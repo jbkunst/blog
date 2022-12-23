@@ -1,0 +1,97 @@
+---
+title: "Quarto post example"
+subtitle: "Yep, this is a quarto post example"
+description: Description is a longer text of what your post is about, or anything else. This particular
+  post is about make an example of a quarto post showing what I like about quarto.
+date: 2000-01-01
+categories: [testing, dont-forget]
+image: images/preview.jpg
+---
+
+```{r setup, include=FALSE}
+source(here::here("_R/post_setup.R"))
+```
+
+
+## Testing htmlwidgets
+
+```{r}
+library(highcharter)
+library(palmerpenguins)
+
+hc <- hchart(
+  penguins, 
+  "point", 
+  hcaes(bill_length_mm, bill_depth_mm, group = species)
+  )
+
+hc
+```
+
+
+1. Titles in the main are with `##`: Yes, the `<h1>` title is of the first title.
+
+
+## Types of column
+
+More info in https://quarto.org/docs/authoring/article-layout.html
+
+How to use: In the chunk specify with `column` argument.
+
+```r
+#| column: page
+```
+
+Now, list of main column types.
+
+::: {.layout-example .column-body}
+.column-body
+:::
+
+::: {.layout-example .column-body-outset}
+.column-body-outset
+:::
+
+::: {.layout-example .column-page}
+.column-page
+:::
+
+::: {.layout-example .column-page-inset}
+.column-page-inset
+:::
+
+::: {.layout-example .column-screen}
+.column-screen
+:::
+
+::: {.layout-example .column-screen-inset}
+.column-screen-inset
+:::
+
+::: {.layout-example .column-screen-inset-shaded}
+.column-screen-inset-shaded
+:::
+
+## Marging content
+
+Content in the right:
+
+```{r, out.height=300}
+#| column: margin
+# This will be in margin so make points smaller
+# #| column: margin
+# out.height=300
+hc |> 
+  hc_plotOptions(
+   scatter = list(showInLegend = FALSE, marker = list(radius = 2)) 
+  )
+```
+
+::: {.layout-example .column-margin}
+.column-margin
+:::
+
+
+
+
+
