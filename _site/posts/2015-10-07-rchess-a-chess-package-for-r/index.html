@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Joshua Kunst Fuentes">
+<meta name="dcterms.date" content="2015-10-07">
+<title>Data, Code and Visualization - rchess a Chess Package for R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-1.11.0/jquery.min.js"></script><script src="../../site_libs/chessjs-0.9.1/chess.min.js"></script><link href="../../site_libs/chessboardjs-0.3.0/chessboard-0.3.0.min.css" rel="stylesheet">
+<script src="../../site_libs/chessboardjs-0.3.0/chessboard-0.3.0.min.js"></script><script src="../../site_libs/chessboardjs.themes-0.1/chessboardjs.themes.js"></script><script src="../../site_libs/chessboardjs.themes-0.1/chessboardjs.themes.data.js"></script><script src="../../site_libs/chessboardjs-binding-0.1/chessboardjs.js"></script><link rel="stylesheet" href="../../styles.css">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data, Code and Visualization</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">rchess a Chess Package for R</h1>
+            <p class="subtitle lead">Finally R have a chess package! Let’s see what can it do.</p>
+                                <div class="quarto-categories">
+                <div class="quarto-category">package</div>
+                <div class="quarto-category">htmlwidgets</div>
+                <div class="quarto-category">chess</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Joshua Kunst Fuentes </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 7, 2015</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>A long time ago I wonder for some R package for chess. Python, JS, Java, C have chess libraries, why R not? But then the <a href="https://github.com/ramnathv/htmlwidgets">htmlwidgets</a> and <a href="https://github.com/jeroenooms/v8">V8</a> packages were born and now possibilities are <em>almost</em> endless. Anyone can make a wrapper for a JS library :D. And this is how <a href="https://github.com/jbkunst/rchess">rchess</a> came out.</p>
+<p>The <a href="https://github.com/jbkunst/rchess">rchess</a> package is a chess move, generation, validator; piece placement, movement, and check/checkmate/stalemate detection. All this powered by <a href="https://github.com/jeroenooms/v8">V8</a> package and <a href="https://github.com/jhlywa/chess.js">chessjs</a> javascript library.</p>
+<p>The main parts about this package are:</p>
+<ul>
+<li>
+<a href="https://github.com/jeroenooms/v8">V8</a> package and <a href="https://github.com/jhlywa/chess.js">chessjs</a> javascript library. So this is not about performance but have the things done (just like Just <a href="http://datadrivensecurity.info/blog/posts/2015/Oct/getting-into-the-zones-with-r-jsonlite/"><span class="citation" data-cites="hrbrmstr">@hrbrmstr</span></a> saids).</li>
+<li>
+<a href="https://github.com/wch/R6/">R6</a> package for the OO system.</li>
+<li>
+<a href="https://github.com/ramnathv/htmlwidgets">htmlwidgets</a> package and <a href="http://chessboardjs.com/">chessboardjs</a> javascript library.</li>
+</ul>
+<p>Now let’s take a look what this package can do.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("rchess")</span></span>
+<span><span class="co"># devtools::install_github("jbkunst/rchess")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jbkunst/rchess">rchess</a></span><span class="op">)</span></span>
+<span><span class="va">chss</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/rchess/man/Chess.html">Chess</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">chss</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="htmlwidget-be07f8e4ec608b87b177" style="width:100%;height:650px;" class="chessboardjs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-be07f8e4ec608b87b177">{"x":{"fen":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>WHOA chessboardjs have a nice look. Right?</p>
+<p>The basic usage is the same as the <a href="https://github.com/jhlywa/chess.js">chessjs</a> api. I’m just implemented only the calls to this api. Anyway, to see the possibles moves you can use the <em>moves</em> method and if you make a move use the <em>move</em> function.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">moves</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code> [1] "a3"  "a4"  "b3"  "b4"  "c3"  "c4"  "d3"  "d4"  "e3"  "e4"  "f3"  "f4" 
+[13] "g3"  "g4"  "h3"  "h4"  "Na3" "Nc3" "Nf3" "Nh3"</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">moves</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 6
+   color from  to    flags piece san  
+   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 w     a2    a3    n     p     a3   
+ 2 w     a2    a4    b     p     a4   
+ 3 w     b2    b3    n     p     b3   
+ 4 w     b2    b4    b     p     b4   
+ 5 w     c2    c3    n     p     c3   
+ 6 w     c2    c4    b     p     c4   
+ 7 w     d2    d3    n     p     d3   
+ 8 w     d2    d4    b     p     d4   
+ 9 w     e2    e3    n     p     e3   
+10 w     e2    e4    b     p     e4   
+11 w     f2    f3    n     p     f3   
+12 w     f2    f4    b     p     f4   
+13 w     g2    g3    n     p     g3   
+14 w     g2    g4    b     p     g4   
+15 w     h2    h3    n     p     h3   
+16 w     h2    h4    b     p     h4   
+17 w     b1    a3    n     n     Na3  
+18 w     b1    c3    n     n     Nc3  
+19 w     g1    f3    n     n     Nf3  
+20 w     g1    h3    n     n     Nh3  </code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">move</span><span class="op">(</span><span class="st">"a3"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We can also concate moves, see who plays in the next turn, see the history, etc.:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">move</span><span class="op">(</span><span class="st">"e5"</span><span class="op">)</span><span class="op">$</span><span class="fu">move</span><span class="op">(</span><span class="st">"f4"</span><span class="op">)</span><span class="op">$</span><span class="fu">move</span><span class="op">(</span><span class="st">"Qe7"</span><span class="op">)</span><span class="op">$</span><span class="fu">move</span><span class="op">(</span><span class="st">"fxe5"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">chss</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="htmlwidget-1c6fa79c4530f1492ba5" style="width:100%;height:650px;" class="chessboardjs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c6fa79c4530f1492ba5">{"x":{"fen":"rnb1kbnr/ppppqppp/8/4P3/8/P7/1PPPP1PP/RNBQKBNR b KQkq - 0 3"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">turn</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "b"</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">history</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 8
+  color from  to    flags piece san   captured number_move
+  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;          &lt;int&gt;
+1 w     a2    a3    n     p     a3    &lt;NA&gt;               1
+2 b     e7    e5    b     p     e5    &lt;NA&gt;               2
+3 w     f2    f4    b     p     f4    &lt;NA&gt;               3
+4 b     d8    e7    n     q     Qe7   &lt;NA&gt;               4
+5 w     f4    e5    c     p     fxe5  p                  5</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chss</span><span class="op">$</span><span class="fu">history</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] "a3"   "e5"   "f4"   "Qe7"  "fxe5"</code></pre>
+</div>
+</div>
+<p>A must have funcionality is load games from PGN and FEN notations:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chssfen</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/rchess/man/Chess.html">Chess</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="va">fen</span> <span class="op">&lt;-</span> <span class="st">"rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"</span></span>
+<span> </span>
+<span><span class="va">chssfen</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="va">fen</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>(Shh you can also plot the chesboard with ggplot. I know I need change that unicode style pieces ;) ).</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">chssfen</span>, type <span class="op">=</span> <span class="st">"ggplot"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now load PGN string:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/pgn/kasparov_vs_topalov.pgn"</span>, package <span class="op">=</span> <span class="st">"rchess"</span><span class="op">)</span></span>
+<span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">pgn</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">pgn</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chsspgn</span> <span class="op">&lt;-</span> <span class="va"><a href="https://rdrr.io/pkg/rchess/man/Chess.html">Chess</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chsspgn</span><span class="op">$</span><span class="fu">load_pgn</span><span class="op">(</span><span class="va">pgn</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">chsspgn</span><span class="op">$</span><span class="fu">pgn</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>[Event "Hoogovens A Tournament"]
+[Site "Wijk aan Zee NED"]
+[Date "1999.01.20"]
+[EventDate "?"]
+[Round "4"]
+[Result "1-0"]
+[White "Garry Kasparov"]
+[Black "Veselin Topalov"]
+[ECO "B06"]
+[WhiteElo "2812"]
+[BlackElo "2700"]
+[PlyCount "87"]
+
+1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Be3 Bg7 5. Qd2 c6 6. f3 b5
+7. Nge2 Nbd7 8. Bh6 Bxh6 9. Qxh6 Bb7 10. a3 e5 11. O-O-O Qe7
+12. Kb1 a6 13. Nc1 O-O-O 14. Nb3 exd4 15. Rxd4 c5 16. Rd1 Nb6
+17. g3 Kb8 18. Na5 Ba8 19. Bh3 d5 20. Qf4+ Ka7 21. Rhe1 d4
+22. Nd5 Nbxd5 23. exd5 Qd6 24. Rxd4 cxd4 25. Re7+ Kb6
+26. Qxd4+ Kxa5 27. b4+ Ka4 28. Qc3 Qxd5 29. Ra7 Bb7
+30. Rxb7 Qc4 31. Qxf6 Kxa3 32. Qxa6+ Kxb4 33. c3+ Kxc3
+34. Qa1+ Kd2 35. Qb2+ Kd1 36. Bf1 Rd2 37. Rd7 Rxd7
+38. Bxc4 bxc4 39. Qxh8 Rd3 40. Qa8 c3 41. Qa4+ Ke1 42. f4 f5
+43. Kc1 Rd2 44. Qa7 1-0</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">chsspgn</span><span class="op">$</span><span class="fu">history</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 8
+   color from  to    flags piece san   captured number_move
+   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;          &lt;int&gt;
+ 1 w     e2    e4    b     p     e4    &lt;NA&gt;               1
+ 2 b     d7    d6    n     p     d6    &lt;NA&gt;               2
+ 3 w     d2    d4    b     p     d4    &lt;NA&gt;               3
+ 4 b     g8    f6    n     n     Nf6   &lt;NA&gt;               4
+ 5 w     b1    c3    n     n     Nc3   &lt;NA&gt;               5
+ 6 b     g7    g6    n     p     g6    &lt;NA&gt;               6
+ 7 w     c1    e3    n     b     Be3   &lt;NA&gt;               7
+ 8 b     f8    g7    n     b     Bg7   &lt;NA&gt;               8
+ 9 w     d1    d2    n     q     Qd2   &lt;NA&gt;               9
+10 b     c7    c6    n     p     c6    &lt;NA&gt;              10
+11 w     f2    f3    n     p     f3    &lt;NA&gt;              11
+12 b     b7    b5    b     p     b5    &lt;NA&gt;              12
+13 w     g1    e2    n     n     Nge2  &lt;NA&gt;              13
+14 b     b8    d7    n     n     Nbd7  &lt;NA&gt;              14
+15 w     e3    h6    n     b     Bh6   &lt;NA&gt;              15
+16 b     g7    h6    c     b     Bxh6  b                 16
+17 w     d2    h6    c     q     Qxh6  b                 17
+18 b     c8    b7    n     b     Bb7   &lt;NA&gt;              18
+19 w     a2    a3    n     p     a3    &lt;NA&gt;              19
+20 b     e7    e5    b     p     e5    &lt;NA&gt;              20</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">chsspgn</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div id="htmlwidget-31b8de596cae046520cb" style="width:100%;height:650px;" class="chessboardjs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-31b8de596cae046520cb">{"x":{"fen":"8/Q6p/6p1/5p2/5P2/2p3P1/3r3P/2K1k3 b - - 3 44"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>And that’s it. If you want to check more funcionalities check the <a href="https://github.com/jbkunst/rchess">github repository</a> or <a href="http://rpubs.com/jbkunst/rchess2">this</a> document.</p>
+<p>Bye mate!</p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2015,
+  author = {Joshua Kunst Fuentes},
+  title = {Rchess a {Chess} {Package} for {R}},
+  date = {2015-10-07},
+  url = {https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2015" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Joshua Kunst Fuentes. 2015. <span>“Rchess a Chess Package for R.”</span>
+October 7, 2015. <a href="https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r">https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r</a>.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Joshua Kunst ©</div>   
+    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕.</div>
+  </div>
+</footer>
+
+
+</body></html>

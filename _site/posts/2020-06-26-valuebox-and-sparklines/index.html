@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Joshua Kunst Fuentes">
+<meta name="dcterms.date" content="2020-06-29">
+<meta name="description" content="The value boxes are a good way to get to the point quickly in a dashboard showing the relevant value with a big font and eye-catching color. But sometimes it would be better show that relevant number with a related text, sparkline or information to give context of that value, or just to compare it with the previoues ones. In this post we’ll show how to add sparklines to valueBox in shinydashboard and other related packages.">
+<title>Data, Code and Visualization - valueBoxes and Sparklines</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script><script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script><script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script><link rel="stylesheet" href="../../styles.css">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data, Code and Visualization</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">valueBoxes and Sparklines</h1>
+                  <div>
+        <div class="description">
+          The value boxes are a good way to get to the point quickly in a dashboard showing the relevant value with a big font and eye-catching color. But sometimes it would be better show that relevant number with a related text, sparkline or information to give context of that value, or just to compare it with the previoues ones. In this post we’ll show how to add sparklines to valueBox in shinydashboard and other related packages.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">shiny</div>
+                <div class="quarto-category">highcharts</div>
+                <div class="quarto-category">highcharter</div>
+                <div class="quarto-category">htmlwidgets</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Joshua Kunst Fuentes </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 29, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li><a href="#introducction" id="toc-introducction" class="nav-link active" data-scroll-target="#introducction">Introducction</a></li>
+  <li><a href="#the-basic-valuebox" id="toc-the-basic-valuebox" class="nav-link" data-scroll-target="#the-basic-valuebox">The basic <code>valueBox</code></a></li>
+  <li><a href="#modifying-the-valuebox" id="toc-modifying-the-valuebox" class="nav-link" data-scroll-target="#modifying-the-valuebox">Modifying the <code>valueBox</code></a></li>
+  <li><a href="#adding-sparklines" id="toc-adding-sparklines" class="nav-link" data-scroll-target="#adding-sparklines">Adding sparklines</a></li>
+  <li><a href="#including-an-information-helper" id="toc-including-an-information-helper" class="nav-link" data-scroll-target="#including-an-information-helper">Including an information helper</a></li>
+  <li><a href="#demo" id="toc-demo" class="nav-link" data-scroll-target="#demo">Demo</a></li>
+  <li><a href="#extending-the-idea" id="toc-extending-the-idea" class="nav-link" data-scroll-target="#extending-the-idea">Extending the idea</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><div class="cell">
+
+</div>
+<p><em>Post updated on Dec 22, 2022</em></p>
+<section id="introducction" class="level2"><h2 class="anchored" data-anchor-id="introducction">Introducction</h2>
+<p>When you create a dashboard to track some information is usual put the important numbers big and clear at the beginning of the main section. For this, {shinydashboard} (https://rstudio.github.io/shinydashboard/) and other dashboard oriented packages for shiny like {bs4dash}, {argonDash}, {tablerDash} - all from https://rinterface.com/ - have an implementation to put this type of information know as a <em>card</em> or <em>value box</em>.</p>
+<p>In some projects like https://jbkunst.shinyapps.io/trd-sttstcs/ I’ve implemented a modification of the original <code><a href="https://rdrr.io/pkg/shinydashboard/man/valueBox.html">shinydashboard::valueBox</a></code> to complement the information (the BIG number) with a sparkline. Always that implementation lives as a function in <code>R/helpers.R</code> script, so this will be a good opportunity to share the code, thoughts and ideas.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="the-basic-valuebox" class="level2"><h2 class="anchored" data-anchor-id="the-basic-valuebox">The basic <code>valueBox</code>
+</h2>
+<p>Let’s start with what we know: The most direct and simple implementation of a <code>valueBox</code> in {shinydashboard}.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://rstudio.github.io/shinydashboard/">shinydashboard</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">vb</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/valueBox.html">valueBox</a></span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="st">"Lines of code written"</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardPage.html">dashboardPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardHeader.html">dashboardHeader</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardSidebar.html">dashboardSidebar</a></span><span class="op">(</span>disable <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardBody.html">dashboardBody</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidRow</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/valueBoxOutput.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">vbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/renderValueBox.html">renderValueBox</a></span><span class="op">(</span><span class="va">vb</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># shiny::shinyApp(ui, server, options = list(launch.browser = .rs.invokeShinyPaneViewer))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This app looks like:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/app1_vb.png" class="img-fluid figure-img" width="975"></p>
+<p></p><figcaption class="figure-caption">The most simple value box</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So here it is, a simple value box to emphasize information which can have an icon/color to give some meaning to the number.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vb1.png" class="img-fluid figure-img" width="300"></p>
+<p></p><figcaption class="figure-caption">Apply some zoom</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="modifying-the-valuebox" class="level2"><h2 class="anchored" data-anchor-id="modifying-the-valuebox">Modifying the <code>valueBox</code>
+</h2>
+<p>Before to modify a value box we need to know what a <code>valueBox</code> is, or how is it built, so take a look what is inside this funcion.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">valueBox</span></span>
+<span></span>
+<span><span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">subtitle</span>, <span class="va">icon</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"aqua"</span>, <span class="va">width</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">href</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">validateColor</span><span class="op">(</span><span class="va">color</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">tagAssert</span><span class="op">(</span><span class="va">icon</span>, type <span class="op">=</span> <span class="st">"i"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"small-box bg-"</span>, <span class="va">color</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"inner"</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">h3</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="va">subtitle</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon-large"</span>, <span class="va">icon</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">href</span><span class="op">)</span><span class="op">)</span> </span>
+<span>    <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">a</a></span><span class="op">(</span>href <span class="op">=</span> <span class="va">href</span>, <span class="va">boxContent</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">width</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"col-sm-"</span>, <span class="va">width</span><span class="op">)</span>, </span>
+<span>    <span class="va">boxContent</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>As we see, the <code>value</code> and <code>subtitle</code> arguments are the main ones. The other are just for styling and format. These elements are in <code>div(class = "inner", ...)</code> so here we’ll put the new content.</p>
+<p>Let’s try to put a title in the top of the div and then use the subtitle as an detailed text.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">valueBox2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">title</span>, <span class="va">subtitle</span>, <span class="va">icon</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"aqua"</span>, <span class="va">width</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">href</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu">validateColor</span><span class="op">(</span><span class="va">color</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/tagAssert.html">tagAssert</a></span><span class="op">(</span><span class="va">icon</span>, type <span class="op">=</span> <span class="st">"i"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"small-box bg-"</span>, <span class="va">color</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"inner"</span>,</span>
+<span>      <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span><span class="va">title</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">h3</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="va">subtitle</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon-large"</span>, <span class="va">icon</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">href</span><span class="op">)</span><span class="op">)</span> </span>
+<span>    <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">a</a></span><span class="op">(</span>href <span class="op">=</span> <span class="va">href</span>, <span class="va">boxContent</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">width</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"col-sm-"</span>, <span class="va">width</span><span class="op">)</span>, </span>
+<span>    <span class="va">boxContent</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>So the implementation is the same as the original <code>valueBox</code> function:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vb</span> <span class="op">&lt;-</span> <span class="fu">valueBox2</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Lines of code"</span><span class="op">)</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last day"</span><span class="op">)</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vb2.png" class="img-fluid figure-img" width="300"></p>
+<p></p><figcaption class="figure-caption">A modificated value box</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The idea of put a title is to help the reader, but we use a small text to be <em>subtle</em>, usually I like to use a <em>Small Caps</em> font but in this case I used uppercase for simplicity.</p>
+</section><section id="adding-sparklines" class="level2"><h2 class="anchored" data-anchor-id="adding-sparklines">Adding sparklines</h2>
+<p>The idea to add a sparkline to the value box is give more information. For example, if your have a historical data, it would be good put a sparkline to show the previous behaviour about the data, so you can compare the <em>BIG</em> number with the past.</p>
+<p>Let’s simulate data to create a sparkline:</p>
+<div class="cell" data-paged.print="true">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="va">N</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">200</span><span class="op">*</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html">days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">N</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>            x    y
+1  2022-12-03   98
+2  2022-12-04  102
+3  2022-12-05  251
+4  2022-12-06  302
+5  2022-12-07  343
+6  2022-12-08  700
+7  2022-12-09  815
+8  2022-12-10  609
+9  2022-12-11  498
+10 2022-12-12  495
+11 2022-12-13  744
+12 2022-12-14  860
+13 2022-12-15 1020
+14 2022-12-16 1055
+15 2022-12-17 1000
+16 2022-12-18 1378
+17 2022-12-19 1490
+18 2022-12-20 1172
+19 2022-12-21 1402
+20 2022-12-22 1345</code></pre>
+</div>
+</div>
+<p>Let’s create a sparkline with {highcharter} package:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"line"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"lines of code"</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_size.html">hc_size</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-44474b3e8cd160f85a98" style="width:100%;height:96px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-44474b3e8cd160f85a98">{"x":{"hc_opts":{"chart":{"reflow":true,"height":100},"title":{"text":null},"yAxis":{"title":{"text":"y"},"type":"linear"},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"x":1670025600000,"y":98},{"x":1670112000000,"y":102},{"x":1670198400000,"y":251},{"x":1670284800000,"y":302},{"x":1670371200000,"y":343},{"x":1670457600000,"y":700},{"x":1670544000000,"y":815},{"x":1670630400000,"y":609},{"x":1670716800000,"y":498},{"x":1670803200000,"y":495},{"x":1670889600000,"y":744},{"x":1670976000000,"y":860},{"x":1671062400000,"y":1020},{"x":1671148800000,"y":1055},{"x":1671235200000,"y":1000},{"x":1671321600000,"y":1378},{"x":1671408000000,"y":1490},{"x":1671494400000,"y":1172},{"x":1671580800000,"y":1402},{"x":1671667200000,"y":1345}],"type":"line","name":"lines of code"}],"xAxis":{"type":"datetime","title":{"text":"x"},"categories":null}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>We have our first sparkline. It’s important note the <code>hc</code> object will use the available horizontal (<code>width</code>) space, but we need to control the <code>heigth</code>.</p>
+<p>Now we can create a new <code>valueBox</code> function;</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">valueBox3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">title</span>, <span class="va">sparkobj</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">subtitle</span>, <span class="va">icon</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>                      <span class="va">color</span> <span class="op">=</span> <span class="st">"aqua"</span>, <span class="va">width</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">href</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu">validateColor</span><span class="op">(</span><span class="va">color</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/tagAssert.html">tagAssert</a></span><span class="op">(</span><span class="va">icon</span>, type <span class="op">=</span> <span class="st">"i"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"small-box bg-"</span>, <span class="va">color</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"inner"</span>,</span>
+<span>      <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span><span class="va">title</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">h3</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sparkobj</span><span class="op">)</span><span class="op">)</span> <span class="va">sparkobj</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="va">subtitle</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon-large"</span>, <span class="va">icon</span>, style <span class="op">=</span> <span class="st">"z-index; 0"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">href</span><span class="op">)</span><span class="op">)</span> </span>
+<span>    <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">a</a></span><span class="op">(</span>href <span class="op">=</span> <span class="va">href</span>, <span class="va">boxContent</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">width</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"col-sm-"</span>, <span class="va">width</span><span class="op">)</span>, </span>
+<span>    <span class="va">boxContent</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>So now:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vb</span> <span class="op">&lt;-</span> <span class="fu">valueBox3</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Lines of code"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last day"</span><span class="op">)</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>And the result is:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vb3.png" class="img-fluid figure-img" width="300"></p>
+<p></p><figcaption class="figure-caption">A value box with a sparkline using a bad theme</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>LOL! We need modify the look of the chart. For this we’ll create a custom theme. The general idea is gain space via removing axis and borders. Then have cleaner look removing grid lines… You know, show <em>just</em> the line.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hc_theme_sparkline_vb</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    chart <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      backgroundColor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>      margins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>      spacingTop <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      spacingRight <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      spacingBottom <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      spacingLeft <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      plotBorderWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      borderWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>overflow <span class="op">=</span> <span class="st">"visible"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    xAxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      visible <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>      endOnTick <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>      startOnTick <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    yAxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      visible <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      endOnTick <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>      startOnTick <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      outside <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      shadow <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      borderColor <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>      botderWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>      backgroundColor <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>      style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>textOutline <span class="op">=</span> <span class="st">"5px white"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    plotOptions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>        marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>        lineWidth <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>        shadow <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        fillOpacity <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>        color <span class="op">=</span> <span class="st">"#FFFFFFBF"</span>,</span>
+<span>        fillColor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>          linearGradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">0</span>, y1 <span class="op">=</span> <span class="fl">1</span>, x2 <span class="op">=</span> <span class="fl">0</span>, y2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>,</span>
+<span>          stops <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">0.00</span>, <span class="st">"#FFFFFF00"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">0.50</span>, <span class="st">"#FFFFFF7F"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1.00</span>, <span class="st">"#FFFFFFFF"</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    credits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      enabled <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      text <span class="op">=</span> <span class="st">""</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html">structure</a></span><span class="op">(</span><span class="va">theme</span>, class <span class="op">=</span> <span class="st">"hc_theme"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_merge.html">hc_theme_merge</a></span><span class="op">(</span></span>
+<span>      <span class="va">theme</span>,</span>
+<span>      <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme.html">hc_theme</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  </span>
+<span>  <span class="va">theme</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Testing the theme.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="va">hc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_538.html">hc_theme_sparkline_vb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="co"># emulate the background color of the valueBox</span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span>backgroundColor <span class="op">=</span> <span class="st">"#DD4B39"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-5d05eac75555269eefd0" style="width:100%;height:225px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5d05eac75555269eefd0">{"x":{"hc_opts":{"chart":{"reflow":true,"height":100,"backgroundColor":"#DD4B39"},"title":{"text":null},"yAxis":{"title":{"text":"y"},"type":"linear"},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"x":1670025600000,"y":98},{"x":1670112000000,"y":102},{"x":1670198400000,"y":251},{"x":1670284800000,"y":302},{"x":1670371200000,"y":343},{"x":1670457600000,"y":700},{"x":1670544000000,"y":815},{"x":1670630400000,"y":609},{"x":1670716800000,"y":498},{"x":1670803200000,"y":495},{"x":1670889600000,"y":744},{"x":1670976000000,"y":860},{"x":1671062400000,"y":1020},{"x":1671148800000,"y":1055},{"x":1671235200000,"y":1000},{"x":1671321600000,"y":1378},{"x":1671408000000,"y":1490},{"x":1671494400000,"y":1172},{"x":1671580800000,"y":1402},{"x":1671667200000,"y":1345}],"type":"line","name":"lines of code"}],"xAxis":{"type":"datetime","title":{"text":"x"},"categories":null}},"theme":{"chart":{"backgroundColor":null,"margins":[0,0,0,0],"spacingTop":0,"spacingRight":0,"spacingBottom":0,"spacingLeft":0,"plotBorderWidth":0,"borderWidth":0,"style":{"overflow":"visible"}},"xAxis":{"visible":false,"endOnTick":false,"startOnTick":false},"yAxis":{"visible":false,"endOnTick":false,"startOnTick":false},"tooltip":{"outside":false,"shadow":false,"borderColor":"transparent","botderWidth":0,"backgroundColor":"transparent","style":{"textOutline":"5px white"}},"plotOptions":{"series":{"marker":{"enabled":false},"lineWidth":2,"shadow":false,"fillOpacity":0.25,"color":"#FFFFFFBF","fillColor":{"linearGradient":{"x1":0,"y1":1,"x2":0,"y2":0},"stops":[[0,"#FFFFFF00"],[0.5,"#FFFFFF7F"],[1,"#FFFFFFFF"]]}}},"credits":{"enabled":false,"text":""}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>And trying again:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vb</span> <span class="op">&lt;-</span> <span class="fu">valueBox3</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Lines of code"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last day"</span><span class="op">)</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vb4.png" class="img-fluid figure-img" width="300"></p>
+<p></p><figcaption class="figure-caption">A value box with a proper sparkline</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="including-an-information-helper" class="level2"><h2 class="anchored" data-anchor-id="including-an-information-helper">Including an information helper</h2>
+<p>Sometimes I like to add helper information icon to explain how to read the metric/number if is needed.</p>
+<p>This can be done using the icon <code>"info-cirle"</code> and using the class <code>"pull-right"</code> to put in the corner.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">valueBox4</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">title</span>, <span class="va">sparkobj</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">subtitle</span>, <span class="va">info</span> <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                      <span class="va">icon</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"aqua"</span>, <span class="va">width</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">href</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu">validateColor</span><span class="op">(</span><span class="va">color</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/tagAssert.html">tagAssert</a></span><span class="op">(</span><span class="va">icon</span>, type <span class="op">=</span> <span class="st">"i"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">info_icon</span> <span class="op">&lt;-</span> <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span></span>
+<span>    <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"fa fa-info-circle fa-lg"</span>,</span>
+<span>      title <span class="op">=</span> <span class="va">info</span>,</span>
+<span>      `data-toggle` <span class="op">=</span> <span class="st">"tooltip"</span>,</span>
+<span>      style <span class="op">=</span> <span class="st">"color: rgba(255, 255, 255, 0.75);"</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    class <span class="op">=</span> <span class="st">"pull-right"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"small-box bg-"</span>, <span class="va">color</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"inner"</span>,</span>
+<span>      <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span><span class="va">title</span><span class="op">)</span>,</span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sparkobj</span><span class="op">)</span><span class="op">)</span> <span class="va">info_icon</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">h3</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sparkobj</span><span class="op">)</span><span class="op">)</span> <span class="va">sparkobj</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="va">subtitle</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon-large"</span>, <span class="va">icon</span>, style <span class="op">=</span> <span class="st">"z-index; 0"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">href</span><span class="op">)</span><span class="op">)</span> </span>
+<span>    <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">a</a></span><span class="op">(</span>href <span class="op">=</span> <span class="va">href</span>, <span class="va">boxContent</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">width</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"col-sm-"</span>, <span class="va">width</span><span class="op">)</span>, </span>
+<span>    <span class="va">boxContent</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>So now:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vb</span> <span class="op">&lt;-</span> <span class="fu">valueBox4</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Lines of code"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last day"</span><span class="op">)</span>,</span>
+<span>  info <span class="op">=</span> <span class="st">"This is the lines of code I've written in the past 20 days! That's a lot, right?"</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/vb5.png" class="img-fluid figure-img" width="300"></p>
+<p></p><figcaption class="figure-caption">A value box with helper text on hover</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Voilà</em> we have a value box with a information helper.</p>
+</section><section id="demo" class="level2"><h2 class="anchored" data-anchor-id="demo">Demo</h2>
+<p>Demo section! We can use other types of charts, texts and colors:</p>
+<p>Before the demo, let’s give a proper name to our function:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">valueBoxSpark</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">title</span>, <span class="va">sparkobj</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">subtitle</span>, <span class="va">info</span> <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>                          <span class="va">icon</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">color</span> <span class="op">=</span> <span class="st">"aqua"</span>, <span class="va">width</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">href</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu">validateColor</span><span class="op">(</span><span class="va">color</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">shinydashboard</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/tagAssert.html">tagAssert</a></span><span class="op">(</span><span class="va">icon</span>, type <span class="op">=</span> <span class="st">"i"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">info_icon</span> <span class="op">&lt;-</span> <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span></span>
+<span>    <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"fa fa-info-circle fa-lg"</span>,</span>
+<span>      title <span class="op">=</span> <span class="va">info</span>,</span>
+<span>      `data-toggle` <span class="op">=</span> <span class="st">"tooltip"</span>,</span>
+<span>      style <span class="op">=</span> <span class="st">"color: rgba(255, 255, 255, 0.75);"</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="co"># bs3 pull-right </span></span>
+<span>    <span class="co"># bs4 float-right</span></span>
+<span>    class <span class="op">=</span> <span class="st">"pull-right float-right"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"small-box bg-"</span>, <span class="va">color</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>      class <span class="op">=</span> <span class="st">"inner"</span>,</span>
+<span>      <span class="va">tags</span><span class="op">$</span><span class="fu">small</span><span class="op">(</span><span class="va">title</span><span class="op">)</span>,</span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sparkobj</span><span class="op">)</span><span class="op">)</span> <span class="va">info_icon</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">h3</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span>,</span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">sparkobj</span><span class="op">)</span><span class="op">)</span> <span class="va">sparkobj</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">p</a></span><span class="op">(</span><span class="va">subtitle</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>    <span class="co"># bs3 icon-large</span></span>
+<span>    <span class="co"># bs4 icon</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">icon</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon-large icon"</span>, <span class="va">icon</span>, style <span class="op">=</span> <span class="st">"z-index; 0"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">href</span><span class="op">)</span><span class="op">)</span> </span>
+<span>    <span class="va">boxContent</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">a</a></span><span class="op">(</span>href <span class="op">=</span> <span class="va">href</span>, <span class="va">boxContent</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span></span>
+<span>    class <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">width</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"col-sm-"</span>, <span class="va">width</span><span class="op">)</span>, </span>
+<span>    <span class="va">boxContent</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Some charts:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"area"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"lines of code"</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_size.html">hc_size</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_538.html">hc_theme_sparkline_vb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">hc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"line"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Distance"</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_size.html">hc_size</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_538.html">hc_theme_sparkline_vb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">hc3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">df</span>, <span class="st">"column"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Daily amount"</span><span class="op">)</span>  <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_size.html">hc_size</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_538.html">hc_theme_sparkline_vb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Some value boxes:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">vb</span> <span class="op">&lt;-</span> <span class="fu">valueBoxSpark</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Lines of code written"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last day"</span><span class="op">)</span>,</span>
+<span>  info <span class="op">=</span> <span class="st">"This is the lines of code I've written in the past 20 days! That's a lot, right?"</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"code"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"teal"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">vb2</span> <span class="op">&lt;-</span> <span class="fu">valueBoxSpark</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,345 KM"</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Distance Traveled"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc2</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"25% Since last month"</span><span class="op">)</span>,</span>
+<span>  info <span class="op">=</span> <span class="st">"This is the lines of code I've written in the past 20 days! That's a lot, right?"</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"plane"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">vb3</span> <span class="op">&lt;-</span> <span class="fu">valueBoxSpark</span><span class="op">(</span></span>
+<span>  value <span class="op">=</span> <span class="st">"1,3 Hrs."</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">toupper</a></span><span class="op">(</span><span class="st">"Thinking time"</span><span class="op">)</span>,</span>
+<span>  sparkobj <span class="op">=</span> <span class="va">hc3</span>,</span>
+<span>  subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"&amp;uarr;"</span><span class="op">)</span>, <span class="st">"5% Since last year"</span><span class="op">)</span>,</span>
+<span>  info <span class="op">=</span> <span class="st">"This is the lines of code I've written in the past 20 days! That's a lot, right?"</span>,</span>
+<span>  icon <span class="op">=</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/icon.html">icon</a></span><span class="op">(</span><span class="st">"hourglass-half"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"yellow"</span>,</span>
+<span>  href <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Finally the app:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://rstudio.github.io/shinydashboard/">shinydashboard</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardPage.html">dashboardPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardHeader.html">dashboardHeader</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardSidebar.html">dashboardSidebar</a></span><span class="op">(</span>disable <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/dashboardBody.html">dashboardBody</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidRow</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/valueBoxOutput.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/valueBoxOutput.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox2"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/valueBoxOutput.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox3"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">vbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/renderValueBox.html">renderValueBox</a></span><span class="op">(</span><span class="va">vb</span><span class="op">)</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">vbox2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/renderValueBox.html">renderValueBox</a></span><span class="op">(</span><span class="va">vb2</span><span class="op">)</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">vbox3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shinydashboard/man/renderValueBox.html">renderValueBox</a></span><span class="op">(</span><span class="va">vb3</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># shiny::shinyApp(ui, server, options = list(launch.browser = .rs.invokeShinyPaneViewer))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This app look like this :)! What do you think?</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/app2_vb.png" class="img-fluid figure-img" width="975"></p>
+<p></p><figcaption class="figure-caption">Awesome new value boxes</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="extending-the-idea" class="level2"><h2 class="anchored" data-anchor-id="extending-the-idea">Extending the idea</h2>
+<p>Due the {bs4dash} package is based in the same template of the {shinydashboard} https://github.com/ColorlibHQ/AdminLTE is direct use the functions. There some details in the info icon, but you can remove it if you use <code>icon = NULL</code>.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rinterface.github.io/bs4Dash/index.html">bs4Dash</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/dashboardPage.html">bs4DashPage</a></span><span class="op">(</span></span>
+<span>  header <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/dashboardHeader.html">dashboardHeader</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  sidebar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/dashboardSidebar.html">bs4DashSidebar</a></span><span class="op">(</span>disable <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/dashboardBody.html">bs4DashBody</a></span><span class="op">(</span></span>
+<span>    <span class="co"># this is for use tooltips in the bs4dash package</span></span>
+<span>    <span class="va">tags</span><span class="op">$</span><span class="fu">script</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/HTML.html">HTML</a></span><span class="op">(</span><span class="st">"setInterval(function(){ $('[title]').tooltip(); }, 1000)"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="va">tags</span><span class="op">$</span><span class="fu">h2</span><span class="op">(</span><span class="st">"Testing with {bs4dash} package"</span><span class="op">)</span>,</span>
+<span>    <span class="va">tags</span><span class="op">$</span><span class="fu">hr</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidRow</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/valueBox.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/valueBox.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox2"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/bs4Dash/man/valueBox.html">valueBoxOutput</a></span><span class="op">(</span><span class="st">"vbox3"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># setTimeout(function(){ $('[title]').tooltip(); }, 3000)</span></span>
+<span><span class="co"># setInterval(function(){ $('[title]').tooltip(); }, 3000)</span></span>
+<span><span class="co"># JS("$(function () { $('[title]').tooltip() })")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="images/app3_vb.png" class="img-fluid figure-img" width="992"></p>
+<p></p><figcaption class="figure-caption">Work with the {bs4dash} package too</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This walkthrough/tutorial will help to implement sparklines in other packages as well as other elements such as <code>infoBox</code>, or maybe with other htmlwidgets like {echarts4r} or {plotly}. So if you make an implementation please tell us and share with other people.</p>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2020,
+  author = {Joshua Kunst Fuentes},
+  title = {valueBoxes and {Sparklines}},
+  date = {2020-06-29},
+  url = {https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2020" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Joshua Kunst Fuentes. 2020. <span>“valueBoxes and Sparklines.”</span>
+June 29, 2020. <a href="https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines">https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines</a>.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Joshua Kunst ©</div>   
+    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕.</div>
+  </div>
+</footer>
+
+
+</body></html>

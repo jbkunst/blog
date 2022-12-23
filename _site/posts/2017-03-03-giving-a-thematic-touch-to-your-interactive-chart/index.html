@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Joshua Kunst Fuentes">
+<meta name="dcterms.date" content="2017-03-03">
+<meta name="description" content="Sometimes you need to express yourself.">
+<title>Data, Code and Visualization - Giving a Thematic Touch to your Interactive Chart</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script><script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script><script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script><link rel="stylesheet" href="../../styles.css">
+</head>
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data, Code and Visualization</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+<div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Giving a Thematic Touch to your Interactive Chart</h1>
+                  <div>
+        <div class="description">
+          Sometimes you need to express yourself.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">data-visualization</div>
+                <div class="quarto-category">higcharter</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Joshua Kunst Fuentes </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 3, 2017</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul>
+<li><a href="#preliminars" id="toc-preliminars" class="nav-link active" data-scroll-target="#preliminars">Preliminars</a></li>
+  <li><a href="#example-i-oil-spills" id="toc-example-i-oil-spills" class="nav-link" data-scroll-target="#example-i-oil-spills">Example I: Oil Spills</a></li>
+  <li><a href="#example-ii-winter-olympic-games" id="toc-example-ii-winter-olympic-games" class="nav-link" data-scroll-target="#example-ii-winter-olympic-games">Example II: Winter Olympic Games</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="preliminars" class="level2"><h2 class="anchored" data-anchor-id="preliminars">Preliminars</h2>
+<p>Usually (mainly at work) I made a chart and when I present it nobody cares about the style, if the chart comes from an excel spreadsheet, paint or intercative chart, or colors, labels, font, or things I like to care. That’s sad for me but it’s fine: the data/history behind and how you present it is what matters. And surely I’m overreacting.</p>
+<p>But hey! That’s not implies you only must do always clean chart or tufte style plots. Sometimes you can play with the topic of your chart and give some <em>thematic touch</em>.</p>
+<p>The first example that come to my mind is the <em>Iraq’s bloody toll</em> visualization:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="http://cdn3.i-scmp.com/sites/default/files/styles/980w/public/2013/07/17/iraqdeaths.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Iraq’s bloody toll</figcaption><p></p>
+</figure>
+</div>
+<p>So. We’ll use some resources to try:</p>
+<ul>
+<li>Add some context of the topic before the viewer read something.</li>
+<li>Hopefully keep in the viewer’s memory :) in a <em>gooood</em> way.</li>
+</ul>
+<p>Keeping the message intact, ie, don’t abuse adding many element so the user don’t lose the main point of the chart.</p>
+</section><section id="example-i-oil-spills" class="level2"><h2 class="anchored" data-anchor-id="example-i-oil-spills">Example I: Oil Spills</h2>
+<p>We can reuse the <em>bloody toll</em> effect, using with <em>Oil Spills</em> data.</p>
+<p>The <a href="https://ourworldindata.org/oil-spills/">ourworldindata.org</a> website have a descriptive study Max Roser.</p>
+<blockquote class="blockquote">
+<p>Max Roser (2016) - ‘Oil Spills’. Published online at OurWorldInData.org. Retrieved from: https://ourworldindata.org/oil-spills/ [Online Resource]</p>
+</blockquote>
+<p>They start with:</p>
+<blockquote class="blockquote">
+<p>Over the past 4 decades - the time for which we have data - oil spills decreased dramatically. Although oil spills also happen on land, marine oil spills are considered more serious as the spilled oil is less containable</p>
+</blockquote>
+<p>Let’s load the data and make the basic chart.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805">jsonlite</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_lines.html">read_lines</a></span><span class="op">(</span><span class="st">"https://ourworldindata.org/wp-content/uploads/nvd3/nvd3_multiBarChart_Oil/multiBarChart_Oil.html"</span><span class="op">)</span></span>
+<span><span class="va">json</span> <span class="op">&lt;-</span> <span class="va">json</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">json</span>, <span class="st">"var xxx"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">first</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">json</span>, <span class="st">"\\}\\]\\;"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">json</span>, <span class="st">"var xxx = |;$"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">json</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/transpose.html">transpose</a></span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">json</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>List of 2
+ $ :List of 2
+  ..$ values:'data.frame':  43 obs. of  2 variables:
+  .. ..$ x: num [1:43] 0.00 3.16e+10 6.31e+10 9.47e+10 1.26e+11 ...
+  .. ..$ y: int [1:43] 30 14 27 31 27 20 26 16 23 32 ...
+  ..$ key   : chr "&gt;700 Tonnes"
+ $ :List of 2
+  ..$ values:'data.frame':  43 obs. of  2 variables:
+  .. ..$ x: num [1:43] 0.00 3.16e+10 6.31e+10 9.47e+10 1.26e+11 ...
+  .. ..$ y: int [1:43] 7 18 48 28 90 96 67 69 59 60 ...
+  ..$ key   : chr "7-700 Tonnes"</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dspills</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span><span class="op">(</span><span class="va">json</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">x</span><span class="op">[[</span><span class="st">"values"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">df</span><span class="op">$</span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[[</span><span class="st">"key"</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl_df.html">tbl_df</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="va">df</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">dspills</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Rows: 86
+Columns: 3
+$ x   &lt;dbl&gt; 0.00000e+00, 3.15569e+10, 6.31138e+10, 9.46707e+10, 1.26228e+11, 1…
+$ y   &lt;int&gt; 30, 14, 27, 31, 27, 20, 26, 16, 23, 32, 13, 7, 4, 13, 8, 8, 7, 10,…
+$ key &lt;chr&gt; "&gt;700 Tonnes", "&gt;700 Tonnes", "&gt;700 Tonnes", "&gt;700 Tonnes", "&gt;700 …</code></pre>
+</div>
+</div>
+<p>The data is ready. So we can make an staked area chart. I used <em>areaspline</em> here to make a <em>liquid</em> effect.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hcspills</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">dspills</span>, <span class="st">"areaspline"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, group <span class="op">=</span> <span class="st">"key"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>stacking <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"datetime"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Number of Oil Spills Over the Past 4 Decades"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hcspills</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-580272094870535cb624" style="width:100%;height:464px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-580272094870535cb624">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"Number of Oil Spills Over the Past 4 Decades"},"yAxis":{"title":{"text":"y"},"type":"linear"},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":true,"stacking":"normal"},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"name":">700 Tonnes","data":[{"x":0,"y":30,"key":">700 Tonnes"},{"x":31556900000,"y":14,"key":">700 Tonnes"},{"x":63113800000,"y":27,"key":">700 Tonnes"},{"x":94670700000,"y":31,"key":">700 Tonnes"},{"x":126228000000,"y":27,"key":">700 Tonnes"},{"x":157785000000,"y":20,"key":">700 Tonnes"},{"x":189341000000,"y":26,"key":">700 Tonnes"},{"x":220898000000,"y":16,"key":">700 Tonnes"},{"x":252455000000,"y":23,"key":">700 Tonnes"},{"x":284012000000,"y":32,"key":">700 Tonnes"},{"x":315569000000,"y":13,"key":">700 Tonnes"},{"x":347126000000,"y":7,"key":">700 Tonnes"},{"x":378683000000,"y":4,"key":">700 Tonnes"},{"x":410240000000,"y":13,"key":">700 Tonnes"},{"x":441797000000,"y":8,"key":">700 Tonnes"},{"x":473354000000,"y":8,"key":">700 Tonnes"},{"x":504910000000,"y":7,"key":">700 Tonnes"},{"x":536467000000,"y":10,"key":">700 Tonnes"},{"x":568024000000,"y":10,"key":">700 Tonnes"},{"x":599581000000,"y":13,"key":">700 Tonnes"},{"x":631138000000,"y":14,"key":">700 Tonnes"},{"x":662695000000,"y":7,"key":">700 Tonnes"},{"x":694252000000,"y":10,"key":">700 Tonnes"},{"x":725809000000,"y":11,"key":">700 Tonnes"},{"x":757366000000,"y":9,"key":">700 Tonnes"},{"x":788923000000,"y":3,"key":">700 Tonnes"},{"x":820479000000,"y":3,"key":">700 Tonnes"},{"x":852036000000,"y":10,"key":">700 Tonnes"},{"x":883593000000,"y":5,"key":">700 Tonnes"},{"x":915150000000,"y":6,"key":">700 Tonnes"},{"x":946707000000,"y":4,"key":">700 Tonnes"},{"x":978264000000,"y":3,"key":">700 Tonnes"},{"x":1009820000000,"y":3,"key":">700 Tonnes"},{"x":1041380000000,"y":4,"key":">700 Tonnes"},{"x":1072930000000,"y":5,"key":">700 Tonnes"},{"x":1104490000000,"y":3,"key":">700 Tonnes"},{"x":1136050000000,"y":5,"key":">700 Tonnes"},{"x":1167610000000,"y":4,"key":">700 Tonnes"},{"x":1199160000000,"y":1,"key":">700 Tonnes"},{"x":1230720000000,"y":1,"key":">700 Tonnes"},{"x":1262280000000,"y":4,"key":">700 Tonnes"},{"x":1293830000000,"y":1,"key":">700 Tonnes"},{"x":1325390000000,"y":0,"key":">700 Tonnes"}],"type":"areaspline"},{"name":"7-700 Tonnes","data":[{"x":0,"y":7,"key":"7-700 Tonnes"},{"x":31556900000,"y":18,"key":"7-700 Tonnes"},{"x":63113800000,"y":48,"key":"7-700 Tonnes"},{"x":94670700000,"y":28,"key":"7-700 Tonnes"},{"x":126228000000,"y":90,"key":"7-700 Tonnes"},{"x":157785000000,"y":96,"key":"7-700 Tonnes"},{"x":189341000000,"y":67,"key":"7-700 Tonnes"},{"x":220898000000,"y":69,"key":"7-700 Tonnes"},{"x":252455000000,"y":59,"key":"7-700 Tonnes"},{"x":284012000000,"y":60,"key":"7-700 Tonnes"},{"x":315569000000,"y":52,"key":"7-700 Tonnes"},{"x":347126000000,"y":54,"key":"7-700 Tonnes"},{"x":378683000000,"y":46,"key":"7-700 Tonnes"},{"x":410240000000,"y":52,"key":"7-700 Tonnes"},{"x":441797000000,"y":26,"key":"7-700 Tonnes"},{"x":473354000000,"y":33,"key":"7-700 Tonnes"},{"x":504910000000,"y":27,"key":"7-700 Tonnes"},{"x":536467000000,"y":27,"key":"7-700 Tonnes"},{"x":568024000000,"y":11,"key":"7-700 Tonnes"},{"x":599581000000,"y":33,"key":"7-700 Tonnes"},{"x":631138000000,"y":51,"key":"7-700 Tonnes"},{"x":662695000000,"y":30,"key":"7-700 Tonnes"},{"x":694252000000,"y":31,"key":"7-700 Tonnes"},{"x":725809000000,"y":31,"key":"7-700 Tonnes"},{"x":757366000000,"y":26,"key":"7-700 Tonnes"},{"x":788923000000,"y":20,"key":"7-700 Tonnes"},{"x":820479000000,"y":20,"key":"7-700 Tonnes"},{"x":852036000000,"y":28,"key":"7-700 Tonnes"},{"x":883593000000,"y":25,"key":"7-700 Tonnes"},{"x":915150000000,"y":20,"key":"7-700 Tonnes"},{"x":946707000000,"y":21,"key":"7-700 Tonnes"},{"x":978264000000,"y":17,"key":"7-700 Tonnes"},{"x":1009820000000,"y":12,"key":"7-700 Tonnes"},{"x":1041380000000,"y":19,"key":"7-700 Tonnes"},{"x":1072930000000,"y":17,"key":"7-700 Tonnes"},{"x":1104490000000,"y":22,"key":"7-700 Tonnes"},{"x":1136050000000,"y":13,"key":"7-700 Tonnes"},{"x":1167610000000,"y":13,"key":"7-700 Tonnes"},{"x":1199160000000,"y":8,"key":"7-700 Tonnes"},{"x":1230720000000,"y":7,"key":"7-700 Tonnes"},{"x":1262280000000,"y":4,"key":"7-700 Tonnes"},{"x":1293830000000,"y":5,"key":"7-700 Tonnes"},{"x":1325390000000,"y":7,"key":"7-700 Tonnes"}],"type":"areaspline"}],"xAxis":{"type":"datetime","title":{"text":"x"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Yay, the spills are decreasing over time. So we can do:</p>
+<ul>
+<li>Add a <em>deep sea</em> background.</li>
+<li>Reverse the <code>yAxis</code> to the give the <em>fall</em> effect.</li>
+<li>Add a dark colors to simulate the <em>oil</em>.</li>
+<li>Add the credits for give the <em>serious</em> (? ;) ) touch.</li>
+</ul>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hcspills2</span> <span class="op">&lt;-</span> <span class="va">hcspills</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#000000"</span>, <span class="st">"#222222"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"left"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>sort <span class="op">=</span> <span class="cn">TRUE</span>, table <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_legend.html">hc_legend</a></span><span class="op">(</span>align <span class="op">=</span> <span class="st">"right"</span>, verticalAlign <span class="op">=</span> <span class="st">"top"</span>, layout <span class="op">=</span> <span class="st">"horizontal"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span></span>
+<span>    enabled <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    text <span class="op">=</span> <span class="st">"Data from ITOPF.com"</span>,</span>
+<span>    href <span class="op">=</span> <span class="st">"http://www.itopf.com/knowledge-resources/data-statistics/statistics/"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span></span>
+<span>    divBackgroundImage <span class="op">=</span> <span class="st">"https://images-na.ssl-images-amazon.com/images/I/71EUEG8orVL._SL1500_.jpg"</span>,</span>
+<span>    backgroundColor <span class="op">=</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hex_to_rgba.html">hex_to_rgba</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="fl">0.50</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span></span>
+<span>    opposite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    gridLineWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Time"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    lineColor <span class="op">=</span> <span class="st">"black"</span>, tickColor <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span></span>
+<span>    reversed <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>    gridLineWidth <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>    lineWidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    lineColor <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>    tickWidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    tickLength <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>    tickColor <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Oil Spills"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_elementary.html">hc_theme_elementary</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hcspills2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-8c14e1512c0b12708664" style="width:100%;height:464px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8c14e1512c0b12708664">{"x":{"hc_opts":{"chart":{"reflow":true,"divBackgroundImage":"https://images-na.ssl-images-amazon.com/images/I/71EUEG8orVL._SL1500_.jpg","backgroundColor":"rgba(255,255,255,0.5)"},"title":{"text":"Number of Oil Spills Over the Past 4 Decades","align":"left","style":{"color":"black"}},"yAxis":{"title":{"text":"Oil Spills","style":{"color":"black"}},"type":"linear","reversed":true,"gridLineWidth":0,"lineWidth":1,"lineColor":"black","tickWidth":1,"tickLength":10,"tickColor":"black","labels":{"style":{"color":"black"}}},"credits":{"enabled":true,"text":"Data from ITOPF.com","href":"http://www.itopf.com/knowledge-resources/data-statistics/statistics/"},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":true,"stacking":"normal","marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"name":">700 Tonnes","data":[{"x":0,"y":30,"key":">700 Tonnes"},{"x":31556900000,"y":14,"key":">700 Tonnes"},{"x":63113800000,"y":27,"key":">700 Tonnes"},{"x":94670700000,"y":31,"key":">700 Tonnes"},{"x":126228000000,"y":27,"key":">700 Tonnes"},{"x":157785000000,"y":20,"key":">700 Tonnes"},{"x":189341000000,"y":26,"key":">700 Tonnes"},{"x":220898000000,"y":16,"key":">700 Tonnes"},{"x":252455000000,"y":23,"key":">700 Tonnes"},{"x":284012000000,"y":32,"key":">700 Tonnes"},{"x":315569000000,"y":13,"key":">700 Tonnes"},{"x":347126000000,"y":7,"key":">700 Tonnes"},{"x":378683000000,"y":4,"key":">700 Tonnes"},{"x":410240000000,"y":13,"key":">700 Tonnes"},{"x":441797000000,"y":8,"key":">700 Tonnes"},{"x":473354000000,"y":8,"key":">700 Tonnes"},{"x":504910000000,"y":7,"key":">700 Tonnes"},{"x":536467000000,"y":10,"key":">700 Tonnes"},{"x":568024000000,"y":10,"key":">700 Tonnes"},{"x":599581000000,"y":13,"key":">700 Tonnes"},{"x":631138000000,"y":14,"key":">700 Tonnes"},{"x":662695000000,"y":7,"key":">700 Tonnes"},{"x":694252000000,"y":10,"key":">700 Tonnes"},{"x":725809000000,"y":11,"key":">700 Tonnes"},{"x":757366000000,"y":9,"key":">700 Tonnes"},{"x":788923000000,"y":3,"key":">700 Tonnes"},{"x":820479000000,"y":3,"key":">700 Tonnes"},{"x":852036000000,"y":10,"key":">700 Tonnes"},{"x":883593000000,"y":5,"key":">700 Tonnes"},{"x":915150000000,"y":6,"key":">700 Tonnes"},{"x":946707000000,"y":4,"key":">700 Tonnes"},{"x":978264000000,"y":3,"key":">700 Tonnes"},{"x":1009820000000,"y":3,"key":">700 Tonnes"},{"x":1041380000000,"y":4,"key":">700 Tonnes"},{"x":1072930000000,"y":5,"key":">700 Tonnes"},{"x":1104490000000,"y":3,"key":">700 Tonnes"},{"x":1136050000000,"y":5,"key":">700 Tonnes"},{"x":1167610000000,"y":4,"key":">700 Tonnes"},{"x":1199160000000,"y":1,"key":">700 Tonnes"},{"x":1230720000000,"y":1,"key":">700 Tonnes"},{"x":1262280000000,"y":4,"key":">700 Tonnes"},{"x":1293830000000,"y":1,"key":">700 Tonnes"},{"x":1325390000000,"y":0,"key":">700 Tonnes"}],"type":"areaspline"},{"name":"7-700 Tonnes","data":[{"x":0,"y":7,"key":"7-700 Tonnes"},{"x":31556900000,"y":18,"key":"7-700 Tonnes"},{"x":63113800000,"y":48,"key":"7-700 Tonnes"},{"x":94670700000,"y":28,"key":"7-700 Tonnes"},{"x":126228000000,"y":90,"key":"7-700 Tonnes"},{"x":157785000000,"y":96,"key":"7-700 Tonnes"},{"x":189341000000,"y":67,"key":"7-700 Tonnes"},{"x":220898000000,"y":69,"key":"7-700 Tonnes"},{"x":252455000000,"y":59,"key":"7-700 Tonnes"},{"x":284012000000,"y":60,"key":"7-700 Tonnes"},{"x":315569000000,"y":52,"key":"7-700 Tonnes"},{"x":347126000000,"y":54,"key":"7-700 Tonnes"},{"x":378683000000,"y":46,"key":"7-700 Tonnes"},{"x":410240000000,"y":52,"key":"7-700 Tonnes"},{"x":441797000000,"y":26,"key":"7-700 Tonnes"},{"x":473354000000,"y":33,"key":"7-700 Tonnes"},{"x":504910000000,"y":27,"key":"7-700 Tonnes"},{"x":536467000000,"y":27,"key":"7-700 Tonnes"},{"x":568024000000,"y":11,"key":"7-700 Tonnes"},{"x":599581000000,"y":33,"key":"7-700 Tonnes"},{"x":631138000000,"y":51,"key":"7-700 Tonnes"},{"x":662695000000,"y":30,"key":"7-700 Tonnes"},{"x":694252000000,"y":31,"key":"7-700 Tonnes"},{"x":725809000000,"y":31,"key":"7-700 Tonnes"},{"x":757366000000,"y":26,"key":"7-700 Tonnes"},{"x":788923000000,"y":20,"key":"7-700 Tonnes"},{"x":820479000000,"y":20,"key":"7-700 Tonnes"},{"x":852036000000,"y":28,"key":"7-700 Tonnes"},{"x":883593000000,"y":25,"key":"7-700 Tonnes"},{"x":915150000000,"y":20,"key":"7-700 Tonnes"},{"x":946707000000,"y":21,"key":"7-700 Tonnes"},{"x":978264000000,"y":17,"key":"7-700 Tonnes"},{"x":1009820000000,"y":12,"key":"7-700 Tonnes"},{"x":1041380000000,"y":19,"key":"7-700 Tonnes"},{"x":1072930000000,"y":17,"key":"7-700 Tonnes"},{"x":1104490000000,"y":22,"key":"7-700 Tonnes"},{"x":1136050000000,"y":13,"key":"7-700 Tonnes"},{"x":1167610000000,"y":13,"key":"7-700 Tonnes"},{"x":1199160000000,"y":8,"key":"7-700 Tonnes"},{"x":1230720000000,"y":7,"key":"7-700 Tonnes"},{"x":1262280000000,"y":4,"key":"7-700 Tonnes"},{"x":1293830000000,"y":5,"key":"7-700 Tonnes"},{"x":1325390000000,"y":7,"key":"7-700 Tonnes"}],"type":"areaspline"}],"xAxis":{"type":"datetime","title":{"text":"Time","style":{"color":"black"}},"opposite":true,"gridLineWidth":0,"lineColor":"black","tickColor":"black","labels":{"style":{"color":"black"}}},"colors":["#000000","#222222"],"tooltip":{"shared":true,"formatter":"function(tooltip){\n          function isArray(obj) {\n          return Object.prototype.toString.call(obj) === '[object Array]';\n          }\n\n          function splat(obj) {\n          return isArray(obj) ? obj : [obj];\n          }\n\n          var items = this.points || splat(this), series = items[0].series, s;\n\n          // sort the values\n          items.sort(function(a, b){\n          return ((a.y < b.y) ? -1 : ((a.y > b.y) ? 1 : 0));\n          });\n          items.reverse();\n\n          return tooltip.defaultFormatter.call(this, tooltip);\n        }","useHTML":true,"headerFormat":"<small>{point.key}<\/small><table>","pointFormat":"<tr><td style=\"color: {series.color}\">{series.name}: <\/td><td style=\"text-align: right\"><b>{point.y}<\/b><\/td><\/tr>","footerFormat":"<\/table>"},"legend":{"align":"right","verticalAlign":"top","layout":"horizontal"}},"theme":{"colors":["#41B5E9","#FA8832","#34393C","#E46151"],"chart":{"style":{"color":"#333","fontFamily":"Open Sans"}},"title":{"style":{"fontFamily":"Raleway","fontWeight":"100"}},"subtitle":{"style":{"fontFamily":"Raleway","fontWeight":"100"}},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":["-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","Open+Sans","Raleway"],"debug":false},"evals":["hc_opts.tooltip.formatter"],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="example-ii-winter-olympic-games" class="level2"><h2 class="anchored" data-anchor-id="example-ii-winter-olympic-games">Example II: Winter Olympic Games</h2>
+<p>Here we will take the data and chart the participating nations over the years.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="st">"https://en.wikipedia.org/wiki/Winter_Olympic_Games"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># dgames &lt;- tables[[6]]</span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/janitor/man/clean_names.html">clean_names</a></span><span class="op">(</span><span class="va">dgames</span><span class="op">)</span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl_df.html">tbl_df</a></span><span class="op">(</span><span class="va">dgames</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_if</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="va">is.character</span>, <span class="va">str_trim</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="op">!</span><span class="va">no</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1940"</span>, <span class="st">"1944"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="op">!</span><span class="va">year</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">2018</span>, by <span class="op">=</span> <span class="fl">4</span>, length.out <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="va">dgames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_extract.html">str_extract</a></span><span class="op">(</span><span class="va">year</span>, <span class="st">"[0-9]{4}"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Not sure how re-read data to get the right column types. So a dirty trick.</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="va">tf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="va">tf</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="va">dgames</span>,</span>
+<span>                 <span class="co"># nations = n,</span></span>
+<span>                 nations <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_extract.html">str_extract</a></span><span class="op">(</span><span class="va">nations</span>, <span class="st">"\\d+"</span><span class="op">)</span>,</span>
+<span>                 nations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">nations</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">dgames</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Rows: 27
+Columns: 11
+$ year                  &lt;dbl&gt; 1924, 1928, 1932, 1936, 1940, 1944, 1948, 1952, …
+$ no                    &lt;chr&gt; "I", "II", "III", "IV", "[C]", "[C]", "V", "VI",…
+$ host                  &lt;chr&gt; "Chamonix", "St. Moritz", "Lake Placid", "Garmis…
+$ games_dates_opened_by &lt;chr&gt; "25 January – 5 February 1924Gaston Vidal", "11–…
+$ sports_disciplines    &lt;chr&gt; "6 (9)", "4 (8)", "4 (7)", "4 (8)", "Awarded to …
+$ competitors           &lt;chr&gt; "258", "464", "252", "646", "Awarded to Japan (S…
+$ competitors_2         &lt;chr&gt; "247", "438", "231", "566", "Awarded to Japan (S…
+$ competitors_3         &lt;chr&gt; "11", "26", "21", "80", "Awarded to Japan (Sappo…
+$ events                &lt;chr&gt; "16", "14", "14", "17", "Awarded to Japan (Sappo…
+$ nations               &lt;dbl&gt; 16, 25, 17, 28, NA, NA, 28, 30, 32, 30, 36, 37, …
+$ top_nation            &lt;chr&gt; "Norway&nbsp;(NOR)", "Norway&nbsp;(NOR)", "United States&nbsp;(…</code></pre>
+</div>
+</div>
+<p>Let’s see the first chart:</p>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hcgames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="st">"areaspline"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">nations</span>, name <span class="op">=</span> <span class="va">host</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Nations"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Number of Participating Nations in every Winter Olympic Games"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Time"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Nations"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hcgames</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-7e2e4580d4deafe48bcf" style="width:100%;height:464px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e2e4580d4deafe48bcf">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":"Number of Participating Nations in every Winter Olympic Games"},"yAxis":{"title":{"text":"Nations"},"type":"linear"},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"year":1924,"no":"I","host":"Chamonix","games_dates_opened_by":"25 January – 5 February 1924Gaston Vidal","sports_disciplines":"6 (9)","competitors":"258","competitors_2":"247","competitors_3":"11","events":"16","nations":16,"top_nation":"Norway (NOR)","x":1924,"y":16,"name":"Chamonix"},{"year":1928,"no":"II","host":"St. Moritz","games_dates_opened_by":"11–19 February 1928President Edmund Schulthess[A]","sports_disciplines":"4 (8)","competitors":"464","competitors_2":"438","competitors_3":"26","events":"14","nations":25,"top_nation":"Norway (NOR)","x":1928,"y":25,"name":"St. Moritz"},{"year":1932,"no":"III","host":"Lake Placid","games_dates_opened_by":"4–15 February 1932Governor Franklin Roosevelt","sports_disciplines":"4 (7)","competitors":"252","competitors_2":"231","competitors_3":"21","events":"14","nations":17,"top_nation":"United States (USA)","x":1932,"y":17,"name":"Lake Placid"},{"year":1936,"no":"IV","host":"Garmisch-Partenkirchen","games_dates_opened_by":"6–16 February 1936Chancellor Adolf Hitler[B]","sports_disciplines":"4 (8)","competitors":"646","competitors_2":"566","competitors_3":"80","events":"17","nations":28,"top_nation":"Norway (NOR)","x":1936,"y":28,"name":"Garmisch-Partenkirchen"},{"year":1940,"no":"[C]","host":"Awarded to Japan (Sapporo); cancelled because of World War II","games_dates_opened_by":"Awarded to Japan (Sapporo); cancelled because of World War II","sports_disciplines":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors_2":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors_3":"Awarded to Japan (Sapporo); cancelled because of World War II","events":"Awarded to Japan (Sapporo); cancelled because of World War II","nations":null,"top_nation":"Awarded to Japan (Sapporo); cancelled because of World War II","x":1940,"y":null,"name":"Awarded to Japan (Sapporo); cancelled because of World War II"},{"year":1944,"no":"[C]","host":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","games_dates_opened_by":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","sports_disciplines":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors_2":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors_3":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","events":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","nations":null,"top_nation":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","x":1944,"y":null,"name":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II"},{"year":1948,"no":"V","host":"St. Moritz","games_dates_opened_by":"30 January – 8 February 1948President Enrico Celio[A]","sports_disciplines":"4 (9)","competitors":"669","competitors_2":"592","competitors_3":"77","events":"22","nations":28,"top_nation":"Norway (NOR) Sweden (SWE)","x":1948,"y":28,"name":"St. Moritz"},{"year":1952,"no":"VI","host":"Oslo","games_dates_opened_by":"14–25 February 1952Princess Ragnhild","sports_disciplines":"4 (8)","competitors":"694","competitors_2":"585","competitors_3":"109","events":"22","nations":30,"top_nation":"Norway (NOR)","x":1952,"y":30,"name":"Oslo"},{"year":1956,"no":"VII","host":"Cortina d'Ampezzo","games_dates_opened_by":"26 January – 5 February 1956President Giovanni Gronchi","sports_disciplines":"4 (8)","competitors":"821","competitors_2":"687","competitors_3":"134","events":"24","nations":32,"top_nation":"Soviet Union (URS)","x":1956,"y":32,"name":"Cortina d'Ampezzo"},{"year":1960,"no":"VIII","host":"Squaw Valley","games_dates_opened_by":"18–28 February 1960Vice President Richard Nixon","sports_disciplines":"4 (8)","competitors":"665","competitors_2":"521","competitors_3":"144","events":"27","nations":30,"top_nation":"Soviet Union (URS)","x":1960,"y":30,"name":"Squaw Valley"},{"year":1964,"no":"IX","host":"Innsbruck","games_dates_opened_by":"29 January – 9 February 1964President Adolf Schärf","sports_disciplines":"6 (10)","competitors":"1091","competitors_2":"892","competitors_3":"199","events":"34","nations":36,"top_nation":"Soviet Union (URS)","x":1964,"y":36,"name":"Innsbruck"},{"year":1968,"no":"X","host":"Grenoble","games_dates_opened_by":"6–18 February 1968President Charles de Gaulle","sports_disciplines":"6 (10)","competitors":"1158","competitors_2":"947","competitors_3":"211","events":"35","nations":37,"top_nation":"Norway (NOR)","x":1968,"y":37,"name":"Grenoble"},{"year":1972,"no":"XI","host":"Sapporo","games_dates_opened_by":"3–13 February 1972Emperor Hirohito","sports_disciplines":"6 (10)","competitors":"1006","competitors_2":"801","competitors_3":"205","events":"35","nations":35,"top_nation":"Soviet Union (URS)","x":1972,"y":35,"name":"Sapporo"},{"year":1976,"no":"XII","host":"Innsbruck","games_dates_opened_by":"4–15 February 1976President Rudolf Kirchschläger","sports_disciplines":"6 (10)","competitors":"1123","competitors_2":"892","competitors_3":"231","events":"37","nations":37,"top_nation":"Soviet Union (URS)","x":1976,"y":37,"name":"Innsbruck"},{"year":1980,"no":"XIII","host":"Lake Placid","games_dates_opened_by":"13–24 February 1980Vice President Walter Mondale","sports_disciplines":"6 (10)","competitors":"1072","competitors_2":"840","competitors_3":"232","events":"38","nations":37,"top_nation":"Soviet Union (URS)","x":1980,"y":37,"name":"Lake Placid"},{"year":1984,"no":"XIV","host":"Sarajevo","games_dates_opened_by":"8–19 February 1984President Mika Špiljak","sports_disciplines":"6 (10)","competitors":"1272","competitors_2":"998","competitors_3":"274","events":"39","nations":49,"top_nation":"East Germany (GDR)","x":1984,"y":49,"name":"Sarajevo"},{"year":1988,"no":"XV","host":"Calgary","games_dates_opened_by":"13–28 February 1988Governor-General Jeanne Sauvé","sports_disciplines":"6 (10)","competitors":"1423","competitors_2":"1122","competitors_3":"301","events":"46","nations":57,"top_nation":"Soviet Union (URS)","x":1988,"y":57,"name":"Calgary"},{"year":1992,"no":"XVI","host":"Albertville","games_dates_opened_by":"8–23 February 1992President François Mitterrand","sports_disciplines":"6 (12)","competitors":"1801","competitors_2":"1313","competitors_3":"488","events":"57","nations":64,"top_nation":"Germany (GER)","x":1992,"y":64,"name":"Albertville"},{"year":1994,"no":"XVII","host":"Lillehammer","games_dates_opened_by":"12–27 February 1994King Harald V","sports_disciplines":"6 (12)","competitors":"1737","competitors_2":"1215","competitors_3":"522","events":"61","nations":67,"top_nation":"Russia (RUS)","x":1994,"y":67,"name":"Lillehammer"},{"year":1998,"no":"XVIII","host":"Nagano","games_dates_opened_by":"7–22 February 1998Emperor Akihito","sports_disciplines":"7 (14)","competitors":"2176","competitors_2":"1389","competitors_3":"787","events":"68","nations":72,"top_nation":"Germany (GER)","x":1998,"y":72,"name":"Nagano"},{"year":2002,"no":"XIX","host":"Salt Lake City","games_dates_opened_by":"8–24 February 2002President George W. Bush","sports_disciplines":"7 (15)","competitors":"2399","competitors_2":"1513","competitors_3":"886","events":"78","nations":78,"top_nation":"Norway (NOR)","x":2002,"y":78,"name":"Salt Lake City"},{"year":2006,"no":"XX","host":"Turin","games_dates_opened_by":"10–26 February 2006President Carlo Azeglio Ciampi","sports_disciplines":"7 (15)","competitors":"2508","competitors_2":"1548","competitors_3":"960","events":"84","nations":80,"top_nation":"Germany (GER)","x":2006,"y":80,"name":"Turin"},{"year":2010,"no":"XXI","host":"Vancouver","games_dates_opened_by":"12–28 February 2010Governor-General Michaëlle Jean","sports_disciplines":"7 (15)","competitors":"2566","competitors_2":"1522","competitors_3":"1044","events":"86","nations":82,"top_nation":"Canada (CAN)","x":2010,"y":82,"name":"Vancouver"},{"year":2014,"no":"XXII","host":"Sochi","games_dates_opened_by":"7–23 February 2014President Vladimir Putin","sports_disciplines":"7 (15)","competitors":"2873","competitors_2":"1714","competitors_3":"1159","events":"98","nations":88,"top_nation":"Russia (RUS)","x":2014,"y":88,"name":"Sochi"},{"year":2018,"no":"XXIII","host":"Pyeongchang","games_dates_opened_by":"9–25 February 2018President Moon Jae-in","sports_disciplines":"7 (15)","competitors":"2922","competitors_2":"1680","competitors_3":"1242","events":"102","nations":92,"top_nation":"Norway (NOR)","x":2018,"y":92,"name":"Pyeongchang"},{"year":2022,"no":"XXIV","host":"Beijing","games_dates_opened_by":"4–20 February 2022President Xi Jinping[F]","sports_disciplines":"7 (15)","competitors":"2861","competitors_2":"1573","competitors_3":"1288","events":"109","nations":91,"top_nation":"Norway (NOR)","x":2022,"y":91,"name":"Beijing"},{"year":2026,"no":"XXV","host":"Milan and Cortina d'Ampezzo","games_dates_opened_by":"6–22 February 2026President Sergio Mattarella","sports_disciplines":"8 (16)","competitors":"TBA","competitors_2":"TBA","competitors_3":"TBA","events":"116","nations":null,"top_nation":"TBA","x":2026,"y":null,"name":"Milan and Cortina d'Ampezzo"}],"type":"areaspline","name":"Nations"}],"xAxis":{"type":"linear","title":{"text":"Time"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>With that increase of nations in 1980 we can:</p>
+<ul>
+<li>Use a white color to simulate a big snowed mountain.</li>
+<li>Put a relevant background.</li>
+<li>Put some flags for each host.</li>
+<li>And work on the tooltip to show more information.</li>
+</ul>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://vincentarelbundock.github.io/countrycode/">countrycode</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">urlico</span> <span class="op">&lt;-</span> <span class="st">"url(https://raw.githubusercontent.com/tugmaks/flags/2d15d1870266cf5baefb912378ecfba418826a79/flags/flags-iso/flat/24/%s.png)"</span></span>
+<span></span>
+<span><span class="co"># dgames &lt;- dgames %&gt;% </span></span>
+<span><span class="co">#   mutate(country = tn,</span></span>
+<span><span class="co">#     country = str_extract(host, ", .*$"),</span></span>
+<span><span class="co">#          country = str_replace(country, ", ", ""),</span></span>
+<span><span class="co">#          country = str_trim(country)) %&gt;% </span></span>
+<span><span class="co">#   mutate(countrycode = countrycode(country, origin = "country.name", destination = "iso2c")) %&gt;% </span></span>
+<span><span class="co">#   mutate(marker = sprintf(urlico, countrycode),</span></span>
+<span><span class="co">#          marker = map(marker, function(x) list(symbol = x)),</span></span>
+<span><span class="co">#          flagicon = sprintf(urlico, countrycode),</span></span>
+<span><span class="co">#          flagicon = str_replace_all(flagicon, "url\\(|\\)", "")) %&gt;% </span></span>
+<span><span class="co">#   rename(men = c_2, women = c_3)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">dgames</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Rows: 27
+Columns: 11
+$ year                  &lt;dbl&gt; 1924, 1928, 1932, 1936, 1940, 1944, 1948, 1952, …
+$ no                    &lt;chr&gt; "I", "II", "III", "IV", "[C]", "[C]", "V", "VI",…
+$ host                  &lt;chr&gt; "Chamonix", "St. Moritz", "Lake Placid", "Garmis…
+$ games_dates_opened_by &lt;chr&gt; "25 January – 5 February 1924Gaston Vidal", "11–…
+$ sports_disciplines    &lt;chr&gt; "6 (9)", "4 (8)", "4 (7)", "4 (8)", "Awarded to …
+$ competitors           &lt;chr&gt; "258", "464", "252", "646", "Awarded to Japan (S…
+$ competitors_2         &lt;chr&gt; "247", "438", "231", "566", "Awarded to Japan (S…
+$ competitors_3         &lt;chr&gt; "11", "26", "21", "80", "Awarded to Japan (Sappo…
+$ events                &lt;chr&gt; "16", "14", "14", "17", "Awarded to Japan (Sappo…
+$ nations               &lt;dbl&gt; 16, 25, 17, 28, NA, NA, 28, 30, 32, 30, 36, 37, …
+$ top_nation            &lt;chr&gt; "Norway&nbsp;(NOR)", "Norway&nbsp;(NOR)", "United States&nbsp;(…</code></pre>
+</div>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">urlimg</span> <span class="op">&lt;-</span> <span class="st">"https://i.pinimg.com/originals/1a/ad/f5/1aadf58a23d4928945e1dd793f129261.jpg"</span></span>
+<span><span class="va">ttvars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"nations"</span>, <span class="st">"sports"</span>, <span class="st">"competitors"</span>, <span class="st">"women"</span>, <span class="st">"men"</span>, <span class="st">"events"</span><span class="op">)</span></span>
+<span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/tooltip_table.html">tooltip_table</a></span><span class="op">(</span></span>
+<span>  <span class="va">ttvars</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"{point.%s}"</span>, <span class="va">ttvars</span><span class="op">)</span>, img <span class="op">=</span> <span class="va">tags</span><span class="op">$</span><span class="fu">img</span><span class="op">(</span>src<span class="op">=</span><span class="st">"{point.flagicon}"</span>, style <span class="op">=</span> <span class="st">"text-align: center;"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">hcgames2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">dgames</span>, <span class="st">"areaspline"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">nations</span>, name <span class="op">=</span> <span class="va">host</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Nations"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_colors.html">hc_colors</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hex_to_rgba.html">hex_to_rgba</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span></span>
+<span>    text <span class="op">=</span> <span class="st">"Number of Participating Nations in every Winter Olympic Games"</span>,</span>
+<span>    align <span class="op">=</span> <span class="st">"left"</span>,</span>
+<span>    style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_credits.html">hc_credits</a></span><span class="op">(</span></span>
+<span>    enabled <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    text <span class="op">=</span> <span class="st">"Data from Wipiedia"</span>,</span>
+<span>    href <span class="op">=</span> <span class="st">"https://en.wikipedia.org/wiki/Winter_Olympic_Games"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Time"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    gridLineWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span></span>
+<span>    lineWidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    tickWidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    tickLength <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Nations"</span>, style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    gridLineWidth <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span></span>
+<span>    divBackgroundImage <span class="op">=</span> <span class="va">urlimg</span>,</span>
+<span>    backgroundColor <span class="op">=</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hex_to_rgba.html">hex_to_rgba</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="fl">0.10</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span></span>
+<span>    headerFormat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">tags</span><span class="op">$</span><span class="fu">h4</span><span class="op">(</span><span class="st">"{point.key}"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">br</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    pointFormat <span class="op">=</span> <span class="va">tt</span>,</span>
+<span>    useHTML <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    backgroundColor <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>    borderColor <span class="op">=</span> <span class="st">"transparent"</span>,</span>
+<span>    shadow <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span>, fontSize <span class="op">=</span> <span class="st">"0.8em"</span>, fontWeight <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span>,</span>
+<span>    positioner <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="st">"function () { return { x: this.chart.plotLeft + 15, y: this.chart.plotTop + 0 }; }"</span><span class="op">)</span>,</span>
+<span>    shape <span class="op">=</span> <span class="st">"square"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span></span>
+<span>    series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      states <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>hover <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>halo <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size  <span class="op">=</span> <span class="fl">30</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_theme.html">hc_add_theme</a></span><span class="op">(</span><span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_theme_elementary.html">hc_theme_elementary</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hcgames2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+
+<div id="htmlwidget-38209bb593eeb0507ecd" style="width:100%;height:464px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-38209bb593eeb0507ecd">{"x":{"hc_opts":{"chart":{"reflow":true,"divBackgroundImage":"https://i.pinimg.com/originals/1a/ad/f5/1aadf58a23d4928945e1dd793f129261.jpg","backgroundColor":"rgba(0,0,0,0.1)"},"title":{"text":"Number of Participating Nations in every Winter Olympic Games","align":"left","style":{"color":"white"}},"yAxis":{"title":{"text":"Nations","style":{"color":"white"}},"type":"linear","lineWidth":1,"tickWidth":1,"tickLength":10,"gridLineWidth":0,"labels":{"style":{"color":"white"}}},"credits":{"enabled":true,"text":"Data from Wipiedia","href":"https://en.wikipedia.org/wiki/Winter_Olympic_Games"},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false,"states":{"hover":{"halo":{"size":30}}}},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"year":1924,"no":"I","host":"Chamonix","games_dates_opened_by":"25 January – 5 February 1924Gaston Vidal","sports_disciplines":"6 (9)","competitors":"258","competitors_2":"247","competitors_3":"11","events":"16","nations":16,"top_nation":"Norway (NOR)","x":1924,"y":16,"name":"Chamonix"},{"year":1928,"no":"II","host":"St. Moritz","games_dates_opened_by":"11–19 February 1928President Edmund Schulthess[A]","sports_disciplines":"4 (8)","competitors":"464","competitors_2":"438","competitors_3":"26","events":"14","nations":25,"top_nation":"Norway (NOR)","x":1928,"y":25,"name":"St. Moritz"},{"year":1932,"no":"III","host":"Lake Placid","games_dates_opened_by":"4–15 February 1932Governor Franklin Roosevelt","sports_disciplines":"4 (7)","competitors":"252","competitors_2":"231","competitors_3":"21","events":"14","nations":17,"top_nation":"United States (USA)","x":1932,"y":17,"name":"Lake Placid"},{"year":1936,"no":"IV","host":"Garmisch-Partenkirchen","games_dates_opened_by":"6–16 February 1936Chancellor Adolf Hitler[B]","sports_disciplines":"4 (8)","competitors":"646","competitors_2":"566","competitors_3":"80","events":"17","nations":28,"top_nation":"Norway (NOR)","x":1936,"y":28,"name":"Garmisch-Partenkirchen"},{"year":1940,"no":"[C]","host":"Awarded to Japan (Sapporo); cancelled because of World War II","games_dates_opened_by":"Awarded to Japan (Sapporo); cancelled because of World War II","sports_disciplines":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors_2":"Awarded to Japan (Sapporo); cancelled because of World War II","competitors_3":"Awarded to Japan (Sapporo); cancelled because of World War II","events":"Awarded to Japan (Sapporo); cancelled because of World War II","nations":null,"top_nation":"Awarded to Japan (Sapporo); cancelled because of World War II","x":1940,"y":null,"name":"Awarded to Japan (Sapporo); cancelled because of World War II"},{"year":1944,"no":"[C]","host":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","games_dates_opened_by":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","sports_disciplines":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors_2":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","competitors_3":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","events":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","nations":null,"top_nation":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II","x":1944,"y":null,"name":"Awarded to Italy (Cortina d'Ampezzo); cancelled because of World War II"},{"year":1948,"no":"V","host":"St. Moritz","games_dates_opened_by":"30 January – 8 February 1948President Enrico Celio[A]","sports_disciplines":"4 (9)","competitors":"669","competitors_2":"592","competitors_3":"77","events":"22","nations":28,"top_nation":"Norway (NOR) Sweden (SWE)","x":1948,"y":28,"name":"St. Moritz"},{"year":1952,"no":"VI","host":"Oslo","games_dates_opened_by":"14–25 February 1952Princess Ragnhild","sports_disciplines":"4 (8)","competitors":"694","competitors_2":"585","competitors_3":"109","events":"22","nations":30,"top_nation":"Norway (NOR)","x":1952,"y":30,"name":"Oslo"},{"year":1956,"no":"VII","host":"Cortina d'Ampezzo","games_dates_opened_by":"26 January – 5 February 1956President Giovanni Gronchi","sports_disciplines":"4 (8)","competitors":"821","competitors_2":"687","competitors_3":"134","events":"24","nations":32,"top_nation":"Soviet Union (URS)","x":1956,"y":32,"name":"Cortina d'Ampezzo"},{"year":1960,"no":"VIII","host":"Squaw Valley","games_dates_opened_by":"18–28 February 1960Vice President Richard Nixon","sports_disciplines":"4 (8)","competitors":"665","competitors_2":"521","competitors_3":"144","events":"27","nations":30,"top_nation":"Soviet Union (URS)","x":1960,"y":30,"name":"Squaw Valley"},{"year":1964,"no":"IX","host":"Innsbruck","games_dates_opened_by":"29 January – 9 February 1964President Adolf Schärf","sports_disciplines":"6 (10)","competitors":"1091","competitors_2":"892","competitors_3":"199","events":"34","nations":36,"top_nation":"Soviet Union (URS)","x":1964,"y":36,"name":"Innsbruck"},{"year":1968,"no":"X","host":"Grenoble","games_dates_opened_by":"6–18 February 1968President Charles de Gaulle","sports_disciplines":"6 (10)","competitors":"1158","competitors_2":"947","competitors_3":"211","events":"35","nations":37,"top_nation":"Norway (NOR)","x":1968,"y":37,"name":"Grenoble"},{"year":1972,"no":"XI","host":"Sapporo","games_dates_opened_by":"3–13 February 1972Emperor Hirohito","sports_disciplines":"6 (10)","competitors":"1006","competitors_2":"801","competitors_3":"205","events":"35","nations":35,"top_nation":"Soviet Union (URS)","x":1972,"y":35,"name":"Sapporo"},{"year":1976,"no":"XII","host":"Innsbruck","games_dates_opened_by":"4–15 February 1976President Rudolf Kirchschläger","sports_disciplines":"6 (10)","competitors":"1123","competitors_2":"892","competitors_3":"231","events":"37","nations":37,"top_nation":"Soviet Union (URS)","x":1976,"y":37,"name":"Innsbruck"},{"year":1980,"no":"XIII","host":"Lake Placid","games_dates_opened_by":"13–24 February 1980Vice President Walter Mondale","sports_disciplines":"6 (10)","competitors":"1072","competitors_2":"840","competitors_3":"232","events":"38","nations":37,"top_nation":"Soviet Union (URS)","x":1980,"y":37,"name":"Lake Placid"},{"year":1984,"no":"XIV","host":"Sarajevo","games_dates_opened_by":"8–19 February 1984President Mika Špiljak","sports_disciplines":"6 (10)","competitors":"1272","competitors_2":"998","competitors_3":"274","events":"39","nations":49,"top_nation":"East Germany (GDR)","x":1984,"y":49,"name":"Sarajevo"},{"year":1988,"no":"XV","host":"Calgary","games_dates_opened_by":"13–28 February 1988Governor-General Jeanne Sauvé","sports_disciplines":"6 (10)","competitors":"1423","competitors_2":"1122","competitors_3":"301","events":"46","nations":57,"top_nation":"Soviet Union (URS)","x":1988,"y":57,"name":"Calgary"},{"year":1992,"no":"XVI","host":"Albertville","games_dates_opened_by":"8–23 February 1992President François Mitterrand","sports_disciplines":"6 (12)","competitors":"1801","competitors_2":"1313","competitors_3":"488","events":"57","nations":64,"top_nation":"Germany (GER)","x":1992,"y":64,"name":"Albertville"},{"year":1994,"no":"XVII","host":"Lillehammer","games_dates_opened_by":"12–27 February 1994King Harald V","sports_disciplines":"6 (12)","competitors":"1737","competitors_2":"1215","competitors_3":"522","events":"61","nations":67,"top_nation":"Russia (RUS)","x":1994,"y":67,"name":"Lillehammer"},{"year":1998,"no":"XVIII","host":"Nagano","games_dates_opened_by":"7–22 February 1998Emperor Akihito","sports_disciplines":"7 (14)","competitors":"2176","competitors_2":"1389","competitors_3":"787","events":"68","nations":72,"top_nation":"Germany (GER)","x":1998,"y":72,"name":"Nagano"},{"year":2002,"no":"XIX","host":"Salt Lake City","games_dates_opened_by":"8–24 February 2002President George W. Bush","sports_disciplines":"7 (15)","competitors":"2399","competitors_2":"1513","competitors_3":"886","events":"78","nations":78,"top_nation":"Norway (NOR)","x":2002,"y":78,"name":"Salt Lake City"},{"year":2006,"no":"XX","host":"Turin","games_dates_opened_by":"10–26 February 2006President Carlo Azeglio Ciampi","sports_disciplines":"7 (15)","competitors":"2508","competitors_2":"1548","competitors_3":"960","events":"84","nations":80,"top_nation":"Germany (GER)","x":2006,"y":80,"name":"Turin"},{"year":2010,"no":"XXI","host":"Vancouver","games_dates_opened_by":"12–28 February 2010Governor-General Michaëlle Jean","sports_disciplines":"7 (15)","competitors":"2566","competitors_2":"1522","competitors_3":"1044","events":"86","nations":82,"top_nation":"Canada (CAN)","x":2010,"y":82,"name":"Vancouver"},{"year":2014,"no":"XXII","host":"Sochi","games_dates_opened_by":"7–23 February 2014President Vladimir Putin","sports_disciplines":"7 (15)","competitors":"2873","competitors_2":"1714","competitors_3":"1159","events":"98","nations":88,"top_nation":"Russia (RUS)","x":2014,"y":88,"name":"Sochi"},{"year":2018,"no":"XXIII","host":"Pyeongchang","games_dates_opened_by":"9–25 February 2018President Moon Jae-in","sports_disciplines":"7 (15)","competitors":"2922","competitors_2":"1680","competitors_3":"1242","events":"102","nations":92,"top_nation":"Norway (NOR)","x":2018,"y":92,"name":"Pyeongchang"},{"year":2022,"no":"XXIV","host":"Beijing","games_dates_opened_by":"4–20 February 2022President Xi Jinping[F]","sports_disciplines":"7 (15)","competitors":"2861","competitors_2":"1573","competitors_3":"1288","events":"109","nations":91,"top_nation":"Norway (NOR)","x":2022,"y":91,"name":"Beijing"},{"year":2026,"no":"XXV","host":"Milan and Cortina d'Ampezzo","games_dates_opened_by":"6–22 February 2026President Sergio Mattarella","sports_disciplines":"8 (16)","competitors":"TBA","competitors_2":"TBA","competitors_3":"TBA","events":"116","nations":null,"top_nation":"TBA","x":2026,"y":null,"name":"Milan and Cortina d'Ampezzo"}],"type":"areaspline","name":"Nations"}],"xAxis":{"type":"linear","title":{"text":"Time","style":{"color":"white"}},"gridLineWidth":0,"labels":{"style":{"color":"white"}}},"colors":["rgba(255,255,255,0.8)"],"tooltip":{"headerFormat":"<h4>\n  {point.key}\n  <br/>\n<\/h4>","pointFormat":"<table>\n  <tr>\n    <th>year<\/th>\n    <td>{point.year}<\/td>\n  <\/tr>\n  <tr>\n    <th>nations<\/th>\n    <td>{point.nations}<\/td>\n  <\/tr>\n  <tr>\n    <th>sports<\/th>\n    <td>{point.sports}<\/td>\n  <\/tr>\n  <tr>\n    <th>competitors<\/th>\n    <td>{point.competitors}<\/td>\n  <\/tr>\n  <tr>\n    <th>women<\/th>\n    <td>{point.women}<\/td>\n  <\/tr>\n  <tr>\n    <th>men<\/th>\n    <td>{point.men}<\/td>\n  <\/tr>\n  <tr>\n    <th>events<\/th>\n    <td>{point.events}<\/td>\n  <\/tr>\n<\/table>\n<img src=\"{point.flagicon}\" style=\"text-align: center;\"/>","useHTML":true,"backgroundColor":"transparent","borderColor":"transparent","shadow":false,"style":{"color":"white","fontSize":"0.8em","fontWeight":"normal"},"positioner":"function () { return { x: this.chart.plotLeft + 15, y: this.chart.plotTop + 0 }; }","shape":"square"}},"theme":{"colors":["#41B5E9","#FA8832","#34393C","#E46151"],"chart":{"style":{"color":"#333","fontFamily":"Open Sans"}},"title":{"style":{"fontFamily":"Raleway","fontWeight":"100"}},"subtitle":{"style":{"fontFamily":"Raleway","fontWeight":"100"}},"legend":{"align":"right","verticalAlign":"bottom"},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":["-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","Open+Sans","Raleway"],"debug":false},"evals":["hc_opts.tooltip.positioner"],"jsHooks":[]}</script>
+</div>
+</div>
+<p>What do you think? I had fun, so for me this worth every background I used.</p>
+
+
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2017,
+  author = {Joshua Kunst Fuentes},
+  title = {Giving a {Thematic} {Touch} to Your {Interactive} {Chart}},
+  date = {2017-03-03},
+  url = {https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2017" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Joshua Kunst Fuentes. 2017. <span>“Giving a Thematic Touch to Your
+Interactive Chart.”</span> March 3, 2017. <a href="https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart">https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart</a>.
+</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Joshua Kunst ©</div>   
+    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕.</div>
+  </div>
+</footer>
+
+
+</body></html>
