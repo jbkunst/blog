@@ -3,13 +3,15 @@ project:
   output-dir: docs
 
 website:
-
-  # title: "<i class=\"bi bi-code-slash\"></i> <i class=\"bi bi-graph-up\"></i>"
   title: Data, Code and Visualization
   site-url: https://jkunst.com/blog
-
   repo-url: https://github.com/jbkunst/blog
   repo-actions: [issue]
+  google-analytics: "UA-17670833-5"
+  open-graph: true
+  twitter-card:
+    creator: "@jbkunst"
+    card-style: summary_large_image
 
   navbar:
     right:
@@ -37,12 +39,6 @@ format:
     monofont:	"Fira Mono"
     monobackgroundcolor: "#f7f7f7"
     code-tools: false
-      # source: repo
-    # code-line-numbers: true # this option disable code-link (downlit)
     code-block-border-left: true
     code-link: true
     code-fold: show
-
-
-# editor: visual
-
