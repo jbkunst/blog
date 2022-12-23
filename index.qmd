@@ -1,0 +1,26 @@
+---
+title: "Data, Code and Visualization"
+subtitle: "A kind of sketches, ideas and 'no forget'"
+listing:
+  id: listings
+  feed: true
+  contents: posts
+  fields: [image, date, title, categories, reading-time] # description, subtitle
+  sort: "date desc"
+  type: grid 
+  grid-columns: 3
+  image-height: 250px
+  categories: true
+  sort-ui: [title, date]
+  filter-ui: true
+page-layout: full
+title-block-banner: true
+code-tools: false # disable here the code-tools (default as true in _quarto.yml)
+---
+
+<!-- You can review the following documents for additional information: -->
+
+::: {#listings}
+:::
+
+<!-- Learn more about Quarto [here](https://www.quarto.com). -->
