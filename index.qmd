@@ -10,6 +10,7 @@ listing:
   type: grid 
   grid-columns: 3
   image-height: 250px
+  page-size: 100
   categories: true
   sort-ui: [title, date]
   filter-ui: true
