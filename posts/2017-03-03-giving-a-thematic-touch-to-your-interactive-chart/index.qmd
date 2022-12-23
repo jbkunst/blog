@@ -2,7 +2,7 @@
 title: "Giving a Thematic Touch to your Interactive Chart"
 description: Sometimes you need to express yourself.
 date: 2017-03-03
-categories: [data-visualization, higcharter]
+categories: [data-visualization, highcharts]
 image: images/preview.png  
 ---
 
