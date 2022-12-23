@@ -1,0 +1,47 @@
+project:
+  type: website
+
+website:
+
+  # title: "<i class=\"bi bi-code-slash\"></i> <i class=\"bi bi-graph-up\"></i>"
+  title: Data, Code and Visualization
+  site-url: https://jkunst.com/blog
+
+  repo-url: https://github.com/jbkunst/blog
+  repo-actions: [issue]
+
+  navbar:
+    right:
+      - icon: info-circle
+        aria-label: about
+        href: about.html
+      - icon: github
+        aria-label: github
+        href: https://github.com/jbkunst/blog
+      - icon: twitter
+        aria-label: twitter
+        href: https://twitter.com/jbkunst
+      - icon: mastodon
+        aria-label: mastodon
+        href: https://fosstodon.org/@jbkunst
+
+  page-footer:
+    right: "This blog is <i class=\"bi bi-code-slash\"></i>  with ❤️ and ☕."
+    left: "Joshua Kunst ©"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    monofont:	"Fira Mono"
+    monobackgroundcolor: "#f7f7f7"
+    code-tools: false
+      # source: repo
+    # code-line-numbers: true # this option disable code-link (downlit)
+    code-block-border-left: true
+    code-link: true
+    code-fold: show
+
+
+# editor: visual
+
