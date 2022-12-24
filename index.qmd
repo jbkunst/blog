@@ -5,7 +5,7 @@ listing:
   id: listings
   feed: true
   contents: posts
-  fields: [image, date, categories, reading-time] # description, subtitle, file-modified
+  fields: [image, title, date, categories, reading-time] # description, subtitle, file-modified
   sort: "date desc"
   type: grid 
   grid-columns: 3

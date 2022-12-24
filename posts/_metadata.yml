@@ -30,7 +30,7 @@ out-width: "100%"
 
 # Links
 link-external-icon: false # due problem/issue with code-link: true
-link-external-newwindow: false
+link-external-newwindow: true
 
 # Default knitr options
 execute:
