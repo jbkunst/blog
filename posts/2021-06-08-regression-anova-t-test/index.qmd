@@ -1,7 +1,8 @@
 ---
 title: "Regression, ANOVA, t-test are related..."
-subtitle: In a new episode of things I forgot to find.
+subtitle: In a new episode of things I forgot.
 date: 2021-06-08
+date-modified: "`r format(Sys.time(), '%Y-%m-%d')`"
 categories: [minipost, stats, dont-forget]
 image: images/preview.png  
 ---
