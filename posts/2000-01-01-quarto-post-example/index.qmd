@@ -4,14 +4,22 @@ subtitle: "Yep, this is a quarto post example"
 description: Description is a longer text of what your post is about, or anything else. This particular
   post is about make an example of a quarto post showing what I like about quarto.
 date: 2000-01-01
+date-modified: "`r format(Sys.time(), '%Y-%m-%d')`"
 categories: [testing, dont-forget]
 image: images/preview.jpg
+fig-format: svg
+echo: fenced 
 ---
 
 ```{r setup, include=FALSE}
 source(here::here("_R/post_setup.R"))
 ```
 
+## Some quicks points
+
+1. Titles in the main are with `##`: Yes, the `<h1>` title is of the first/main title.
+1. This is a [link](https://quarto.org/docs/reference/formats/html.html#links). Another link is 
+https://github.com/quarto-dev/quarto-cli
 
 ## Testing htmlwidgets
 
@@ -27,10 +35,6 @@ hc <- hchart(
 
 hc
 ```
-
-
-1. Titles in the main are with `##`: Yes, the `<h1>` title is of the first title.
-
 
 ## Types of column
 
@@ -71,6 +75,62 @@ Now, list of main column types.
 ::: {.layout-example .column-screen-inset-shaded}
 .column-screen-inset-shaded
 :::
+
+## Figures
+
+According to https://r4ds.hadley.nz/quarto.html#sec-figures:
+
+```{r}
+library(ggplot2)
+library(ggforce)
+
+p <- ggplot(penguins, aes(x = flipper_length_mm, y = bill_length_mm)) +
+  # geom_smooth(aes(color = species), method = "lm") +
+  geom_mark_hull(
+    aes(filter = species == "Gentoo", label = species),
+    description = "A species with long flippers",
+    color = "gray95",
+    fill = "gray80",
+    concavity = 4,
+    size = 20
+  ) +
+  geom_point(aes(fill = species), color = "gray80", size = 3, shape = 21) +
+  scale_fill_viridis_d(option = "B", begin = 0.1, end = 0.9) +
+  # scale_color_viridis_d(option = "B", begin = 0.1, end = 0.9) +
+  labs(
+    title = "Flipper and bill length",
+    subtitle = "Dimensions for Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+    x = "Flipper length (mm)",
+    y = "Bill length (mm)",
+    fill = "Penguin species",
+    captions = "Source: https://allisonhorst.github.io/palmerpenguins/" 
+  )
+
+p
+```
+
+```{r}
+#| fig-width: 6
+#| out-width: "100%"
+#| fig-asp: 0.618
+#| column: body-outset
+p
+```
+
+
+```{r}
+#| out-width: "100%"
+#| fig-align: "center"
+#| column: body-outset
+p
+```
+
+```{r}
+#| out-width: "100%"
+#| fig-align: "center"
+#| column: page
+p + theme_minimal(base_size = 7)
+```
 
 ## Marging content
 
