@@ -1,10 +1,9 @@
 ---
 title: "Using tooltips in unexpected ways"
 subtitle: "Some ideas to (ab)use."
-# description: |
-#   Highcharts tooltips are one of most underated features. In the tooltips you
-#   can easily render html, that means we can put images, tables even charts. 
-#   So the possibilities are almost limitless.
+description: Highcharts tooltips are one of most underated features. In the tooltips you
+  can easily render html, that means we can put images, tables even charts.
+  So the possibilities are almost limitless.
 date: "2019-02-04"
 categories: [data-visualization, highcharts]
 image: images/preview.gif
