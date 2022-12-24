@@ -5,14 +5,14 @@ listing:
   id: listings
   feed: true
   contents: posts
-  fields: [image, date, title, categories, reading-time] # description, subtitle
+  fields: [image, date, categories, reading-time] # description, subtitle, file-modified
   sort: "date desc"
   type: grid 
   grid-columns: 3
   image-height: 250px
   page-size: 100
   categories: true
-  sort-ui: [title, date]
+  sort-ui: [title, date, file-modified]
   filter-ui: true
 page-layout: full
 title-block-banner: true
