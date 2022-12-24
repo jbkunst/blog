@@ -1,0 +1,310 @@
+---
+title: "ggplot2-extensions"
+draft: true
+editor_options: 
+  chunk_output_type: console
+column: page
+fig-format: svg
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = "center")
+source(here::here("_R/post_setup.R"))
+```
+
+```{r}
+# setup -------------------------------------------------------------------
+library(ggplot2)
+library(dplyr)
+library(datos)
+
+glimpse(mtautos)
+
+mtautos <- mtautos |>
+  mutate(
+    modelo = rownames(mtautos),
+    cilindros = factor(cilindros),
+    km_lt = millas * 1.61 / 3.79,
+    peso_kg = peso * 0.453 * 1000,
+    # para colocar las columnas a la izquierda
+    .before = 1
+  )
+
+glimpse(mtautos)
+```
+
+## {ggrepel}
+
+https://ggrepel.slowkow.com/articles/examples.html
+
+```{r}
+p1 <- ggplot(mtautos, aes(x = peso_kg, y = km_lt, color = cilindros)) +
+  geom_point(size = 3)
+
+p1
+
+p1 + geom_text(aes(label = modelo))
+
+library(ggrepel) # geom_text_repel
+
+p1 + geom_text_repel(aes(label = modelo))
+```
+
+
+## ggforce
+
+https://www.data-imaginist.com/2019/the-ggforce-awakens-again/
+
+```{r}
+glimpse(flores)
+
+p2 <- ggplot(flores, aes(Largo.Petalo, Ancho.Petalo, color = Especie)) +
+  geom_point(size = 2)
+
+p2
+
+p2 + facet_wrap(vars(Especie))
+
+library(ggforce) # facet_zoom geom_mark_ellipse geom_mark_hull
+
+p2 + facet_zoom(x = Especie == "versicolor")
+
+p2 + facet_zoom(y = Especie == "versicolor")
+
+p2 + geom_mark_ellipse(aes(fill = Especie, label = Especie), alpha = 0.1)
+
+# requiere tener instalado el paquete `concaveman`
+p2 + geom_mark_hull(aes(fill = Especie, label = Especie))
+
+p2 +
+  geom_mark_hull(
+    aes(filter = Especie == "versicolor", label = Especie),
+    description = "Especie realmente muy interesante y además particular",
+    color = "gray70",
+    fill = "gray80",
+    concavity = 5,
+    size = 0.1
+  )
+```
+
+
+## gghighlight
+
+https://yutannihilation.github.io/gghighlight/articles/gghighlight.html
+
+```{r}
+p1
+
+library(gghighlight) # aes gghighlight
+
+p1 +
+  gghighlight(
+    # casos de interés
+    peso_kg < 1000 & km_lt > 12,
+    # parmatros de la etiqueta: geom_label_repel
+    label_key = modelo,
+    keep_scales = TRUE,
+    label_params = list(color = "black", label.r = 0)
+    )
+
+# alternativa con ggforce
+p1 +
+  geom_mark_hull(
+    aes(filter = peso_kg < 1000 & km_lt > 12, label = "Autos relevantes"),
+    description = "Pesan poco y por tanto poseen buen rendimiento",
+    color = "gray70",
+    fill = "gray80",
+    concavity = 5,
+    size = 0.1
+  )
+```
+
+## scales
+
+https://scales.r-lib.org/
+
+```{r}
+p1
+
+library(scales) # comma dollar label_comma
+
+x <- c(123, 456678, 100000)
+
+x
+
+comma(x)
+
+dollar(x)
+
+km_por_lt <- label_comma(suffix = " km/lt")
+
+km_por_lt(c(1, 15, 20))
+
+p1 +
+  scale_y_continuous(labels = km_por_lt, name = "Rendimiento") +
+  scale_x_continuous(labels = label_comma(suffix = " kg"), name = "Peso vehículo")
+```
+
+
+## ggfittext
+
+https://github.com/wilkox/ggfittext#bar-plots
+
+```{r}
+glimpse(diamantes)
+
+diamantes_corte <- diamantes |>
+  count(corte)
+
+diamantes_corte
+
+p3 <- ggplot(diamantes_corte, aes(x = corte, y = n, label = comma(n))) +
+  geom_col(width = 0.5, fill = "gray70") +
+  scale_y_continuous(labels = label_comma())
+
+p3
+
+p3 +
+  geom_text()
+
+p3 +
+  geom_text(nudge_y = 100)
+
+p3 +
+  geom_text(vjust = -2)
+
+
+library(ggfittext) # geom_bar_text
+
+p3 +
+  geom_bar_text()
+
+p3 +
+  geom_bar_text(place = "bottom")
+```
+
+## ggparty & parttree
+
+https://github.com/martin-borkovec/ggparty
+https://github.com/grantmcdermott/parttree
+
+```{r}
+library(partykit) # ctree
+
+p2
+
+glimpse(flores)
+
+arbol <- ctree(Especie ~ Largo.Petalo + Ancho.Petalo, data = flores)
+
+arbol
+
+plot(arbol)
+
+# remotes::install_github("grantmcdermott/parttree")
+library(parttree) # geom_parttree
+
+p2 +
+  geom_parttree(data = arbol, aes(fill = Especie), alpha = 0.1) +
+labs(caption = "Nota: Puntos denotan los datos, las regiones las predicción del árbol.")
+
+library(ggparty) # ggparty geom_edge geom_edge_label geom_node_label geom_node_plot
+
+ggparty(arbol) +
+  geom_edge() +
+  geom_edge_label() +
+  geom_node_label(aes(label = splitvar), ids = "inner") +
+  geom_node_plot(
+    gglist = list(
+      geom_bar(aes(x = Especie, fill = Especie)),
+      theme_minimal(),
+      theme(
+        axis.text = element_text(size = 7)
+      ),
+      labs(x = NULL, y = NULL)
+    ),
+    scales = "fixed",
+    id = "terminal"
+  )
+
+
+ggparty(arbol) +
+  geom_edge(color = "gray80") +
+  geom_edge_label(color = "gray50", size = 4) +
+  geom_node_label(
+    aes(label = splitvar),
+    color = "gray30",
+    label.col = NA, # sin caja
+    size = 4,
+    label.padding = unit(0.5, "lines"),
+    ids = "inner"
+    ) +
+  geom_node_plot(
+    gglist = list(
+      geom_point(aes(x = Largo.Petalo, y = Ancho.Petalo, color = Especie), size = 2, alpha = 0.5),
+      scale_color_viridis_d(end = 0.9),
+      guides(color = guide_legend(override.aes = list(size=5))),
+      theme_minimal(),
+      theme(axis.text = element_text(size = 7)),
+      labs(x = NULL, y = NULL)
+    ),
+    scales = "fixed",
+    id = "terminal"
+  ) +
+  geom_node_label(
+    aes(label = sprintf("Nodo %s (n = %s)", id, nodesize)),
+    ids = "terminal",
+    size = 3,
+    label.col = NA, # sin caja
+    nudge_y = 0.01
+    )
+```
+
+## patchwork
+
+https://patchwork.data-imaginist.com/articles/patchwork.html
+
+```{r}
+p4 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
+  geom_point(size = 2) +
+  geom_text(aes(label = modelo))
+
+p4
+
+p5 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
+  geom_point(size = 2) +
+  geom_text_repel(aes(label = modelo))
+
+p5
+
+library(patchwork) # plot_layout plot_annotation
+
+p4 + p5
+
+p4 | p5
+
+p4 / p5
+
+pp <- p4 + p5 +
+  plot_layout(
+    widths = c(1, 2),
+    guides = "collect"
+    ) +
+  plot_annotation(
+    title = "Composición de ggplot2",
+    subtitle = "Grafico (a) usa geom_text mientras (b) geom_text_repel.",
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+    )
+
+pp
+
+
+
+library(purrr) # |> reduce
+
+# es lo mismo que p1 + p2 +  p3 + p4 + p5
+list(p1, p2, p3, p4, p5) |> reduce(`+`)
+```
+
