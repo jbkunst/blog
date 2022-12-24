@@ -412,7 +412,9 @@ sim_ar_hc(ar = c(.8, .1))
 
 In this case we can update the highcharts using the new set of proxy functions. You can check the code of the shiny app in https://github.com/jbkunst/shiny-apps-edu/ and the app live is in https://jbkunst.shinyapps.io/arma-process
 
+```{=html}
 <iframe src="https://jbkunst.shinyapps.io/arma-process" height="750px"></iframe>
+```
 
 ## References
 
