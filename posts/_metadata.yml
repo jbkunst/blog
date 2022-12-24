@@ -23,6 +23,15 @@ toc: true
 toc-title: Contents
 toc-location: left
 
+# Options for outputs
+fig-format: svg
+fig-align: "center"
+out-width: "100%"
+
+# Links
+link-external-icon: false # due problem/issue with code-link: true
+link-external-newwindow: false
+
 # Default knitr options
 execute:
   echo: true
