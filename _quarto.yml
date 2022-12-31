@@ -29,7 +29,7 @@ website:
         href: https://fosstodon.org/@jbkunst
 
   page-footer:
-    right: "This blog is <i class=\"bi bi-code-slash\"></i>  with ❤️ and ☕."
+    right: "This blog is <i class=\"bi bi-code-slash\"></i>  with ❤️ and ☕"
     left: "Joshua Kunst ©"
 
 format:

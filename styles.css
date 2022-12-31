@@ -46,6 +46,11 @@ main {
    100% {background: #B71C1C;} /* red */
 }
 
+/* fix code size */
+pre.sourceCode            { font-size: 0.75em;}
+.cell-output > pre > code { font-size: 0.9em;}
+
+/* this is for quarto demo post */
 .layout-example {
   background: #adb5bd;
   color: #fff;

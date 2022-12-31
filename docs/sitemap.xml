@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jkunst.com/blog/index.html</loc>
-    <lastmod>2022-12-24T23:30:15.623Z</lastmod>
+    <lastmod>2022-12-31T17:41:07.179Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/about.html</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2000-01-01-quarto-post-example/index.html</loc>
-    <lastmod>2022-12-24T23:19:54.995Z</lastmod>
+    <lastmod>2022-12-28T03:58:10.774Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2015-09-25-visualizing-sort-algorithms-with-ggplot2/index.html</loc>
@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2016-04-12-adding-motion-to-choropleths/index.html</loc>
-    <lastmod>2022-12-24T23:20:36.515Z</lastmod>
+    <lastmod>2022-12-31T05:37:17.215Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2016-12-02-replicating-nyt-weather-app/index.html</loc>
@@ -82,14 +82,18 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html</loc>
-    <lastmod>2022-12-24T23:22:54.231Z</lastmod>
+    <lastmod>2022-12-31T17:26:56.170Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2021-06-08-regression-anova-t-test/index.html</loc>
-    <lastmod>2022-12-24T23:22:59.691Z</lastmod>
+    <lastmod>2022-12-31T17:44:35.162Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html</loc>
-    <lastmod>2022-12-24T23:23:06.729Z</lastmod>
+    <lastmod>2022-12-31T17:41:05.779Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jkunst.com/blog/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html</loc>
+    <lastmod>2022-12-31T05:29:39.502Z</lastmod>
   </url>
 </urlset>

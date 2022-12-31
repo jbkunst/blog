@@ -2,7 +2,7 @@
 title: "Adding motion to choropleths"
 subtitle: We will use the highchart motion plugin with a map.
 date: 2016-04-12
-categories: [maps, highcharts]
+categories: [maps, highcharts, animation]
 image: images/preview.gif
 ---
 

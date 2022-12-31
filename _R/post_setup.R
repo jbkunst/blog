@@ -1,22 +1,25 @@
+# packages ----------------------------------------------------------------
 library(tidyverse)
-
-# ggplot2 -----------------------------------------------------------------
 library(ggplot2)
 library(showtext)
-font_add_google("IBM Plex Sans", "ibm")
+library(highcharter)
+
+# ggplot2 theme -----------------------------------------------------------
+font_add_google("IBM Plex Sans")
+
 showtext_auto()
 
 theme_set(
-  theme_minimal(base_size = 10) +
+  theme_minimal(base_size = 10, base_family = "IBM Plex Sans") +
     theme(
-      strip.background = element_rect(fill = "gray90", colour = NA),
-      legend.position = "bottom"
+      plot.title = element_text(face = "plain"),
+      plot.background = element_rect(fill = "#FFFAFA", colour = NA),
+      panel.background = element_rect(fill = "#FFFAFA", colour = NA),
+      legend.key.width = unit(1.5, "cm")
     )
-  )
+)
 
-# highcharter -------------------------------------------------------------
-library(highcharter)
-
+# highcharter theme -------------------------------------------------------
 fntfmly <- '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
 
 options(

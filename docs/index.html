@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -108,11 +108,11 @@ ga('send', {
 
 <link rel="stylesheet" href="styles.css">
 <link rel="alternate" type="application/rss+xml" title="Data, Code and Visualization" href="index.xml"><meta property="og:title" content="Data, Code and Visualization">
-<meta property="og:description" content="A kind of sketches, ideas and 'no forget'">
+<meta property="og:description" content="A kind of sketches, ideas and notes">
 <meta property="og:image" content="https://jkunst.com/blog/posts\2021-07-17-simulating-and-watching-autoregressive-processes\images\preview.gif">
 <meta property="og:site-name" content="Data, Code and Visualization">
 <meta name="twitter:title" content="Data, Code and Visualization">
-<meta name="twitter:description" content="A kind of sketches, ideas and 'no forget'">
+<meta name="twitter:description" content="A kind of sketches, ideas and notes">
 <meta name="twitter:image" content="https://jkunst.com/blog/posts\2021-07-17-simulating-and-watching-autoregressive-processes\images\preview.gif">
 <meta name="twitter:creator" content="@jbkunst">
 <meta name="twitter:card" content="summary_large_image">
@@ -165,7 +165,7 @@ ga('send', {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page-left">
       <h1 class="title">Data, Code and Visualization</h1>
-            <p class="subtitle lead">A kind of sketches, ideas and ‘no forget’</p>
+            <p class="subtitle lead">A kind of sketches, ideas and notes</p>
                       </div>
   </div>
     
@@ -183,7 +183,7 @@ ga('send', {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(22)</span></div><div class="category" data-category="chess">chess <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-visualization">data-visualization <span class="quarto-category-count">(13)</span></div><div class="category" data-category="dont-forget">dont-forget <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(6)</span></div><div class="category" data-category="highcharter">highcharter <span class="quarto-category-count">(5)</span></div><div class="category" data-category="highcharts">highcharts <span class="quarto-category-count">(17)</span></div><div class="category" data-category="htmlwidgets">htmlwidgets <span class="quarto-category-count">(2)</span></div><div class="category" data-category="maps">maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="minipost">minipost <span class="quarto-category-count">(7)</span></div><div class="category" data-category="package">package <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="spanish">spanish <span class="quarto-category-count">(3)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div><div class="category" data-category="twitter">twitter <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(23)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="chess">chess <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-visualization">data-visualization <span class="quarto-category-count">(14)</span></div><div class="category" data-category="dont-forget">dont-forget <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(7)</span></div><div class="category" data-category="highcharter">highcharter <span class="quarto-category-count">(5)</span></div><div class="category" data-category="highcharts">highcharts <span class="quarto-category-count">(17)</span></div><div class="category" data-category="htmlwidgets">htmlwidgets <span class="quarto-category-count">(2)</span></div><div class="category" data-category="maps">maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="minipost">minipost <span class="quarto-category-count">(7)</span></div><div class="category" data-category="package">package <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="spanish">spanish <span class="quarto-category-count">(3)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div><div class="category" data-category="twitter">twitter <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -215,7 +215,7 @@ ga('send', {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="minipost,stats,highcharts,highcharter,time-series,data-visualization" data-listing-date-sort="1623988800000" data-listing-file-modified-sort="1671922248833" data-listing-reading-time-sort="11.035">
+<div class="g-col-1" data-index="0" data-categories="minipost,stats,highcharts,highcharter,time-series,data-visualization" data-listing-date-sort="1623988800000" data-listing-file-modified-sort="1672508447675" data-listing-reading-time-sort="11.04">
 <a href="./posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -569,7 +569,40 @@ May 12, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="10" data-categories="data-visualization,highcharts" data-listing-date-sort="1554696000000" data-listing-file-modified-sort="1671735349394" data-listing-reading-time-sort="2.36">
+<div class="g-col-1" data-index="10" data-categories="data-visualization,ggplot2,animation" data-listing-date-sort="1555992000000" data-listing-file-modified-sort="1672464553593" data-listing-reading-time-sort="8.56">
+<a href="./posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2019-04-23-got-animating-the-shifting-of-affiliations/images/preview.gif" class="thumbnail-image card-img" style="height: 250px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+GOT Animating the Shifting of Affiliations
+</h5>
+<div class="listing-reading-time card-text text-muted">
+8 min
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('data-visualization'); return false;">
+data-visualization
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ggplot2'); return false;">
+ggplot2
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('animation'); return false;">
+animation
+</div>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Apr 23, 2019
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="11" data-categories="data-visualization,highcharts" data-listing-date-sort="1554696000000" data-listing-file-modified-sort="1671735349394" data-listing-reading-time-sort="2.36">
 <a href="./posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -599,7 +632,7 @@ Apr 8, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-categories="data-visualization,highcharts" data-listing-date-sort="1549249200000" data-listing-file-modified-sort="1671777539184" data-listing-reading-time-sort="2.86">
+<div class="g-col-1" data-index="12" data-categories="data-visualization,highcharts" data-listing-date-sort="1549249200000" data-listing-file-modified-sort="1671777539184" data-listing-reading-time-sort="2.86">
 <a href="./posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -629,7 +662,7 @@ Feb 4, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="12" data-categories="data-visualization,highcharts" data-listing-date-sort="1488510000000" data-listing-file-modified-sort="1671760287603" data-listing-reading-time-sort="6.545">
+<div class="g-col-1" data-index="13" data-categories="data-visualization,highcharts" data-listing-date-sort="1488510000000" data-listing-file-modified-sort="1671760287603" data-listing-reading-time-sort="6.545">
 <a href="./posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -659,7 +692,7 @@ Mar 3, 2017
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="13" data-categories="maps,data-visualization,highcharts,minipost" data-listing-date-sort="1484881200000" data-listing-file-modified-sort="1671756249425" data-listing-reading-time-sort="3.045">
+<div class="g-col-1" data-index="14" data-categories="maps,data-visualization,highcharts,minipost" data-listing-date-sort="1484881200000" data-listing-file-modified-sort="1671756249425" data-listing-reading-time-sort="3.045">
 <a href="./posts/2017-01-05-thematic-interactive-map/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -695,7 +728,7 @@ Jan 20, 2017
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="14" data-categories="maps,highcharts" data-listing-date-sort="1481770800000" data-listing-file-modified-sort="1671757769222" data-listing-reading-time-sort="3.795">
+<div class="g-col-1" data-index="15" data-categories="maps,highcharts" data-listing-date-sort="1481770800000" data-listing-file-modified-sort="1671757769222" data-listing-reading-time-sort="3.795">
 <a href="./posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -725,7 +758,7 @@ Dec 15, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="15" data-categories="data-visualization,highcharts" data-listing-date-sort="1480647600000" data-listing-file-modified-sort="1671755692569" data-listing-reading-time-sort="5.295">
+<div class="g-col-1" data-index="16" data-categories="data-visualization,highcharts" data-listing-date-sort="1480647600000" data-listing-file-modified-sort="1671755692569" data-listing-reading-time-sort="5.295">
 <a href="./posts/2016-12-02-replicating-nyt-weather-app/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -755,7 +788,7 @@ Dec 2, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="16" data-categories="maps,highcharts" data-listing-date-sort="1460430000000" data-listing-file-modified-sort="1671754703749" data-listing-reading-time-sort="1.59">
+<div class="g-col-1" data-index="17" data-categories="maps,highcharts,animation" data-listing-date-sort="1460430000000" data-listing-file-modified-sort="1672464965114" data-listing-reading-time-sort="1.59">
 <a href="./posts/2016-04-12-adding-motion-to-choropleths/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -775,6 +808,9 @@ maps
 <div class="listing-category" onclick="window.quartoListingCategory('highcharts'); return false;">
 highcharts
 </div>
+<div class="listing-category" onclick="window.quartoListingCategory('animation'); return false;">
+animation
+</div>
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -785,7 +821,7 @@ Apr 12, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="17" data-categories="data-visualization,highcharts,ggplot2,minipost" data-listing-date-sort="1458788400000" data-listing-file-modified-sort="1671754105344" data-listing-reading-time-sort="3.765">
+<div class="g-col-1" data-index="18" data-categories="data-visualization,highcharts,ggplot2,minipost" data-listing-date-sort="1458788400000" data-listing-file-modified-sort="1671754105344" data-listing-reading-time-sort="3.765">
 <a href="./posts/2016-03-24-how-to-weather-radials/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -821,7 +857,7 @@ Mar 24, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="18" data-categories="data-visualization,ggplot2,chess" data-listing-date-sort="1446174000000" data-listing-file-modified-sort="1671751926560" data-listing-reading-time-sort="12.925">
+<div class="g-col-1" data-index="19" data-categories="data-visualization,ggplot2,chess" data-listing-date-sort="1446174000000" data-listing-file-modified-sort="1671751926560" data-listing-reading-time-sort="12.925">
 <a href="./posts/2015-10-30-visualizing-chess-data-with-ggplot/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -854,7 +890,7 @@ Oct 30, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="19" data-categories="package,htmlwidgets,chess" data-listing-date-sort="1444186800000" data-listing-file-modified-sort="1671748477217" data-listing-reading-time-sort="1.39">
+<div class="g-col-1" data-index="20" data-categories="package,htmlwidgets,chess" data-listing-date-sort="1444186800000" data-listing-file-modified-sort="1671748477217" data-listing-reading-time-sort="1.39">
 <a href="./posts/2015-10-07-rchess-a-chess-package-for-r/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -887,7 +923,7 @@ Oct 7, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="20" data-categories="ggplot2,data-visualization" data-listing-date-sort="1443150000000" data-listing-file-modified-sort="1671748192808" data-listing-reading-time-sort="4.855">
+<div class="g-col-1" data-index="21" data-categories="ggplot2,data-visualization" data-listing-date-sort="1443150000000" data-listing-file-modified-sort="1671748192808" data-listing-reading-time-sort="4.855">
 <a href="./posts/2015-09-25-visualizing-sort-algorithms-with-ggplot2/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -917,7 +953,7 @@ Sep 25, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="21" data-categories="testing,dont-forget" data-listing-date-sort="946695600000" data-listing-file-modified-sort="1671922536401" data-listing-reading-time-sort="1.575">
+<div class="g-col-1" data-index="22" data-categories="testing,dont-forget" data-listing-date-sort="946695600000" data-listing-file-modified-sort="1671922536401" data-listing-reading-time-sort="1.575">
 <a href="./posts/2000-01-01-quarto-post-example/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -1095,7 +1131,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">Joshua Kunst ©</div>   
-    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕.</div>
+    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕</div>
   </div>
 </footer>
 

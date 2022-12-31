@@ -1,6 +1,6 @@
 ---
 title: "Data, Code and Visualization"
-subtitle: "A kind of sketches, ideas and 'no forget'"
+subtitle: "A kind of sketches, ideas and notes"
 listing:
   id: listings
   feed: true
