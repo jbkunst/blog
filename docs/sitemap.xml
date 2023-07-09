@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jkunst.com/blog/index.html</loc>
-    <lastmod>2022-12-31T17:41:07.179Z</lastmod>
+    <lastmod>2023-07-09T04:59:42.689Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/about.html</loc>
-    <lastmod>2022-12-24T23:19:51.725Z</lastmod>
+    <lastmod>2023-04-16T00:36:44.028Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2000-01-01-quarto-post-example/index.html</loc>
-    <lastmod>2022-12-28T03:58:10.774Z</lastmod>
+    <lastmod>2023-04-16T03:16:30.223Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2015-09-25-visualizing-sort-algorithms-with-ggplot2/index.html</loc>
@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2021-06-08-regression-anova-t-test/index.html</loc>
-    <lastmod>2022-12-31T17:44:35.162Z</lastmod>
+    <lastmod>2023-04-16T02:04:39.792Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html</loc>
@@ -95,5 +95,9 @@
   <url>
     <loc>https://jkunst.com/blog/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html</loc>
     <lastmod>2022-12-31T05:29:39.502Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jkunst.com/blog/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html</loc>
+    <lastmod>2023-07-09T04:59:41.545Z</lastmod>
   </url>
 </urlset>

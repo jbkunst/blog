@@ -10,11 +10,11 @@ font_add_google("IBM Plex Sans")
 showtext_auto()
 
 theme_set(
-  theme_minimal(base_size = 10, base_family = "IBM Plex Sans") +
+  theme_minimal(base_size = 9, base_family = "IBM Plex Sans") +
     theme(
       plot.title = element_text(face = "plain"),
-      plot.background = element_rect(fill = "#FFFAFA", colour = NA),
-      panel.background = element_rect(fill = "#FFFAFA", colour = NA),
+      plot.background = element_rect(fill = "#f9f9f9", colour = NA),
+      panel.background = element_rect(fill = "#f9f9f9", colour = NA),
       legend.key.width = unit(1.5, "cm")
     )
 )
