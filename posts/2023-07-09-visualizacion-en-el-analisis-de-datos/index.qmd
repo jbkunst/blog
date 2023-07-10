@@ -273,7 +273,7 @@ p2 <- d1 |>
 p1 | p2 
 ```
 
-## Correlaciones
+### Todas las correlaciones
 
 ```{r}
 dcor <- data |>
@@ -450,7 +450,7 @@ pnet <- ggplot(dfnet) +
 pnet
 ```
 
-# Reducción de Dimensionalidad
+## Reducción de Dimensionalidad
 
 Hasta ahora hemos usado solamente *correlaciones* que miden asociacion lineal 
 y no es un indicador necesariamente robusto para usarlo como métrica de distancia.
@@ -579,8 +579,7 @@ dkm <- tibble(
 pkm <- ggplot(dkm, aes(cluster, tot.withinss, fill = "1", color = "1")) +
   
   geom_line(size = 2) +
-  kunstomverse::geom_point2(size = 3) +
-  
+  geom_point(size = 3, shape = 21, color = "white") +
   scale_x_continuous(breaks = dkm$cluster) +
   labs(
     y = "Suma de los cuadrados dentro de cada grupo",
@@ -689,8 +688,11 @@ pphylo <- ggplot(dedges2) +
     max.overlaps = 1000,
     segment.colour = "gray80"
     )  +
-  
-  kunstomverse::geom_point2(aes(x, y, fill = cluster), data = dnodes, size = 4) +
+  geom_point(
+    aes(x, y, fill = cluster), 
+    data = dnodes, 
+    shape = 21, color = "white", size = 4
+    ) +
   scale_color_viridis_d()  + 
   scale_fill_viridis_d()  + 
   theme(

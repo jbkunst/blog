@@ -227,14 +227,12 @@ ga('send', {
   <ul class="collapse">
 <li><a href="#correlaci%C3%B3n" id="toc-correlación" class="nav-link" data-scroll-target="#correlaci%C3%B3n">Correlación</a></li>
   <li><a href="#otro-par-de-estaciones" id="toc-otro-par-de-estaciones" class="nav-link" data-scroll-target="#otro-par-de-estaciones">Otro par de estaciones</a></li>
+  <li><a href="#todas-las-correlaciones" id="toc-todas-las-correlaciones" class="nav-link" data-scroll-target="#todas-las-correlaciones">Todas las correlaciones</a></li>
   </ul>
 </li>
-  <li><a href="#correlaciones" id="toc-correlaciones" class="nav-link" data-scroll-target="#correlaciones">Correlaciones</a></li>
   <li><a href="#redes-y-comunidades" id="toc-redes-y-comunidades" class="nav-link" data-scroll-target="#redes-y-comunidades">Redes y comunidades</a></li>
+  <li><a href="#reducci%C3%B3n-de-dimensionalidad" id="toc-reducción-de-dimensionalidad" class="nav-link" data-scroll-target="#reducci%C3%B3n-de-dimensionalidad">Reducción de Dimensionalidad</a></li>
   <li>
-<a href="#reducci%C3%B3n-de-dimensionalidad" id="toc-reducción-de-dimensionalidad" class="nav-link" data-scroll-target="#reducci%C3%B3n-de-dimensionalidad">Reducción de Dimensionalidad</a>
-  <ul class="collapse">
-<li>
 <a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">Clustering</a>
   <ul class="collapse">
 <li><a href="#k-means" id="toc-k-means" class="nav-link" data-scroll-target="#k-means">K-means</a></li>
@@ -245,8 +243,6 @@ ga('send', {
   <li><a href="#significan-algo-los-cluster-generados" id="toc-significan-algo-los-cluster-generados" class="nav-link" data-scroll-target="#significan-algo-los-cluster-generados">¿Significan algo los cluster generados?</a></li>
   <li><a href="#contextualizar" id="toc-contextualizar" class="nav-link" data-scroll-target="#contextualizar">Contextualizar</a></li>
   <li><a href="#resumiendo" id="toc-resumiendo" class="nav-link" data-scroll-target="#resumiendo">Resumiendo</a></li>
-  </ul>
-</li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action">Informar de un problema</a></p></div></div></nav>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
@@ -525,7 +521,7 @@ ga('send', {
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid"></p>
 </div>
 </div>
-</section></section><section id="correlaciones" class="level2"><h2 class="anchored" data-anchor-id="correlaciones">Correlaciones</h2>
+</section><section id="todas-las-correlaciones" class="level3"><h3 class="anchored" data-anchor-id="todas-las-correlaciones">Todas las correlaciones</h3>
 <div class="cell">
 <details open=""><summary>Código</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dcor</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">widyr</span><span class="fu">::</span><span class="fu"><a href="https://juliasilge.github.io/widyr/reference/pairwise_cor.html">pairwise_cor</a></span><span class="op">(</span></span>
@@ -597,7 +593,7 @@ ga('send', {
 <p><img src="index_files/figure-html/unnamed-chunk-14-1.svg" class="img-fluid"></p>
 </div>
 </div>
-</section><section id="redes-y-comunidades" class="level2"><h2 class="anchored" data-anchor-id="redes-y-comunidades">Redes y comunidades</h2>
+</section></section><section id="redes-y-comunidades" class="level2"><h2 class="anchored" data-anchor-id="redes-y-comunidades">Redes y comunidades</h2>
 <p>Selecciones las correlaciones más altas.</p>
 <div class="cell">
 <details open=""><summary>Código</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ncors</span> <span class="op">&lt;-</span> <span class="fl">250</span></span>
@@ -700,7 +696,7 @@ ga('send', {
 <p><img src="index_files/figure-html/unnamed-chunk-16-1.svg" class="img-fluid"></p>
 </div>
 </div>
-</section><section id="reducción-de-dimensionalidad" class="level1"><h1>Reducción de Dimensionalidad</h1>
+</section><section id="reducción-de-dimensionalidad" class="level2"><h2 class="anchored" data-anchor-id="reducción-de-dimensionalidad">Reducción de Dimensionalidad</h2>
 <p>Hasta ahora hemos usado solamente <em>correlaciones</em> que miden asociacion lineal y no es un indicador necesariamente robusto para usarlo como métrica de distancia.</p>
 <p>Usaremos todos los datos por estacion y usaremos <strong>UMAP</strong>, un algoritmo para <em>resumir</em> toda la información en <em>2</em> columnas/variables. Lleva de una tabla con muchas columnas por observación a 2 columnas:</p>
 <p>De esto:</p>
@@ -781,7 +777,7 @@ ga('send', {
 <p><img src="index_files/figure-html/unnamed-chunk-19-1.svg" class="img-fluid"></p>
 </div>
 </div>
-<section id="clustering" class="level2"><h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
+</section><section id="clustering" class="level2"><h2 class="anchored" data-anchor-id="clustering">Clustering</h2>
 <section id="k-means" class="level3"><h3 class="anchored" data-anchor-id="k-means">K-means</h3>
 <p>De vez en cuando es relevante agrupar información/perfilar. <strong>Diagramas de Voronoi</strong>.</p>
 <div class="cell">
@@ -845,8 +841,7 @@ ga('send', {
 <span><span class="va">pkm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">dkm</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">cluster</span>, <span class="va">tot.withinss</span>, fill <span class="op">=</span> <span class="st">"1"</span>, color <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">kunstomverse</span><span class="fu">::</span><span class="fu"><a href="http://jkunst.com/kunstomverse/reference/geom_point2.html">geom_point2</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">21</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="va">dkm</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="st">"Suma de los cuadrados dentro de cada grupo"</span>,</span>
@@ -954,8 +949,11 @@ ga('send', {
 <span>    max.overlaps <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>    segment.colour <span class="op">=</span> <span class="st">"gray80"</span></span>
 <span>    <span class="op">)</span>  <span class="op">+</span></span>
-<span>  </span>
-<span>  <span class="fu">kunstomverse</span><span class="fu">::</span><span class="fu"><a href="http://jkunst.com/kunstomverse/reference/geom_point2.html">geom_point2</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dnodes</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, fill <span class="op">=</span> <span class="va">cluster</span><span class="op">)</span>, </span>
+<span>    data <span class="op">=</span> <span class="va">dnodes</span>, </span>
+<span>    shape <span class="op">=</span> <span class="fl">21</span>, color <span class="op">=</span> <span class="st">"white"</span>, size <span class="op">=</span> <span class="fl">4</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_d</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
@@ -1193,7 +1191,7 @@ ga('send', {
 </div>
 
 
-</section></section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reutilización</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.es">https://creativecommons.org/licenses/by/4.0/deed.es</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Cómo citar</h2><div><div class="quarto-appendix-secondary-label">BibTeX</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2023,
+</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reutilización</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.es">https://creativecommons.org/licenses/by/4.0/deed.es</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Cómo citar</h2><div><div class="quarto-appendix-secondary-label">BibTeX</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2023,
   author = {Joshua Kunst Fuentes},
   title = {Visualización en el Análisis de Datos},
   date = {2023-09-07},

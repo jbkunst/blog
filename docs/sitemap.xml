@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jkunst.com/blog/index.html</loc>
-    <lastmod>2023-07-09T04:59:42.689Z</lastmod>
+    <lastmod>2023-07-10T03:22:30.079Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/about.html</loc>
-    <lastmod>2023-04-16T00:36:44.028Z</lastmod>
+    <lastmod>2023-07-09T08:13:29.305Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2000-01-01-quarto-post-example/index.html</loc>
-    <lastmod>2023-04-16T03:16:30.223Z</lastmod>
+    <lastmod>2023-07-09T17:13:55.453Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2015-09-25-visualizing-sort-algorithms-with-ggplot2/index.html</loc>
@@ -98,6 +98,6 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html</loc>
-    <lastmod>2023-07-09T04:59:41.545Z</lastmod>
+    <lastmod>2023-07-10T03:23:01.758Z</lastmod>
   </url>
 </urlset>

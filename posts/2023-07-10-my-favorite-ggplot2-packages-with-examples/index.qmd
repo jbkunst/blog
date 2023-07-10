@@ -1,0 +1,424 @@
+---
+title: "My favorite `ggplot2` packages with examples"
+subtitle: I have to put things somewhere so I don't forget them
+date: 2023-07-10
+date-modified: "`r format(Sys.time(), '%Y-%m-%d')`"
+categories: [minipost, ggplot2, dont-forget]
+image: images/preview.png  
+draft: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+# source(here::here("_R/post_setup.R"))
+```
+
+The idea is to show some packages that I use on a daily basis, and leave code with annotations and defaults that I normally use. We will go through the packages one by one with examples, but these can be grouped into the following categories.
+
+* Typography: `{showtext}`.
+* Annotations: `{ggrepel}`, `{gghighlight}`, `{ggforce}`, `{ggfittext}`.
+* Extra functionalities: `{scales}` and -again- `{ggforce}`.
+* Other type of data: `{ggparty}`.
+
+Where do we start from? Define some data and some defaults plots that we would have and would like to modify. 
+
+```{r}
+#| layout-ncol: 3
+#| column: page
+library(tidyverse)
+library(palmerpenguins)
+
+set.seed(123)
+
+mtcars <- mtcars |>
+  rownames_to_column(var = "name") |> 
+  as_tibble() |> 
+  sample_n(20)
+
+p1 <- ggplot(mtcars, aes(wt, mpg, label = name)) +
+  geom_point(color = "cyan4", size = 2)
+p1
+
+p2 <- ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(color = species), size = 2)
+p2
+
+p3 <- penguins |> 
+  count(species) |> 
+  ggplot(aes(species, n)) +
+  geom_col()
+p3
+```
+In my particuar case I like `theme_minimal` theme and legend at the bottom.
+
+```{r}
+theme_set(
+  theme_minimal() +
+    theme(
+      plot.title = element_text(face = "plain"),
+      plot.background = element_rect(fill = "#f9f9f9", colour = NA),
+      panel.background = element_rect(fill = "#f9f9f9", colour = NA),
+      legend.position = "bottom",
+      legend.key.width = unit(1.5, "cm")
+    )
+)
+
+colors <- c("darkorange","darkorchid","cyan4")
+```
+
+We're ready to go!
+
+
+## `{showtext}`
+
+Source:[ https://github.com/yixuan/showtext](https://github.com/yixuan/showtext).
+
+This package makes easy to use typography! Do you want some typography from https://fonts.google.com/? You want it? You got it!
+
+```{r}
+library(showtext)
+
+font_add_google("IBM Plex Sans", family = "ibm")
+
+showtext_auto()
+
+p2
+```
+
+
+## `{ggrepel}`
+
+Source: [https://ggrepel.slowkow.com/articles/examples.html](https://ggrepel.slowkow.com/articles/examples.html).
+
+This package has been on CRAN/github for a while now. Package that in combination with the `data` argument can make simple and effective annotations.
+
+```{r}
+library(ggrepel)
+
+p_repel1 <- p1  +
+  geom_text_repel(color = "gray40", family  = "ibm")
+
+p_repel1
+
+p_repel2 <- p1 +
+  geom_text_repel(
+    data = ~ filter(.x, mpg > 30), 
+    color = "gray40", 
+    family  = "ibm",
+     force = 20
+    )
+
+p_repel2
+```
+
+
+## `{gghighlight}`
+
+Source: [https://yutannihilation.github.io/gghighlight/articles/gghighlight.html](https://yutannihilation.github.io/gghighlight/articles/gghighlight.html).
+
+- This package is plug and play if you have to highlight data with a specific filter. 
+- Is important to know this package don't work like the usual `geom_*` + `aes()`.
+
+```{r}
+library(gghighlight) 
+
+p1 +
+  gghighlight(
+    # interest subset
+    mpg > 30,
+    # additional parameters
+    label_key = name,
+    keep_scales = TRUE,
+    label_params = list(color = "gray40", label.r = 0, fill = "gray95"),
+    # can change previous parameters
+    unhighlighted_params = list(size = 1.5, color = "darkorchid")
+    )
+```
+
+
+## `{ggforce}`
+
+Source: [https://ggforce.data-imaginist.com/](https://ggforce.data-imaginist.com/).
+
+- `{ggforce}` takes annotations to the next level.
+- Not only annotation. Other funcionalities like 
+
+```{r}
+library(ggforce)
+
+p1 +
+  geom_mark_hull(
+    aes(filter =  mpg > 30, label = "Interesting"),
+    description = "Lightweight vehicles have high performance.",
+    color = "gray70",
+    fill = "gray90",
+    concavity = 5,
+    # control width text
+    label.minwidth = unit(100, "mm"),
+    # how much distance before show legend
+    label.buffer = unit(5, "mm"),
+    label.colour = "gray30",
+    label.family = "ibm"
+  ) +
+  # use circle for points
+  geom_mark_circle(
+    aes(filter =  wt == max(wt), label = NULL, description = name),
+    color = "gray70",
+    fill = "transparent",
+    label.fontsize = 10,
+    label.family = "ibm"
+   )
+```
+
+
+
+## `{ggforce}`
+
+```{r}
+# # ggforce -----------------------------------------------------------------
+# # https://www.data-imaginist.com/2019/the-ggforce-awakens-again/
+# flores
+# 
+# glimpse(flores)
+# 
+# p2 <- ggplot(flores, aes(Largo.Petalo, Ancho.Petalo, color = Especie)) +
+#   geom_point(size = 2)
+# 
+# p2
+# 
+# p2 + facet_wrap(vars(Especie))
+# 
+# library(ggforce) # facet_zoom geom_mark_ellipse geom_mark_hull
+# 
+# p2 + facet_zoom(x = Especie == "versicolor")
+# 
+# p2 + facet_zoom(y = Especie == "versicolor")
+# 
+# p2 + geom_mark_ellipse(aes(fill = Especies, label = Especies), alpha = 0.1)
+# 
+# # requiere tener instalado el paquete `concaveman`
+# p2 + geom_mark_hull(aes(fill = Especie, label = Especie))
+# 
+# p2 +
+#   geom_mark_hull(
+#     aes(filter = Especie == "versicolor", label = Especie),
+#     description = "Especie realmente muy interesante y además particular",
+#     color = "gray70",
+#     fill = "gray80",
+#     concavity = 5,
+#     size = 0.1
+#     )
+# 
+# 
+# # gghighlight -------------------------------------------------------------
+# # https://yutannihilation.github.io/gghighlight/articles/gghighlight.html
+# 
+# p1
+# 
+# library(gghighlight) # aes gghighlight
+# 
+# p1 +
+#   gghighlight(
+#     # casos de interés
+#     peso_kg < 1000 & km_lt > 12,
+#     # parmatros de la etiqueta: geom_label_repel
+#     label_key = modelo,
+#     keep_scales = TRUE,
+#     label_params = list(color = "black", label.r = 0)
+#     )
+# 
+# # alternativa con ggforce
+# p1 +
+#   geom_mark_hull(
+#     aes(filter = peso_kg < 1000 & km_lt > 12, label = "Autos relevantes"),
+#     description = "Pesan poco y por tanto poseen buen rendimiento",
+#     color = "gray70",
+#     fill = "gray80",
+#     concavity = 5,
+#     size = 0.1
+#   )
+# 
+# 
+# # scales ------------------------------------------------------------------
+# # https://scales.r-lib.org/
+# p1
+# 
+# library(scales) # comma dollar label_comma
+# 
+# x <- c(123, 456678, 100000)
+# 
+# x
+# 
+# comma(x)
+# 
+# dollar(x)
+# 
+# km_por_lt <- label_comma(suffix = " km/lt")
+# 
+# km_por_lt(c(1, 15, 20))
+# 
+# p1 +
+#   scale_y_continuous(labels = km_por_lt, name = "Rendimiento") +
+#   scale_x_continuous(labels = label_comma(suffix = " kg"), name = "Peso vehículo")
+# 
+# 
+# 
+# # ggfittext ---------------------------------------------------------------
+# # https://github.com/wilkox/ggfittext#bar-plots
+# 
+# glimpse(diamantes)
+# 
+# diamantes_corte <- diamantes %>%
+#   count(corte)
+# 
+# diamantes_corte
+# 
+# p3 <- ggplot(diamantes_corte, aes(x = corte, y = n, label = comma(n))) +
+#   geom_col(width = 0.5, fill = "gray70") +
+#   scale_y_continuous(labels = label_comma())
+# 
+# p3
+# 
+# p3 +
+#   geom_text()
+# 
+# p3 +
+#   geom_text(nudge_y = 100)
+# 
+# p3 +
+#   geom_text(vjust = -2)
+# 
+# 
+# library(ggfittext) # geom_bar_text
+# 
+# p3 +
+#   geom_bar_text()
+# 
+# p3 +
+#   geom_bar_text(place = "bottom")
+# 
+# 
+# # ggparty & parttree ------------------------------------------------------
+# # https://github.com/martin-borkovec/ggparty
+# # https://github.com/grantmcdermott/parttree
+# 
+# library(partykit) # ctree
+# 
+# p2
+# 
+# glimpse(flores)
+# 
+# arbol <- ctree(Especies ~ Largo.Petalo + Ancho.Petalo, data = flores)
+# 
+# arbol
+# 
+# plot(arbol)
+# 
+# # remotes::install_github("grantmcdermott/parttree")
+# library(parttree) # geom_parttree
+# 
+# p2 +
+#   geom_parttree(data = arbol, aes(fill = Especies), alpha = 0.1) +
+#   labs(caption = "Nota: Puntos denotan los datos, las regiones las predicción del árbol.")
+# 
+# library(ggparty) # ggparty geom_edge geom_edge_label geom_node_label geom_node_plot
+# 
+# ggparty(arbol) +
+#   geom_edge() +
+#   geom_edge_label() +
+#   geom_node_label(aes(label = splitvar), ids = "inner") +
+#   geom_node_plot(
+#     gglist = list(
+#       geom_bar(aes(x = Especies, fill = Especies)),
+#       theme_minimal(),
+#       theme(
+#         axis.text = element_text(size = 7)
+#       ),
+#       labs(x = NULL, y = NULL)
+#     ),
+#     scales = "fixed",
+#     id = "terminal"
+#   )
+# 
+# 
+# ggparty(arbol) +
+#   geom_edge(color = "gray80") +
+#   geom_edge_label(color = "gray50", size = 4) +
+#   geom_node_label(
+#     aes(label = splitvar),
+#     color = "gray30",
+#     label.col = NA, # sin caja
+#     size = 4,
+#     label.padding = unit(0.5, "lines"),
+#     ids = "inner"
+#     ) +
+#   geom_node_plot(
+#     gglist = list(
+#       geom_point(aes(x = Largo.Petalo, y = Ancho.Petalo, color = Especies), size = 2, alpha = 0.5),
+#       scale_color_viridis_d(end = 0.9),
+#       guides(color = guide_legend(override.aes = list(size=5))),
+#       theme_minimal(),
+#       theme(axis.text = element_text(size = 7)),
+#       labs(x = NULL, y = NULL)
+#     ),
+#     scales = "fixed",
+#     id = "terminal"
+#   ) +
+#   geom_node_label(
+#     aes(label = sprintf("Nodo %s (n = %s)", id, nodesize)),
+#     ids = "terminal",
+#     size = 3,
+#     label.col = NA, # sin caja
+#     nudge_y = 0.01
+#     )
+# 
+# 
+# 
+# # patchwork ---------------------------------------------------------------
+# # https://patchwork.data-imaginist.com/articles/patchwork.html
+# 
+# p4 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
+#   geom_point(size = 2) +
+#   geom_text(aes(label = modelo))
+# 
+# p4
+# 
+# p5 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
+#   geom_point(size = 2) +
+#   geom_text_repel(aes(label = modelo))
+# 
+# p5
+# 
+# library(patchwork) # plot_layout plot_annotation
+# 
+# p4 + p5
+# 
+# p4 | p5
+# 
+# p4 / p5
+# 
+# pp <- p4 + p5 +
+#   plot_layout(
+#     widths = c(1, 2),
+#     guides = "collect"
+#     ) +
+#   plot_annotation(
+#     title = "Composición de ggplot2",
+#     subtitle = "Grafico (a) usa geom_text mientras (b) geom_text_repel.",
+#     tag_levels = "a",
+#     tag_prefix = "(",
+#     tag_suffix = ")"
+#     )
+# 
+# pp
+# 
+# 
+# 
+# library(purrr) # %>% reduce
+# 
+# # es lo mismo que p1 + p2 +  p3 + p4 + p5
+# list(p1, p2, p3, p4, p5) %>% reduce(`+`)
+
+
+```
