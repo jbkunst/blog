@@ -5,7 +5,6 @@ date: 2023-07-10
 date-modified: "`r format(Sys.time(), '%Y-%m-%d')`"
 categories: [minipost, ggplot2, dont-forget]
 image: images/preview.png  
-draft: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -14,12 +13,12 @@ editor_options:
 # source(here::here("_R/post_setup.R"))
 ```
 
-The idea is to show some packages that I use on a daily basis, and leave code with annotations and defaults that I normally use. We will go through the packages one by one with examples, but these can be grouped into the following categories.
+The idea is to show some packages and options that I use on a daily basis, and leave code with annotations and defaults that I normally use. We will go through the packages one by one with examples, but these can be grouped into the following categories.
 
 * Typography: `{showtext}`.
 * Annotations: `{ggrepel}`, `{gghighlight}`, `{ggforce}`, `{ggfittext}`.
-* Extra functionalities: `{scales}` and -again- `{ggforce}`.
-* Other type of data: `{ggparty}`.
+* Extra features: `{scales}` and -again- `{ggforce}`.
+* Tree-objects: `{ggparty}` and `{parttree}`.
 
 Where do we start from? Define some data and some defaults plots that we would have and would like to modify. 
 
@@ -36,6 +35,9 @@ mtcars <- mtcars |>
   as_tibble() |> 
   sample_n(20)
 
+penguins <- penguins |> 
+  filter(complete.cases(penguins)) 
+
 p1 <- ggplot(mtcars, aes(wt, mpg, label = name)) +
   geom_point(color = "cyan4", size = 2)
 p1
@@ -50,6 +52,7 @@ p3 <- penguins |>
   geom_col()
 p3
 ```
+
 In my particuar case I like `theme_minimal` theme and legend at the bottom.
 
 ```{r}
@@ -57,8 +60,8 @@ theme_set(
   theme_minimal() +
     theme(
       plot.title = element_text(face = "plain"),
-      plot.background = element_rect(fill = "#f9f9f9", colour = NA),
-      panel.background = element_rect(fill = "#f9f9f9", colour = NA),
+      plot.background = element_rect(fill = "#fcfcfc", colour = NA),
+      panel.background = element_rect(fill = "#fcfcfc", colour = NA),
       legend.position = "bottom",
       legend.key.width = unit(1.5, "cm")
     )
@@ -142,7 +145,8 @@ p1 +
 Source: [https://ggforce.data-imaginist.com/](https://ggforce.data-imaginist.com/).
 
 - `{ggforce}` takes annotations to the next level.
-- Not only annotation. Other funcionalities like 
+- Not only annotation. Other funcionalities like.
+- Hig 
 
 ```{r}
 library(ggforce)
@@ -157,13 +161,13 @@ p1 +
     # control width text
     label.minwidth = unit(100, "mm"),
     # how much distance before show legend
-    label.buffer = unit(5, "mm"),
+    label.buffer = unit(2.5, "mm"),
     label.colour = "gray30",
     label.family = "ibm"
   ) +
   # use circle for points
   geom_mark_circle(
-    aes(filter =  wt == max(wt), label = NULL, description = name),
+    aes(filter =  wt > 3.75, label = NULL, description = name),
     color = "gray70",
     fill = "transparent",
     label.fontsize = 10,
@@ -171,254 +175,375 @@ p1 +
    )
 ```
 
-
-
-## `{ggforce}`
+And other `geom_mark_*` like  hull, circle, ellpse, rect.
 
 ```{r}
-# # ggforce -----------------------------------------------------------------
-# # https://www.data-imaginist.com/2019/the-ggforce-awakens-again/
-# flores
-# 
-# glimpse(flores)
-# 
-# p2 <- ggplot(flores, aes(Largo.Petalo, Ancho.Petalo, color = Especie)) +
-#   geom_point(size = 2)
-# 
-# p2
-# 
-# p2 + facet_wrap(vars(Especie))
-# 
-# library(ggforce) # facet_zoom geom_mark_ellipse geom_mark_hull
-# 
-# p2 + facet_zoom(x = Especie == "versicolor")
-# 
-# p2 + facet_zoom(y = Especie == "versicolor")
-# 
-# p2 + geom_mark_ellipse(aes(fill = Especies, label = Especies), alpha = 0.1)
-# 
-# # requiere tener instalado el paquete `concaveman`
-# p2 + geom_mark_hull(aes(fill = Especie, label = Especie))
-# 
-# p2 +
-#   geom_mark_hull(
-#     aes(filter = Especie == "versicolor", label = Especie),
-#     description = "Especie realmente muy interesante y además particular",
-#     color = "gray70",
-#     fill = "gray80",
-#     concavity = 5,
-#     size = 0.1
-#     )
-# 
-# 
-# # gghighlight -------------------------------------------------------------
-# # https://yutannihilation.github.io/gghighlight/articles/gghighlight.html
-# 
-# p1
-# 
-# library(gghighlight) # aes gghighlight
-# 
-# p1 +
-#   gghighlight(
-#     # casos de interés
-#     peso_kg < 1000 & km_lt > 12,
-#     # parmatros de la etiqueta: geom_label_repel
-#     label_key = modelo,
-#     keep_scales = TRUE,
-#     label_params = list(color = "black", label.r = 0)
-#     )
-# 
-# # alternativa con ggforce
-# p1 +
-#   geom_mark_hull(
-#     aes(filter = peso_kg < 1000 & km_lt > 12, label = "Autos relevantes"),
-#     description = "Pesan poco y por tanto poseen buen rendimiento",
-#     color = "gray70",
-#     fill = "gray80",
-#     concavity = 5,
-#     size = 0.1
-#   )
-# 
-# 
-# # scales ------------------------------------------------------------------
-# # https://scales.r-lib.org/
-# p1
-# 
-# library(scales) # comma dollar label_comma
-# 
-# x <- c(123, 456678, 100000)
-# 
-# x
-# 
-# comma(x)
-# 
-# dollar(x)
-# 
-# km_por_lt <- label_comma(suffix = " km/lt")
-# 
-# km_por_lt(c(1, 15, 20))
-# 
-# p1 +
-#   scale_y_continuous(labels = km_por_lt, name = "Rendimiento") +
-#   scale_x_continuous(labels = label_comma(suffix = " kg"), name = "Peso vehículo")
-# 
-# 
-# 
-# # ggfittext ---------------------------------------------------------------
-# # https://github.com/wilkox/ggfittext#bar-plots
-# 
-# glimpse(diamantes)
-# 
-# diamantes_corte <- diamantes %>%
-#   count(corte)
-# 
-# diamantes_corte
-# 
-# p3 <- ggplot(diamantes_corte, aes(x = corte, y = n, label = comma(n))) +
-#   geom_col(width = 0.5, fill = "gray70") +
-#   scale_y_continuous(labels = label_comma())
-# 
-# p3
-# 
-# p3 +
-#   geom_text()
-# 
-# p3 +
-#   geom_text(nudge_y = 100)
-# 
-# p3 +
-#   geom_text(vjust = -2)
-# 
-# 
-# library(ggfittext) # geom_bar_text
-# 
-# p3 +
-#   geom_bar_text()
-# 
-# p3 +
-#   geom_bar_text(place = "bottom")
-# 
-# 
-# # ggparty & parttree ------------------------------------------------------
-# # https://github.com/martin-borkovec/ggparty
-# # https://github.com/grantmcdermott/parttree
-# 
-# library(partykit) # ctree
-# 
-# p2
-# 
-# glimpse(flores)
-# 
-# arbol <- ctree(Especies ~ Largo.Petalo + Ancho.Petalo, data = flores)
-# 
-# arbol
-# 
-# plot(arbol)
-# 
-# # remotes::install_github("grantmcdermott/parttree")
-# library(parttree) # geom_parttree
-# 
-# p2 +
-#   geom_parttree(data = arbol, aes(fill = Especies), alpha = 0.1) +
-#   labs(caption = "Nota: Puntos denotan los datos, las regiones las predicción del árbol.")
-# 
-# library(ggparty) # ggparty geom_edge geom_edge_label geom_node_label geom_node_plot
-# 
-# ggparty(arbol) +
-#   geom_edge() +
-#   geom_edge_label() +
-#   geom_node_label(aes(label = splitvar), ids = "inner") +
-#   geom_node_plot(
-#     gglist = list(
-#       geom_bar(aes(x = Especies, fill = Especies)),
-#       theme_minimal(),
-#       theme(
-#         axis.text = element_text(size = 7)
-#       ),
-#       labs(x = NULL, y = NULL)
-#     ),
-#     scales = "fixed",
-#     id = "terminal"
-#   )
-# 
-# 
-# ggparty(arbol) +
-#   geom_edge(color = "gray80") +
-#   geom_edge_label(color = "gray50", size = 4) +
-#   geom_node_label(
-#     aes(label = splitvar),
-#     color = "gray30",
-#     label.col = NA, # sin caja
-#     size = 4,
-#     label.padding = unit(0.5, "lines"),
-#     ids = "inner"
-#     ) +
-#   geom_node_plot(
-#     gglist = list(
-#       geom_point(aes(x = Largo.Petalo, y = Ancho.Petalo, color = Especies), size = 2, alpha = 0.5),
-#       scale_color_viridis_d(end = 0.9),
-#       guides(color = guide_legend(override.aes = list(size=5))),
-#       theme_minimal(),
-#       theme(axis.text = element_text(size = 7)),
-#       labs(x = NULL, y = NULL)
-#     ),
-#     scales = "fixed",
-#     id = "terminal"
-#   ) +
-#   geom_node_label(
-#     aes(label = sprintf("Nodo %s (n = %s)", id, nodesize)),
-#     ids = "terminal",
-#     size = 3,
-#     label.col = NA, # sin caja
-#     nudge_y = 0.01
-#     )
-# 
-# 
-# 
-# # patchwork ---------------------------------------------------------------
-# # https://patchwork.data-imaginist.com/articles/patchwork.html
-# 
-# p4 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
-#   geom_point(size = 2) +
-#   geom_text(aes(label = modelo))
-# 
-# p4
-# 
-# p5 <- ggplot(mtautos, aes(peso_kg, km_lt, color = cilindros)) +
-#   geom_point(size = 2) +
-#   geom_text_repel(aes(label = modelo))
-# 
-# p5
-# 
-# library(patchwork) # plot_layout plot_annotation
-# 
-# p4 + p5
-# 
-# p4 | p5
-# 
-# p4 / p5
-# 
-# pp <- p4 + p5 +
-#   plot_layout(
-#     widths = c(1, 2),
-#     guides = "collect"
-#     ) +
-#   plot_annotation(
-#     title = "Composición de ggplot2",
-#     subtitle = "Grafico (a) usa geom_text mientras (b) geom_text_repel.",
-#     tag_levels = "a",
-#     tag_prefix = "(",
-#     tag_suffix = ")"
-#     )
-# 
-# pp
-# 
-# 
-# 
-# library(purrr) # %>% reduce
-# 
-# # es lo mismo que p1 + p2 +  p3 + p4 + p5
-# list(p1, p2, p3, p4, p5) %>% reduce(`+`)
+#| column: screen-inset
+#| fig-width: 12
+#| fig-height: 8
+#| fig-align: center
+p2 + 
+  geom_mark_ellipse(
+    aes(fill = species, label = species),
+    alpha = 0.1,
+    color = "transparent", # a nice touch sometimes! (imho)
+    label.colour = "gray30",
+    label.family = "ibm",
+    label.fontsize = 8,
+    # label.fontface = "plain",
+    # this is just for blogpost
+    expand = unit(-5, "mm"),
+    radius = unit(5, "mm")
+    ) +
+  geom_mark_circle(
+    aes(
+      filter = coalesce(bill_length_mm, 0) == max(bill_length_mm, na.rm = TRUE),
+      label = NULL, 
+      description = "A rare penguin!"
+      ),
+    color = "gray70",
+    fill = "transparent",
+    label.fontsize = 8,
+    label.family = "ibm"
+   ) +
+  theme(legend.position = "none") +
+  labs(x = NULL, y = NULL)
+```
+
+Now imagine we used a $K$-means algorithm:
+
+```{r}
+#| column: screen-inset
+#| fig-width: 12
+#| fig-height: 8
+#| fig-align: center
+dcenters <- penguins |>
+  select(species, bill_length_mm, bill_depth_mm) |> 
+  filter(!is.na(bill_length_mm)) |> 
+  filter(!is.na(bill_depth_mm)) |> 
+  group_by(species) |> 
+  summarise(across(everything(), median)) |> 
+  select(-species) |> 
+  mutate(cluster = as.character(row_number()))
+
+dcenters
+
+bnd <- penguins |>
+  summarise(
+    min(bill_length_mm, na.rm = TRUE) - 1,
+    max(bill_length_mm, na.rm = TRUE) + 1,
+    min(bill_depth_mm, na.rm = TRUE)  - 1,
+    max(bill_depth_mm, na.rm = TRUE)  + 1
+  ) |> 
+  as.list() |> 
+  unlist() |> 
+  as.vector()
+
+p2 +
+  geom_voronoi_tile(
+    aes(fill = cluster, group = -1),
+    data = dcenters, alpha = 0.2, bound = bnd
+    ) +
+  geom_voronoi_segment(
+    aes(group = -1),
+    data = dcenters, color = "gray90", bound = bnd
+    ) +
+  xlim(bnd[1], bnd[2]) + 
+  ylim(bnd[3], bnd[4]) +
+  scale_fill_viridis_d(direction = -1, option = "C") +
+  # its better put point over all layers
+  geom_point(
+    aes(color = species), 
+    size = 2,
+    shape = 21, 
+    color = "gray90"
+    ) +
+  theme(legend.position = "right")
+```
+
+## `{ggfittext}`
+
+Source: [https://github.com/wilkox/ggfittext](https://github.com/wilkox/ggfittext#bar-plots).
+
+This package have a lot of features to work with strings in ggplot objects, particulary
+when you use treemaps.
+
+A love the simple and useful function `geom_bar_text()` + `geom_col()` combo.
 
 
+```{r}
+#| layout-ncol: 3
+#| column: page
+library(ggfittext)
+
+p3 <- penguins |> 
+  count(species) |> 
+  mutate(n = 100 * n) |> 
+  ggplot(aes(species, n)) +
+  geom_col(width = 0.35, fill = "cyan4") 
+
+p3 +
+  geom_bar_text()
+
+p3 +
+  geom_bar_text(
+    formatter = scales::comma_format(), 
+    padding.y =  grid::unit(2.5, "mm")
+  )
+
+p3 + 
+  geom_bar_text(
+    formatter = scales::comma_format(), 
+    place = "bottom",
+    padding.y =  grid::unit(2.5, "mm")
+  )
+```
+
+
+## `{scales}`
+
+Source: [https://scales.r-lib.org/](https://scales.r-lib.org/).
+
+
+You use this package using a `label_*` function in the `labels` argument of
+`scale_*` function.
+
+```{r}
+library(scales) # comma dollar label_comma
+
+x <- c(123, 456678, 100000)
+
+c(comma(x), dollar(x))
+
+# I know the correct alternative is Mpg
+miles_per_gallon <- label_comma(suffix = " mi/gal")
+
+wt_lbl <- label_comma(scale = 1000, suffix = " lbs")
+
+p1 +
+  scale_y_continuous(
+    labels = miles_per_gallon, 
+    name = "fuel consumption"
+    ) +
+  scale_x_continuous(
+    labels = wt_lbl, 
+    name = "weigth"
+    )
+```
+
+## `{ggparty}`
+
+Source: [https://github.com/martin-borkovec/ggparty](https://github.com/martin-borkovec/ggparty).
+
+```{r}
+library(partykit) # ctree
+library(ggparty)
+
+penguinct <- ctree(
+  species ~ bill_length_mm + bill_depth_mm + flipper_length_mm + body_mass_g + sex,
+  data = penguins
+  )
+
+autoplot(penguinct)
+```
+
+```{r}
+#| column: screen-inset
+#| fig-width: 12
+#| fig-height: 8
+#| fig-align: center
+ggparty(penguinct) +
+  geom_edge(color = "gray80") +
+  geom_edge_label(color = "gray50", size = 4) +
+  geom_node_label(
+    aes(label = splitvar),
+    color = "gray30",
+    label.col = NA, # no box
+    size = 4,
+    label.padding = unit(0.5, "lines"),
+    ids = "inner"
+    ) +
+  geom_node_plot(
+    gglist = list(
+      geom_point(
+        aes(x = bill_length_mm, y = bill_depth_mm, color = species),
+        size = 1, alpha = 0.5
+        ),
+      scale_color_viridis_d(end = 0.9),
+      guides(color = guide_legend(override.aes = list(size = 5))), 
+      theme_minimal(),
+      theme(axis.text = element_text(size = 7)),
+      labs(x = NULL, y = NULL)
+    ),
+    scales = "fixed",
+    id = "terminal"
+  ) +
+  geom_node_label(
+    aes(label = sprintf("Node %s (n = %s)", id, nodesize)),
+    ids = "terminal",
+    size = 3,
+    label.col = NA, # no box
+    nudge_y = 0.01
+    )
+```
+
+
+## `{parttree}`
+
+Source: [https://github.com/grantmcdermott/parttree](https://github.com/grantmcdermott/parttree).
+
+I use the {parttree} package when the model is simple, or when I want to explain the decision tree algorithm.
+
+```{r}
+library(parttree)
+
+# 2 independent variables
+penguinct2 <- ctree(
+  species ~ bill_length_mm + bill_depth_mm,
+  data = penguins,
+  control = ctree_control(maxdepth = 3)
+  )
+
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_parttree(
+    data = penguinct2, 
+    aes(fill = species),
+    alpha = 0.2, 
+    color = "gray60",
+    ) + 
+  geom_point(aes(col = species)) +
+  theme_minimal()
+```
+
+## `{ggparty}` + `{parttree}` 
+
+```{r}
+#| column: screen-inset
+#| fig-width: 12
+#| fig-height: 8
+#| fig-align: center
+dpred_node <- penguins |>
+  select(species, bill_length_mm, bill_depth_mm) |>
+  mutate(
+    id = predict(penguinct2, type = "node", newdata = penguins),
+    species_pred = predict(penguinct2, newdata = penguins)
+    ) |>
+  group_by(id) |>
+  summarise(
+    species = unique(species_pred),
+    bill_length_mm = mean(bill_length_mm),
+    bill_depth_mm = mean(bill_depth_mm)
+  )
+
+dpred_node
+
+dparttree <- parttree(penguinct2)
+dparttree <- dparttree |> 
+  as_tibble() |> 
+  rename(id = node) |> 
+  select(-path)
+
+ggp <- ggparty(penguinct2) 
+
+ggp$data <- ggp$data |> 
+  as_tibble() |> 
+  left_join(
+    dpred_node |> select(id, species),
+    by = join_by(id)
+    )
+
+ggp +
+  geom_edge(color = "gray80") +
+  geom_edge_label(color = "gray50", size = 4) +
+  geom_node_label(
+    aes(label = str_replace_all(splitvar, "_", " ")),
+    color = "gray30",
+    label.col = NA, # no box
+    size = 4,
+    label.padding = unit(0.5, "lines"),
+    ids = "inner"
+    ) +
+  geom_node_plot(
+    gglist = list(
+      geom_point(
+        aes(x = bill_length_mm, y = bill_depth_mm, color = species),
+        size = 1, alpha = 0.5
+        ),
+      geom_parttree(
+        data = penguinct2, 
+        aes(fill = species),
+        alpha = 0.1, 
+        color = "gray60",
+        ),
+      
+      geom_point(
+        data = dpred_node, 
+        aes(x = bill_length_mm, y = bill_depth_mm, color = species),
+        size = 3
+        ),
+      
+      geom_rect(
+        data = dparttree, 
+        aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = species),
+        alpha = 0.5, 
+        color = "gray40",
+        ),
+      
+      scale_fill_manual(values = colors),
+      scale_color_manual(values = colors),
+      # scale_color_viridis_d(end = 0.9),
+      # scale_fill_viridis_d(end = 0.9),
+      guides(color = guide_legend(override.aes = list(size=5))),
+      theme_minimal(),
+      theme(axis.text = element_text(size = 7)),
+      labs(x = NULL, y = NULL)
+    ),
+    scales = "fixed",
+    # id = "all"
+    id = "terminal"
+  ) +
+  geom_node_label(
+    aes(label = str_glue("{species} (#{id},  n = {nodesize})")),
+    ids = "terminal",
+    size = 3,
+    family = "ibm",
+    label.col = NA, # no box
+    nudge_y = 0.01
+    )
+
+```
+
+## `{patchwork}`
+
+Source: [https://patchwork.data-imaginist.com/articles/patchwork.html](https://patchwork.data-imaginist.com/articles/patchwork.html).
+
+```{r}
+#| column: screen-inset
+#| fig-width: 12
+#| fig-height: 8
+#| fig-align: center
+library(patchwork)
+
+p2 <- p2 +
+  scale_color_manual(values = colors) +
+  theme(legend.position = "none")
+
+p3 <- p3 +
+  geom_col(aes(fill = species), width = 0.5) +
+  scale_fill_manual(values = colors, name = NULL)
+
+pp <- ((p1 / p3) | p2) +
+  plot_layout(
+    widths = c(1, 2),
+    guides = "collect"
+    ) +
+  plot_annotation(
+    title = "Some ggplot2 objects",
+    subtitle = "The plot (a) shows one aspect, while (b) presents additional data.",
+    tag_levels = "a",
+    tag_prefix = "(",
+    tag_suffix = ")"
+    )
+
+pp
 ```

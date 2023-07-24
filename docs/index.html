@@ -109,17 +109,17 @@ ga('send', {
 <link rel="stylesheet" href="styles.css">
 <link rel="alternate" type="application/rss+xml" title="Data, Code and Visualization" href="index.xml"><meta property="og:title" content="Data, Code and Visualization">
 <meta property="og:description" content="A list of sketches, ideas and notes">
-<meta property="og:image" content="https://jkunst.com/blog/posts\2023-07-09-visualizacion-en-el-analisis-de-datos\images\preview.png">
+<meta property="og:image" content="https://jkunst.com/blog/posts\2023-07-10-my-favorite-ggplot2-packages-with-examples\images\preview.png">
 <meta property="og:site-name" content="Data, Code and Visualization">
-<meta property="og:image:height" content="300">
-<meta property="og:image:width" content="420">
+<meta property="og:image:height" content="2911">
+<meta property="og:image:width" content="2521">
 <meta name="twitter:title" content="Data, Code and Visualization">
 <meta name="twitter:description" content="A list of sketches, ideas and notes">
-<meta name="twitter:image" content="https://jkunst.com/blog/posts\2023-07-09-visualizacion-en-el-analisis-de-datos\images\preview.png">
+<meta name="twitter:image" content="https://jkunst.com/blog/posts\2023-07-10-my-favorite-ggplot2-packages-with-examples\images\preview.png">
 <meta name="twitter:creator" content="@jbkunst">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image-height" content="300">
-<meta name="twitter:image-width" content="420">
+<meta name="twitter:image-height" content="2911">
+<meta name="twitter:image-width" content="2521">
 </head>
 
 <body class="nav-fixed">
@@ -187,7 +187,7 @@ ga('send', {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(24)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="chess">chess <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-visualization">data-visualization <span class="quarto-category-count">(15)</span></div><div class="category" data-category="dont-forget">dont-forget <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(8)</span></div><div class="category" data-category="highcharter">highcharter <span class="quarto-category-count">(5)</span></div><div class="category" data-category="highcharts">highcharts <span class="quarto-category-count">(17)</span></div><div class="category" data-category="htmlwidgets">htmlwidgets <span class="quarto-category-count">(2)</span></div><div class="category" data-category="maps">maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="minipost">minipost <span class="quarto-category-count">(7)</span></div><div class="category" data-category="package">package <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="spanish">spanish <span class="quarto-category-count">(4)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div><div class="category" data-category="twitter">twitter <span class="quarto-category-count">(2)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(25)</span></div><div class="category" data-category="animation">animation <span class="quarto-category-count">(2)</span></div><div class="category" data-category="chess">chess <span class="quarto-category-count">(2)</span></div><div class="category" data-category="data-visualization">data-visualization <span class="quarto-category-count">(15)</span></div><div class="category" data-category="dont-forget">dont-forget <span class="quarto-category-count">(3)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(9)</span></div><div class="category" data-category="highcharter">highcharter <span class="quarto-category-count">(5)</span></div><div class="category" data-category="highcharts">highcharts <span class="quarto-category-count">(17)</span></div><div class="category" data-category="htmlwidgets">htmlwidgets <span class="quarto-category-count">(2)</span></div><div class="category" data-category="maps">maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="minipost">minipost <span class="quarto-category-count">(8)</span></div><div class="category" data-category="package">package <span class="quarto-category-count">(1)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="spanish">spanish <span class="quarto-category-count">(4)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="testing">testing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div><div class="category" data-category="twitter">twitter <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -219,7 +219,40 @@ ga('send', {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="ggplot2,data-visualization,spanish" data-listing-date-sort="1688875200000" data-listing-file-modified-sort="1688959262280" data-listing-reading-time-sort="18.895">
+<div class="g-col-1" data-index="0" data-categories="minipost,ggplot2,dont-forget" data-listing-date-sort="1688961600000" data-listing-file-modified-sort="1690166497181" data-listing-reading-time-sort="11.225">
+<a href="./posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/images/preview.png" class="thumbnail-image card-img" style="height: 250px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+My favorite <code>ggplot2</code> packages with examples
+</h5>
+<div class="listing-reading-time card-text text-muted">
+11 min
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('minipost'); return false;">
+minipost
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ggplot2'); return false;">
+ggplot2
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('dont-forget'); return false;">
+dont-forget
+</div>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+Jul 10, 2023
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="ggplot2,data-visualization,spanish" data-listing-date-sort="1688875200000" data-listing-file-modified-sort="1688959262280" data-listing-reading-time-sort="18.895">
 <a href="./posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -252,7 +285,7 @@ Jul 9, 2023
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="minipost,stats,highcharts,highcharter,time-series,data-visualization" data-listing-date-sort="1623988800000" data-listing-file-modified-sort="1672508447675" data-listing-reading-time-sort="11.04">
+<div class="g-col-1" data-index="2" data-categories="minipost,stats,highcharts,highcharter,time-series,data-visualization" data-listing-date-sort="1623988800000" data-listing-file-modified-sort="1672508447675" data-listing-reading-time-sort="11.04">
 <a href="./posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -294,7 +327,7 @@ Jun 18, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="minipost,stats,dont-forget" data-listing-date-sort="1623124800000" data-listing-file-modified-sort="1671922636280" data-listing-reading-time-sort="0.505">
+<div class="g-col-1" data-index="3" data-categories="minipost,stats,dont-forget" data-listing-date-sort="1623124800000" data-listing-file-modified-sort="1671922636280" data-listing-reading-time-sort="0.505">
 <a href="./posts/2021-06-08-regression-anova-t-test/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -327,7 +360,7 @@ Jun 8, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-categories="twitter,minipost,highcharts,highcharter" data-listing-date-sort="1610247600000" data-listing-file-modified-sort="1671726292771" data-listing-reading-time-sort="2.13">
+<div class="g-col-1" data-index="4" data-categories="twitter,minipost,highcharts,highcharter" data-listing-date-sort="1610247600000" data-listing-file-modified-sort="1671726292771" data-listing-reading-time-sort="2.13">
 <a href="./posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -363,7 +396,7 @@ Jan 10, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-categories="minipost,highcharts,highcharter" data-listing-date-sort="1609988400000" data-listing-file-modified-sort="1671726323279" data-listing-reading-time-sort="1.1">
+<div class="g-col-1" data-index="5" data-categories="minipost,highcharts,highcharter" data-listing-date-sort="1609988400000" data-listing-file-modified-sort="1671726323279" data-listing-reading-time-sort="1.1">
 <a href="./posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -396,7 +429,7 @@ Jan 7, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-categories="twitter,minipost,highcharts,highcharter" data-listing-date-sort="1609902000000" data-listing-file-modified-sort="1671727680534" data-listing-reading-time-sort="4.12">
+<div class="g-col-1" data-index="6" data-categories="twitter,minipost,highcharts,highcharter" data-listing-date-sort="1609902000000" data-listing-file-modified-sort="1671727680534" data-listing-reading-time-sort="4.12">
 <a href="./posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -432,7 +465,7 @@ Jan 6, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-categories="shiny,highcharts,highcharter,htmlwidgets" data-listing-date-sort="1593403200000" data-listing-file-modified-sort="1671758853320" data-listing-reading-time-sort="15.49">
+<div class="g-col-1" data-index="7" data-categories="shiny,highcharts,highcharter,htmlwidgets" data-listing-date-sort="1593403200000" data-listing-file-modified-sort="1671758853320" data-listing-reading-time-sort="15.49">
 <a href="./posts/2020-06-26-valuebox-and-sparklines/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -468,7 +501,7 @@ Jun 29, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="7" data-categories="data-visualization,highcharts" data-listing-date-sort="1592971200000" data-listing-file-modified-sort="1671730574562" data-listing-reading-time-sort="8.79">
+<div class="g-col-1" data-index="8" data-categories="data-visualization,highcharts" data-listing-date-sort="1592971200000" data-listing-file-modified-sort="1671730574562" data-listing-reading-time-sort="8.79">
 <a href="./posts/2020-06-15-when-2-charts-are-more-than-1/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -498,7 +531,7 @@ Jun 24, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="8" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1591070400000" data-listing-file-modified-sort="1671688175721" data-listing-reading-time-sort="11.325">
+<div class="g-col-1" data-index="9" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1591070400000" data-listing-file-modified-sort="1671688175721" data-listing-reading-time-sort="11.325">
 <a href="./posts/2020-06-02-30diasdegraficos-parte-3/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -534,7 +567,7 @@ Jun 2, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="9" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1590120000000" data-listing-file-modified-sort="1671686442765" data-listing-reading-time-sort="26.34">
+<div class="g-col-1" data-index="10" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1590120000000" data-listing-file-modified-sort="1671686442765" data-listing-reading-time-sort="26.34">
 <a href="./posts/2020-05-22-30diasdegraficos-parte-2/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -570,7 +603,7 @@ May 22, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="10" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1589256000000" data-listing-file-modified-sort="1671577918277" data-listing-reading-time-sort="19.605">
+<div class="g-col-1" data-index="11" data-categories="spanish,highcharts,data-visualization,ggplot2" data-listing-date-sort="1589256000000" data-listing-file-modified-sort="1671577918277" data-listing-reading-time-sort="19.605">
 <a href="./posts/2020-05-12-30diasdegraficos-parte-1/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -606,7 +639,7 @@ May 12, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-categories="data-visualization,ggplot2,animation" data-listing-date-sort="1555992000000" data-listing-file-modified-sort="1672464553593" data-listing-reading-time-sort="8.56">
+<div class="g-col-1" data-index="12" data-categories="data-visualization,ggplot2,animation" data-listing-date-sort="1555992000000" data-listing-file-modified-sort="1672464553593" data-listing-reading-time-sort="8.56">
 <a href="./posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -639,7 +672,7 @@ Apr 23, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="12" data-categories="data-visualization,highcharts" data-listing-date-sort="1554696000000" data-listing-file-modified-sort="1671735349394" data-listing-reading-time-sort="2.36">
+<div class="g-col-1" data-index="13" data-categories="data-visualization,highcharts" data-listing-date-sort="1554696000000" data-listing-file-modified-sort="1671735349394" data-listing-reading-time-sort="2.36">
 <a href="./posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -669,7 +702,7 @@ Apr 8, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="13" data-categories="data-visualization,highcharts" data-listing-date-sort="1549249200000" data-listing-file-modified-sort="1671777539184" data-listing-reading-time-sort="2.86">
+<div class="g-col-1" data-index="14" data-categories="data-visualization,highcharts" data-listing-date-sort="1549249200000" data-listing-file-modified-sort="1671777539184" data-listing-reading-time-sort="2.86">
 <a href="./posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -699,7 +732,7 @@ Feb 4, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="14" data-categories="data-visualization,highcharts" data-listing-date-sort="1488510000000" data-listing-file-modified-sort="1671760287603" data-listing-reading-time-sort="6.545">
+<div class="g-col-1" data-index="15" data-categories="data-visualization,highcharts" data-listing-date-sort="1488510000000" data-listing-file-modified-sort="1671760287603" data-listing-reading-time-sort="6.545">
 <a href="./posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -729,7 +762,7 @@ Mar 3, 2017
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="15" data-categories="maps,data-visualization,highcharts,minipost" data-listing-date-sort="1484881200000" data-listing-file-modified-sort="1671756249425" data-listing-reading-time-sort="3.045">
+<div class="g-col-1" data-index="16" data-categories="maps,data-visualization,highcharts,minipost" data-listing-date-sort="1484881200000" data-listing-file-modified-sort="1671756249425" data-listing-reading-time-sort="3.045">
 <a href="./posts/2017-01-05-thematic-interactive-map/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -765,7 +798,7 @@ Jan 20, 2017
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="16" data-categories="maps,highcharts" data-listing-date-sort="1481770800000" data-listing-file-modified-sort="1671757769222" data-listing-reading-time-sort="3.795">
+<div class="g-col-1" data-index="17" data-categories="maps,highcharts" data-listing-date-sort="1481770800000" data-listing-file-modified-sort="1671757769222" data-listing-reading-time-sort="3.795">
 <a href="./posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -795,7 +828,7 @@ Dec 15, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="17" data-categories="data-visualization,highcharts" data-listing-date-sort="1480647600000" data-listing-file-modified-sort="1671755692569" data-listing-reading-time-sort="5.295">
+<div class="g-col-1" data-index="18" data-categories="data-visualization,highcharts" data-listing-date-sort="1480647600000" data-listing-file-modified-sort="1671755692569" data-listing-reading-time-sort="5.295">
 <a href="./posts/2016-12-02-replicating-nyt-weather-app/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -825,7 +858,7 @@ Dec 2, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="18" data-categories="maps,highcharts,animation" data-listing-date-sort="1460430000000" data-listing-file-modified-sort="1672464965114" data-listing-reading-time-sort="1.59">
+<div class="g-col-1" data-index="19" data-categories="maps,highcharts,animation" data-listing-date-sort="1460430000000" data-listing-file-modified-sort="1672464965114" data-listing-reading-time-sort="1.59">
 <a href="./posts/2016-04-12-adding-motion-to-choropleths/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -858,7 +891,7 @@ Apr 12, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="19" data-categories="data-visualization,highcharts,ggplot2,minipost" data-listing-date-sort="1458788400000" data-listing-file-modified-sort="1671754105344" data-listing-reading-time-sort="3.765">
+<div class="g-col-1" data-index="20" data-categories="data-visualization,highcharts,ggplot2,minipost" data-listing-date-sort="1458788400000" data-listing-file-modified-sort="1671754105344" data-listing-reading-time-sort="3.765">
 <a href="./posts/2016-03-24-how-to-weather-radials/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -894,7 +927,7 @@ Mar 24, 2016
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="20" data-categories="data-visualization,ggplot2,chess" data-listing-date-sort="1446174000000" data-listing-file-modified-sort="1671751926560" data-listing-reading-time-sort="12.925">
+<div class="g-col-1" data-index="21" data-categories="data-visualization,ggplot2,chess" data-listing-date-sort="1446174000000" data-listing-file-modified-sort="1671751926560" data-listing-reading-time-sort="12.925">
 <a href="./posts/2015-10-30-visualizing-chess-data-with-ggplot/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -927,7 +960,7 @@ Oct 30, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="21" data-categories="package,htmlwidgets,chess" data-listing-date-sort="1444186800000" data-listing-file-modified-sort="1671748477217" data-listing-reading-time-sort="1.39">
+<div class="g-col-1" data-index="22" data-categories="package,htmlwidgets,chess" data-listing-date-sort="1444186800000" data-listing-file-modified-sort="1671748477217" data-listing-reading-time-sort="1.39">
 <a href="./posts/2015-10-07-rchess-a-chess-package-for-r/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -960,7 +993,7 @@ Oct 7, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="22" data-categories="ggplot2,data-visualization" data-listing-date-sort="1443150000000" data-listing-file-modified-sort="1671748192808" data-listing-reading-time-sort="4.855">
+<div class="g-col-1" data-index="23" data-categories="ggplot2,data-visualization" data-listing-date-sort="1443150000000" data-listing-file-modified-sort="1671748192808" data-listing-reading-time-sort="4.855">
 <a href="./posts/2015-09-25-visualizing-sort-algorithms-with-ggplot2/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -990,7 +1023,7 @@ Sep 25, 2015
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="23" data-categories="testing,dont-forget" data-listing-date-sort="946695600000" data-listing-file-modified-sort="1671922536401" data-listing-reading-time-sort="1.575">
+<div class="g-col-1" data-index="24" data-categories="testing,dont-forget" data-listing-date-sort="946695600000" data-listing-file-modified-sort="1671922536401" data-listing-reading-time-sort="1.575">
 <a href="./posts/2000-01-01-quarto-post-example/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
