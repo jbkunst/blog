@@ -145,8 +145,7 @@ p1 +
 Source: [https://ggforce.data-imaginist.com/](https://ggforce.data-imaginist.com/).
 
 - `{ggforce}` takes annotations to the next level.
-- Not only annotation. Other funcionalities like.
-- Hig 
+- A lot of other functionalities like new geoms, new facets!
 
 ```{r}
 library(ggforce)
