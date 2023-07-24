@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jkunst.com/blog/index.html</loc>
-    <lastmod>2023-07-24T02:43:55.860Z</lastmod>
+    <lastmod>2023-07-24T15:34:18.039Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/about.html</loc>
@@ -102,6 +102,10 @@
   </url>
   <url>
     <loc>https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html</loc>
-    <lastmod>2023-07-24T02:43:54.675Z</lastmod>
+    <lastmod>2023-07-24T15:34:31.399Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jkunst.com/blog/posts/my-favorite-ggplot2-packages-with-examples/index.html</loc>
+    <lastmod>2023-07-24T15:32:28.244Z</lastmod>
   </url>
 </urlset>
