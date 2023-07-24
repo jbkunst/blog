@@ -1,7 +1,7 @@
 ---
 title: "My favorite `ggplot2` packages with examples"
 subtitle: I have to put things somewhere so I don't forget them
-date: 2023-07-10
+date: 2023-07-23
 date-modified: "`r format(Sys.time(), '%Y-%m-%d')`"
 categories: [minipost, ggplot2, dont-forget]
 image: images/preview.png  
