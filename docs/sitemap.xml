@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://jkunst.com/blog/index.html</loc>
-    <lastmod>2024-03-25T19:25:20.832Z</lastmod>
+    <lastmod>2024-03-26T03:24:18.481Z</lastmod>
   </url>
   <url>
     <loc>https://jkunst.com/blog/about.html</loc>
@@ -107,5 +107,9 @@
   <url>
     <loc>https://jkunst.com/blog/posts/my-favorite-ggplot2-packages-with-examples/index.html</loc>
     <lastmod>2023-07-24T15:32:28.244Z</lastmod>
+  </url>
+  <url>
+    <loc>https://jkunst.com/blog/posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html</loc>
+    <lastmod>2024-03-26T03:24:16.250Z</lastmod>
   </url>
 </urlset>

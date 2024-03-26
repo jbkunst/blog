@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Data, Code and Visualization</title>
+<link>https://jkunst.com/blog/index.html</link>
+<atom:link href="https://jkunst.com/blog/index.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.2.280</generator>
+<lastBuildDate>Sun, 23 Jul 2023 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>{B4F502887207:/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html</link>
+  <description>{B4F502887207:/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html}</description>
+  <category>minipost</category>
+  <category>ggplot2</category>
+  <category>dont-forget</category>
+  <guid>https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/index.html</guid>
+  <pubDate>Sun, 23 Jul 2023 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/images/preview.png" medium="image" type="image/png" height="166" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html</link>
+  <description>{B4F502887207:/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html}</description>
+  <category>ggplot2</category>
+  <category>data-visualization</category>
+  <category>spanish</category>
+  <guid>https://jkunst.com/blog/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/index.html</guid>
+  <pubDate>Sun, 09 Jul 2023 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2023-07-09-visualizacion-en-el-analisis-de-datos/images/preview.png" medium="image" type="image/png" height="103" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html</link>
+  <description>{B4F502887207:/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html}</description>
+  <category>minipost</category>
+  <category>stats</category>
+  <category>highcharts</category>
+  <category>highcharter</category>
+  <category>time-series</category>
+  <category>data-visualization</category>
+  <guid>https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/index.html</guid>
+  <pubDate>Fri, 18 Jun 2021 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/images/preview.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2021-06-08-regression-anova-t-test/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2021-06-08-regression-anova-t-test/index.html</link>
+  <description>{B4F502887207:/posts/2021-06-08-regression-anova-t-test/index.html}</description>
+  <category>minipost</category>
+  <category>stats</category>
+  <category>dont-forget</category>
+  <guid>https://jkunst.com/blog/posts/2021-06-08-regression-anova-t-test/index.html</guid>
+  <pubDate>Tue, 08 Jun 2021 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2021-06-08-regression-anova-t-test/images/preview.png" medium="image" type="image/png" height="97" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html</link>
+  <description>{B4F502887207:/posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html}</description>
+  <category>twitter</category>
+  <category>minipost</category>
+  <category>highcharts</category>
+  <category>highcharter</category>
+  <guid>https://jkunst.com/blog/posts/2021-01-10-using-emoji-with-highcharterhighcharts/index.html</guid>
+  <pubDate>Sun, 10 Jan 2021 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2021-01-10-using-emoji-with-highcharterhighcharts/images/preview.png" medium="image" type="image/png" height="129" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/index.html</link>
+  <description>{B4F502887207:/posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/index.html}</description>
+  <category>minipost</category>
+  <category>highcharts</category>
+  <category>highcharter</category>
+  <guid>https://jkunst.com/blog/posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/index.html</guid>
+  <pubDate>Thu, 07 Jan 2021 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2021-01-07-minimalistic-toolptips-with-highcharter-and-highcharts/images/preview.jpeg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/index.html</link>
+  <description>{B4F502887207:/posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/index.html}</description>
+  <category>twitter</category>
+  <category>minipost</category>
+  <category>highcharts</category>
+  <category>highcharter</category>
+  <guid>https://jkunst.com/blog/posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/index.html</guid>
+  <pubDate>Wed, 06 Jan 2021 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2021-01-06-favorite-and-retweets-counts-from-yearprogress-account/images/preview.png" medium="image" type="image/png" height="72" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-06-26-valuebox-and-sparklines/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines/index.html</link>
+  <description>{B4F502887207:/posts/2020-06-26-valuebox-and-sparklines/index.html}</description>
+  <category>shiny</category>
+  <category>highcharts</category>
+  <category>highcharter</category>
+  <category>htmlwidgets</category>
+  <guid>https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines/index.html</guid>
+  <pubDate>Mon, 29 Jun 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-06-26-valuebox-and-sparklines/images/preview.png" medium="image" type="image/png" height="72" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-06-15-when-2-charts-are-more-than-1/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/index.html</link>
+  <description>{B4F502887207:/posts/2020-06-15-when-2-charts-are-more-than-1/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/index.html</guid>
+  <pubDate>Wed, 24 Jun 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/images/original-chart.png" medium="image" type="image/png" height="115" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-06-15-when-2-charts-are-more-than-1/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/index.html</link>
+  <description>{B4F502887207:/posts/2020-06-15-when-2-charts-are-more-than-1/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/index.html</guid>
+  <pubDate>Wed, 24 Jun 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/images/original-chart.png" medium="image" type="image/png" height="115" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-06-02-30diasdegraficos-parte-3/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/index.html</link>
+  <description>{B4F502887207:/posts/2020-06-02-30diasdegraficos-parte-3/index.html}</description>
+  <category>spanish</category>
+  <category>highcharts</category>
+  <category>data-visualization</category>
+  <category>ggplot2</category>
+  <guid>https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/index.html</guid>
+  <pubDate>Tue, 02 Jun 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/images/preview.png" medium="image" type="image/png" height="87" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-05-22-30diasdegraficos-parte-2/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-05-22-30diasdegraficos-parte-2/index.html</link>
+  <description>{B4F502887207:/posts/2020-05-22-30diasdegraficos-parte-2/index.html}</description>
+  <category>spanish</category>
+  <category>highcharts</category>
+  <category>data-visualization</category>
+  <category>ggplot2</category>
+  <guid>https://jkunst.com/blog/posts/2020-05-22-30diasdegraficos-parte-2/index.html</guid>
+  <pubDate>Fri, 22 May 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-05-22-30diasdegraficos-parte-2/images/preview.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2020-05-12-30diasdegraficos-parte-1/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2020-05-12-30diasdegraficos-parte-1/index.html</link>
+  <description>{B4F502887207:/posts/2020-05-12-30diasdegraficos-parte-1/index.html}</description>
+  <category>spanish</category>
+  <category>highcharts</category>
+  <category>data-visualization</category>
+  <category>ggplot2</category>
+  <guid>https://jkunst.com/blog/posts/2020-05-12-30diasdegraficos-parte-1/index.html</guid>
+  <pubDate>Tue, 12 May 2020 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2020-05-12-30diasdegraficos-parte-1/images/preview.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html</link>
+  <description>{B4F502887207:/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html}</description>
+  <category>data-visualization</category>
+  <category>ggplot2</category>
+  <category>animation</category>
+  <guid>https://jkunst.com/blog/posts/2019-04-23-got-animating-the-shifting-of-affiliations/index.html</guid>
+  <pubDate>Tue, 23 Apr 2019 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2019-04-23-got-animating-the-shifting-of-affiliations/images/preview.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html</link>
+  <description>{B4F502887207:/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/index.html</guid>
+  <pubDate>Mon, 08 Apr 2019 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/images/preview.png" medium="image" type="image/png" height="91" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html</link>
+  <description>{B4F502887207:/posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2019-02-04-using-tooltips-in-unexpected-ways/index.html</guid>
+  <pubDate>Mon, 04 Feb 2019 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2019-02-04-using-tooltips-in-unexpected-ways/images/preview.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html</link>
+  <description>{B4F502887207:/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/index.html</guid>
+  <pubDate>Fri, 03 Mar 2017 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2017-03-03-giving-a-thematic-touch-to-your-interactive-chart/images/preview.png" medium="image" type="image/png" height="76" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2017-01-05-thematic-interactive-map/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2017-01-05-thematic-interactive-map/index.html</link>
+  <description>{B4F502887207:/posts/2017-01-05-thematic-interactive-map/index.html}</description>
+  <category>maps</category>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <category>minipost</category>
+  <guid>https://jkunst.com/blog/posts/2017-01-05-thematic-interactive-map/index.html</guid>
+  <pubDate>Fri, 20 Jan 2017 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2017-01-05-thematic-interactive-map/images/preview.gif" medium="image" type="image/gif"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html</link>
+  <description>{B4F502887207:/posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html}</description>
+  <category>maps</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2016-12-15-interactive-and-styled-middle-earth-map/index.html</guid>
+  <pubDate>Thu, 15 Dec 2016 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2016-12-15-interactive-and-styled-middle-earth-map/images/previewp.png" medium="image" type="image/png" height="73" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2016-12-02-replicating-nyt-weather-app/index.html}</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2016-12-02-replicating-nyt-weather-app/index.html</link>
+  <description>{B4F502887207:/posts/2016-12-02-replicating-nyt-weather-app/index.html}</description>
+  <category>data-visualization</category>
+  <category>highcharts</category>
+  <guid>https://jkunst.com/blog/posts/2016-12-02-replicating-nyt-weather-app/index.html</guid>
+  <pubDate>Fri, 02 Dec 2016 03:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2016-12-02-replicating-nyt-weather-app/images/preview.png" medium="image" type="image/png" height="108" width="144"/>
+</item>
+</channel>
+</rss>

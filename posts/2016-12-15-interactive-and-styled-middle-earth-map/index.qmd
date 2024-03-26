@@ -66,13 +66,8 @@ fldr <- here::here("posts", "2016-12-15-interactive-and-styled-middle-earth-map"
 
 shp_to_geoj_smpl <- function(file = "Towns.shp", k = 0.5) {
   d <- readShapeSpatial(file.path(fldr, file))
-  
   d <- ms_simplify(d, keep = k)
-  
-  
   d <- geojson_list(d)
-  
-  
   geojsonio::geojson_write(d, file = str_replace(file.path(fldr, file), "shp$", "geojson"))
   d
 }
