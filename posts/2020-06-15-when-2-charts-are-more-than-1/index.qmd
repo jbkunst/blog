@@ -55,8 +55,8 @@ library(tidyverse)
 library(lubridate)
 
 data <- readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
-data <- data %>% 
-  filter(date <= ymd(20220701), wday(date) == 2)
+# data <- data %>% 
+#   filter(date <= ymd(20220701), wday(date) == 2)
 # glimpse(data)
 
 data %>% count(continent)
@@ -91,7 +91,10 @@ data <- data %>%
   ungroup()
 
 data <- data %>% 
-  filter(date >= lubridate::ymd(20200315))
+  filter(date >= lubridate::ymd(20200315),
+         date <= lubridate::ymd(20221231),
+         wday(date) == 2
+         )
 ```
 
 The chart show continent so we'll group by date and continent.
