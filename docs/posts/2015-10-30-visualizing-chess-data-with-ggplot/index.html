@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.280">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Joshua Kunst Fuentes">
 <meta name="dcterms.date" content="2015-10-30">
@@ -248,19 +248,19 @@ ga('send', {
 <span><span class="va">chesswc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,266 × 11
-   event   site  date       round white black result white…¹ black…² eco   pgn  
-   &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
- 1 FIDE W… Khan… 2011-08-28   1.1 Kaab… Karj… 0-1       2344    2788 D15   1. d…
- 2 FIDE W… Khan… 2011-08-28   1.1 Ivan… Stee… 1-0       2768    2362 E68   1. c…
- 3 FIDE W… Khan… 2011-08-28   1.1 Ibra… Mame… 0-1       2402    2765 E67   1. N…
- 4 FIDE W… Khan… 2011-08-28   1.1 Pono… Gwaz… 1-0       2764    2434 B40   1. e…
- 5 FIDE W… Khan… 2011-08-28   1.1 Hans… Gash… 0-1       2449    2760 A61   1. d…
- 6 FIDE W… Khan… 2011-08-28   1.1 Gris… Genb… 1-0       2746    2452 D37   1. d…
- 7 FIDE W… Khan… 2011-08-28   1.1 De L… Radj… 0-1       2477    2744 B30   1. e…
- 8 FIDE W… Khan… 2011-08-28   1.1 Kams… Di B… 1-0       2741    2480 B90   1. e…
- 9 FIDE W… Khan… 2011-08-28   1.1 Lima… Svid… 1/2-1…    2493    2739 D85   1. d…
-10 FIDE W… Khan… 2011-08-28   1.1 Jako… Sale… 1-0       2736    2493 B69   1. e…
-# … with 1,256 more rows, and abbreviated variable names ¹​whiteelo, ²​blackelo</code></pre>
+   event site  date       round white black result whiteelo blackelo eco   pgn  
+   &lt;chr&gt; &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;    &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 FIDE… Khan… 2011-08-28   1.1 Kaab… Karj… 0-1        2344     2788 D15   1. d…
+ 2 FIDE… Khan… 2011-08-28   1.1 Ivan… Stee… 1-0        2768     2362 E68   1. c…
+ 3 FIDE… Khan… 2011-08-28   1.1 Ibra… Mame… 0-1        2402     2765 E67   1. N…
+ 4 FIDE… Khan… 2011-08-28   1.1 Pono… Gwaz… 1-0        2764     2434 B40   1. e…
+ 5 FIDE… Khan… 2011-08-28   1.1 Hans… Gash… 0-1        2449     2760 A61   1. d…
+ 6 FIDE… Khan… 2011-08-28   1.1 Gris… Genb… 1-0        2746     2452 D37   1. d…
+ 7 FIDE… Khan… 2011-08-28   1.1 De L… Radj… 0-1        2477     2744 B30   1. e…
+ 8 FIDE… Khan… 2011-08-28   1.1 Kams… Di B… 1-0        2741     2480 B90   1. e…
+ 9 FIDE… Khan… 2011-08-28   1.1 Lima… Svid… 1/2-1…     2493     2739 D85   1. d…
+10 FIDE… Khan… 2011-08-28   1.1 Jako… Sale… 1-0        2736     2493 B69   1. e…
+# ℹ 1,256 more rows</code></pre>
 </div>
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chesswc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -296,29 +296,29 @@ ga('send', {
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">number_move</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 178 × 8
-   piece     from  to    number_move piece_number_move status    numbe…¹ captu…²
-   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;             &lt;int&gt; &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  
- 1 d2 Pawn   d2    d4              1                 1 &lt;NA&gt;           NA &lt;NA&gt;   
- 2 g8 Knight g8    f6              2                 1 &lt;NA&gt;           NA &lt;NA&gt;   
- 3 c2 Pawn   c2    c4              3                 1 game over      NA &lt;NA&gt;   
- 4 e7 Pawn   e7    e6              4                 1 &lt;NA&gt;           NA &lt;NA&gt;   
- 5 b1 Knight b1    c3              5                 1 captured       12 f8 Bis…
- 6 f8 Bishop f8    b4              6                 1 &lt;NA&gt;           NA &lt;NA&gt;   
- 7 g1 Knight g1    f3              7                 1 &lt;NA&gt;           NA &lt;NA&gt;   
- 8 b7 Pawn   b7    b6              8                 1 game over      NA &lt;NA&gt;   
- 9 g2 Pawn   g2    g3              9                 1 &lt;NA&gt;           NA &lt;NA&gt;   
-10 c8 Bishop c8    b7             10                 1 &lt;NA&gt;           NA &lt;NA&gt;   
-# … with 168 more rows, and abbreviated variable names ¹​number_move_capture,
-#   ²​captured_by</code></pre>
+   piece    from  to    number_move piece_number_move status number_move_capture
+   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;             &lt;int&gt; &lt;chr&gt;                &lt;int&gt;
+ 1 d2 Pawn  d2    d4              1                 1 &lt;NA&gt;                    NA
+ 2 g8 Knig… g8    f6              2                 1 &lt;NA&gt;                    NA
+ 3 c2 Pawn  c2    c4              3                 1 game …                  NA
+ 4 e7 Pawn  e7    e6              4                 1 &lt;NA&gt;                    NA
+ 5 b1 Knig… b1    c3              5                 1 captu…                  12
+ 6 f8 Bish… f8    b4              6                 1 &lt;NA&gt;                    NA
+ 7 g1 Knig… g1    f3              7                 1 &lt;NA&gt;                    NA
+ 8 b7 Pawn  b7    b6              8                 1 game …                  NA
+ 9 g2 Pawn  g2    g3              9                 1 &lt;NA&gt;                    NA
+10 c8 Bish… c8    b7             10                 1 &lt;NA&gt;                    NA
+# ℹ 168 more rows
+# ℹ 1 more variable: captured_by &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>The result is a dataframe where each row is a piece’s movement showing explicitly the cells where the travel in a particular number move. Now we apply this function over the 433 games in the FIDE World Cup 2015.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_45be61f8c67b9fc16daaac158e47d3d3">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_4befc032d3bb79d8228166d8f5808e92">
 <details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chesswc</span> <span class="op">&lt;-</span> <span class="va">chesswc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>game_id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>game_id <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/furrr">furrr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://future.futureverse.org/reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dfmoves</span> <span class="op">&lt;-</span> <span class="va">chesswc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">game_id</span>, <span class="va">pgn</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -329,7 +329,7 @@ ga('send', {
 <span>      <span class="va">chss</span><span class="op">$</span><span class="fu">history_detail</span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pgn</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/nest.html">unnest</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html">unnest</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># library(doParallel)</span></span>
 <span><span class="co"># workers &lt;- makeCluster(parallel::detectCores())</span></span>
@@ -342,21 +342,21 @@ ga('send', {
 <span></span>
 <span><span class="va">dfmoves</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details><div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 41,731 × 9
-   game_id piece     from  to    number_move piece_numb…¹ status numbe…² captu…³
-     &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;        &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  
- 1       1 a1 Rook   a1    c1             57            1 &lt;NA&gt;        NA &lt;NA&gt;   
- 2       1 a1 Rook   c1    h1             65            2 &lt;NA&gt;        NA &lt;NA&gt;   
- 3       1 a1 Rook   h1    h5             73            3 &lt;NA&gt;        NA &lt;NA&gt;   
- 4       1 a1 Rook   h5    h7             89            4 &lt;NA&gt;        NA &lt;NA&gt;   
- 5       1 a1 Rook   h7    e7             95            5 captu…      96 Black …
- 6       1 b1 Knight b1    d2             13            1 &lt;NA&gt;        NA &lt;NA&gt;   
- 7       1 b1 Knight d2    f1             69            2 &lt;NA&gt;        NA &lt;NA&gt;   
- 8       1 b1 Knight f1    e3             75            3 captu…      76 g8 Kni…
- 9       1 c1 Bishop c1    b2             31            1 &lt;NA&gt;        NA &lt;NA&gt;   
-10       1 c1 Bishop b2    c1             87            2 game …      NA &lt;NA&gt;   
-# … with 41,721 more rows, and abbreviated variable names ¹​piece_number_move,
-#   ²​number_move_capture, ³​captured_by</code></pre>
+<pre><code># A tibble: 41,616 × 9
+   game_id piece     from  to    number_move piece_number_move status   
+     &lt;int&gt; &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;             &lt;int&gt; &lt;chr&gt;    
+ 1       1 a1 Rook   a1    c1             57                 1 &lt;NA&gt;     
+ 2       1 a1 Rook   c1    h1             65                 2 &lt;NA&gt;     
+ 3       1 a1 Rook   h1    h5             73                 3 &lt;NA&gt;     
+ 4       1 a1 Rook   h5    h7             89                 4 &lt;NA&gt;     
+ 5       1 a1 Rook   h7    e7             95                 5 captured 
+ 6       1 b1 Knight b1    d2             13                 1 &lt;NA&gt;     
+ 7       1 b1 Knight d2    f1             69                 2 &lt;NA&gt;     
+ 8       1 b1 Knight f1    e3             75                 3 captured 
+ 9       1 c1 Bishop c1    b2             31                 1 &lt;NA&gt;     
+10       1 c1 Bishop b2    c1             87                 2 game over
+# ℹ 41,606 more rows
+# ℹ 2 more variables: number_move_capture &lt;int&gt;, captured_by &lt;chr&gt;</code></pre>
 </div>
 </div>
 <p>The <code>dfmoves</code> data frame will be the heart from all these plots due have a lot of information and it is easy to consume.</p>
@@ -381,7 +381,7 @@ ga('send', {
  8 h1    h         1     8     1 w    
  9 a2    a         2     1     2 w    
 10 b2    b         2     2     2 b    
-# … with 54 more rows</code></pre>
+# ℹ 54 more rows</code></pre>
 </div>
 </div>
 <p>Now we add this information to the <code>dfmoves</code> data frame and calculates some field to to know how to draw the curves (see <a href="http://rpubs.com/jbkunst/geom_curve">here</a> for more details).</p>
@@ -527,7 +527,7 @@ ga('send', {
  8 a2 Pawn      433          183     0.577
  9 a7 Pawn      433          185     0.573
 10 f7 Pawn      433          185     0.573
-# … with 22 more rows</code></pre>
+# ℹ 22 more rows</code></pre>
 </div>
 </div>
 <p>This helps as validation because the kings are never captured. Now we use a helper function in the rchess package <code>rchess:::.chesspiecedata()</code> to get the start position for every piece and then plot the survival rates in the cell where the piece start in the game.</p>
@@ -592,7 +592,7 @@ ga('send', {
 </details><div class="cell-output cell-output-stdout">
 <pre><code>[1] "Karjakin, Sergey" "Svidler, Peter"   "Wei, Yi"          "Adams, Michael"  </code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dfmov_players</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span><span class="op">(</span><span class="va">players</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span> <span class="co"># p &lt;- sample(players, size = 1)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dfmov_players</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html">map_df</a></span><span class="op">(</span><span class="va">players</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">{</span> <span class="co"># p &lt;- sample(players, size = 1)</span></span>
 <span>  <span class="va">games</span> <span class="op">&lt;-</span> <span class="va">chesswc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">white</span> <span class="op">==</span> <span class="va">p</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">.</span><span class="op">$</span><span class="va">game_id</span></span>
 <span>  <span class="va">dfres</span> <span class="op">&lt;-</span> <span class="va">dfmoves</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">game_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">games</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">to</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -653,7 +653,7 @@ ga('send', {
 <p>For this plot we’ll use the igraph package and <a href="https://github.com/analyxcompany/ForceAtlas2">ForceAtlas2</a> package an R implementation by <a href="http://adolfoalvarez.cl">Adolfo Alvarez</a> of the Force Atlas 2 graph layout designed for Gephi.</p>
 <p>We get the rows with <code>status == "captured"</code> and summarize by <code>piece</code> and <code>captured_by</code> variables. The result data frame will be the edges in our igraph object using the <code>graph.data.frame</code> function.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://igraph.org">igraph</a></span><span class="op">)</span></span>
+<details open=""><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/">igraph</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># devtools::install_github("analyxcompany/ForceAtlas2")</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ForceAtlas2</span><span class="op">)</span></span>
@@ -662,14 +662,15 @@ ga('send', {
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">status</span> <span class="op">==</span> <span class="st">"captured"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">captured_by</span>, <span class="va">piece</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">captured_by</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dfvertices</span> <span class="op">&lt;-</span> <span class="fu">rchess</span><span class="fu">:::</span><span class="fu">.chesspiecedata</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">fen</span>, <span class="op">-</span><span class="va">start_position</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>name2 <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">" \\w+$"</span>, <span class="va">unicode</span><span class="op">)</span>,</span>
 <span>         name2 <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">name2</span>, <span class="st">"White|Black"</span>, <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph.data.frame</a></span><span class="op">(</span><span class="va">dfcaputures</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">captured_by</span>, <span class="va">piece</span>, weight <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,</span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html">graph.data.frame</a></span><span class="op">(</span><span class="va">dfcaputures</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">captured_by</span>, <span class="va">piece</span>, weight <span class="op">=</span> <span class="va">n</span><span class="op">)</span>,</span>
 <span>                      directed <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                      vertices <span class="op">=</span> <span class="va">dfvertices</span><span class="op">)</span></span>
 <span></span>
@@ -680,8 +681,8 @@ ga('send', {
 <span><span class="va">dfvertices</span> <span class="op">&lt;-</span> <span class="va">dfvertices</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lout</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">lout</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">dfedges</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">as_data_frame</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"edges"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl_df.html">tbl_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">dfedges</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html">as_data_frame</a></span><span class="op">(</span><span class="va">g</span>, <span class="st">"edges"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">dfvertices</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">name</span>, <span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"from"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">dfvertices</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>to <span class="op">=</span> <span class="va">name</span>, xend <span class="op">=</span> <span class="va">x</span>, yend <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"to"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -858,13 +859,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/jkunst\.com\/blog/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script><script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Joshua Kunst ©</div>   
-    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕.</div>
+    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</div>
   </div>
 </footer>
 
