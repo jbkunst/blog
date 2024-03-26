@@ -2,7 +2,7 @@
 
 # freeze computational output
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
-freeze: true
+freeze: true  # never re-render during project render
 
 # Enable banner style title blocks
 title-block-banner: true
@@ -37,6 +37,7 @@ execute:
   echo: true
   message: false
   warning: false
+  freeze: true  # never re-render during project render
 
 comments:
   giscus:

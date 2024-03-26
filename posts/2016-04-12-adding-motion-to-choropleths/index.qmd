@@ -4,6 +4,8 @@ subtitle: We will use the highchart motion plugin with a map.
 date: 2016-04-12
 categories: [maps, highcharts, animation]
 image: images/preview.gif
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +16,9 @@ Time ago hrbrmstr show how to replicate a visualization made by
 [New York Times](http://www.nytimes.com/interactive/2016/01/07/us/drug-overdose-deaths-in-the-us.html?_r=0) 
 with R.
 
-```{r echo=FALSE}
+```{r eval=FALSE, echo=FALSE}
+# remotes::install_github("gadenbuie/tweetrmd")
+# remotes::install_github('rstudio/webshot2')
 tweetrmd::tweet_screenshot("https://twitter.com/hrbrmstr/status/713183027816439808")
 ```
 The result we hope is like this:

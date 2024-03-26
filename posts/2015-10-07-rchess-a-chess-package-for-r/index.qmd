@@ -4,6 +4,8 @@ subtitle: Finally R have a chess package! Let's see what can it do.
 date: 2015-10-07
 categories: [package, htmlwidgets, chess]
 image: images/preview.png  
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -31,9 +33,9 @@ saids).
 
 Now let's take a look what this package can do.
 
-```{r}
+```{r rchess}
 # install.packages("rchess")
-# devtools::install_github("jbkunst/rchess")
+# remotes::install_github("jbkunst/rchess")
 library(rchess)
 chss <- Chess$new()
 
@@ -46,7 +48,7 @@ The basic usage is the same as the [chessjs](https://github.com/jhlywa/chess.js)
 this api. Anyway, to see the possibles moves you can use the *moves* method and if you make a move use the *move*
 function.
 
-```{r}
+```{r moves}
 chss$moves()
 
 chss$moves(verbose = TRUE)
@@ -56,14 +58,14 @@ chss$move("a3")
 
 We can also concate  moves, see who plays in the next turn, see the history, etc.:
 
-```{r}
+```{r move}
 chss$move("e5")$move("f4")$move("Qe7")$move("fxe5")
 
 plot(chss)
 ```
 
 
-```{r}
+```{r turn}
 chss$turn()
 
 chss$history(verbose = TRUE)
@@ -73,7 +75,7 @@ chss$history()
 
 A must have funcionality is load games from PGN and FEN notations:
 
-```{r}
+```{r new}
 chssfen <- Chess$new()
  
 fen <- "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"
@@ -83,13 +85,13 @@ chssfen$load(fen)
 
 (Shh you can also plot the chesboard with ggplot. I know I need change that unicode style pieces ;) ). 
 
-```{r}
+```{r chssfen}
 plot(chssfen, type = "ggplot")
 ```
 
 Now load PGN string:
 
-```{r}
+```{r pgn}
 pgn <- system.file("extdata/pgn/kasparov_vs_topalov.pgn", package = "rchess")
 pgn <- readLines(pgn, warn = FALSE)
 pgn <- paste(pgn, collapse = "\n")

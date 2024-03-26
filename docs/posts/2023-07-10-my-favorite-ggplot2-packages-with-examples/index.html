@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.4.550">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Joshua Kunst Fuentes">
 <meta name="dcterms.date" content="2023-07-23">
+
 <title>Data, Code and Visualization - My favorite ggplot2 packages with examples</title>
 <style>
 code{white-space: pre-wrap;}
@@ -16,11 +19,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -45,44 +49,15 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -99,13 +74,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -114,10 +96,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
-}</script><script type="text/javascript">
+}</script>
+
+<script type="text/javascript">
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -129,60 +115,101 @@ ga('send', {
   hitType: 'pageview',
   'anonymizeIp': true,
 });
-</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="../../styles.css">
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Data, Code and Visualization - My favorite ggplot2 packages with examples">
-<meta property="og:description" content="I have to put things somewhere so I don't forget them">
-<meta property="og:image" content="https://jkunst.com/blog/posts\2023-07-10-my-favorite-ggplot2-packages-with-examples\images\preview.png">
-<meta property="og:site-name" content="Data, Code and Visualization">
+<meta property="og:description" content="I have to put things somewhere so I don’t forget them">
+<meta property="og:image" content="https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/images/preview.png">
+<meta property="og:site_name" content="Data, Code and Visualization">
 <meta property="og:image:height" content="2911">
 <meta property="og:image:width" content="2521">
 <meta name="twitter:title" content="Data, Code and Visualization - My favorite ggplot2 packages with examples">
-<meta name="twitter:description" content="I have to put things somewhere so I don't forget them">
-<meta name="twitter:image" content="https://jkunst.com/blog/posts\2023-07-10-my-favorite-ggplot2-packages-with-examples\images\preview.png">
+<meta name="twitter:description" content="I have to put things somewhere so I don’t forget them">
+<meta name="twitter:image" content="https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples/images/preview.png">
 <meta name="twitter:creator" content="@jbkunst">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="2911">
 <meta name="twitter:image-width" content="2521">
 </head>
+
 <body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data, Code and Visualization</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
-    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"> <i class="bi bi-info-circle" role="img" aria-label="about">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/jbkunst"> <i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"> <i class="bi bi-mastodon" role="img" aria-label="mastodon">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">My favorite <code>ggplot2</code> packages with examples</h1>
             <p class="subtitle lead">I have to put things somewhere so I don’t forget them</p>
@@ -200,7 +227,7 @@ ga('send', {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Joshua Kunst Fuentes </p>
+               <p><a href="https://jkunst.com">Joshua Kunst Fuentes</a> </p>
             </div>
     </div>
       
@@ -214,7 +241,7 @@ ga('send', {
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">July 24, 2023</p>
+        <p class="date-modified">March 25, 2024</p>
       </div>
     </div>
       
@@ -223,10 +250,12 @@ ga('send', {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
    
   <ul>
-<li><a href="#showtext" id="toc-showtext" class="nav-link active" data-scroll-target="#showtext"><code>{showtext}</code></a></li>
+  <li><a href="#showtext" id="toc-showtext" class="nav-link active" data-scroll-target="#showtext"><code>{showtext}</code></a></li>
   <li><a href="#ggrepel" id="toc-ggrepel" class="nav-link" data-scroll-target="#ggrepel"><code>{ggrepel}</code></a></li>
   <li><a href="#gghighlight" id="toc-gghighlight" class="nav-link" data-scroll-target="#gghighlight"><code>{gghighlight}</code></a></li>
   <li><a href="#ggforce" id="toc-ggforce" class="nav-link" data-scroll-target="#ggforce"><code>{ggforce}</code></a></li>
@@ -236,223 +265,284 @@ ga('send', {
   <li><a href="#parttree" id="toc-parttree" class="nav-link" data-scroll-target="#parttree"><code>{parttree}</code></a></li>
   <li><a href="#ggparty-parttree" id="toc-ggparty-parttree" class="nav-link" data-scroll-target="#ggparty-parttree"><code>{ggparty}</code> + <code>{parttree}</code></a></li>
   <li><a href="#patchwork" id="toc-patchwork" class="nav-link" data-scroll-target="#patchwork"><code>{patchwork}</code></a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><p>The idea is to show some packages and options that I use on a daily basis, and leave code with annotations and defaults that I normally use. We will go through the packages one by one with examples, but these can be grouped into the following categories.</p>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<p>The idea is to show some packages and options that I use on a daily basis, and leave code with annotations and defaults that I normally use. We will go through the packages one by one with examples, but these can be grouped into the following categories.</p>
 <ul>
-<li>Typography: <a href="https://github.com/yixuan/showtext">showtext</a>.</li>
-<li>Annotations: <a href="https://github.com/slowkow/ggrepel">ggrepel</a>, <a href="https://yutannihilation.github.io/gghighlight/">gghighlight</a>, <a href="https://ggforce.data-imaginist.com">ggforce</a>, <a href="https://wilkox.org/ggfittext/">ggfittext</a>.</li>
-<li>Extra features: <a href="https://scales.r-lib.org">scales</a> and -again- <a href="https://ggforce.data-imaginist.com">ggforce</a>.</li>
-<li>Tree-objects: <a href="https://github.com/martin-borkovec/ggparty">ggparty</a> and <a href="https://github.com/grantmcdermott/parttree">parttree</a>.</li>
+<li>Typography: <code>{showtext}</code>.</li>
+<li>Annotations: <code>{ggrepel}</code>, <code>{gghighlight}</code>, <code>{ggforce}</code>, <code>{ggfittext}</code>.</li>
+<li>Extra features: <code>{scales}</code> and -again- <code>{ggforce}</code>.</li>
+<li>Tree-objects: <code>{ggparty}</code> and <code>{parttree}</code>.</li>
 </ul>
 <p>Where do we start from? Define some data and some defaults plots that we would have and would like to modify.</p>
-<div class="page-columns page-full">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mtcars</span> <span class="op">&lt;-</span> <span class="va">mtcars</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">rownames_to_column</a></span><span class="op">(</span>var <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">penguins</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">penguins</span><span class="op">)</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, label <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"cyan4"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="va">p1</span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="va">p2</span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">p3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell column-page quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>mtcars <span class="ot">&lt;-</span> mtcars <span class="sc">|&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">"name"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">20</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>penguins <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">complete.cases</span>(penguins)) </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(wt, mpg, <span class="at">label =</span> name)) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"cyan4"</span>, <span class="at">size =</span> <span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>p1</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species), <span class="at">size =</span> <span class="dv">2</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>p2</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species) <span class="sc">|&gt;</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, n)) <span class="sc">+</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell column-page quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-1-1.svg" class="img-fluid"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-1-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-1-3.svg" class="img-fluid"></p>
-</div>
 </div>
 </div>
 </div>
 <p>In my particuar case I like <code>theme_minimal</code> theme and legend at the bottom.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span></span>
-<span>      plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>face <span class="op">=</span> <span class="st">"plain"</span><span class="op">)</span>,</span>
-<span>      plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#fcfcfc"</span>, colour <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>      panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"#fcfcfc"</span>, colour <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>      legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>      legend.key.width <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="st">"cm"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"darkorange"</span>,<span class="st">"darkorchid"</span>,<span class="st">"cyan4"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"plain"</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fcfcfc"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#fcfcfc"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">1.5</span>, <span class="st">"cm"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"darkorange"</span>,<span class="st">"darkorchid"</span>,<span class="st">"cyan4"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>We’re ready to go!</p>
-<section id="showtext" class="level2"><h2 class="anchored" data-anchor-id="showtext"><code>{showtext}</code></h2>
+<section id="showtext" class="level2">
+<h2 class="anchored" data-anchor-id="showtext"><code>{showtext}</code></h2>
 <p>Source:<a href="https://github.com/yixuan/showtext">https://github.com/yixuan/showtext</a>.</p>
 <p>This package makes easy to use typography! Do you want some typography from https://fonts.google.com/? You want it? You got it!</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/sysfonts/man/font_add_google.html">font_add_google</a></span><span class="op">(</span><span class="st">"IBM Plex Sans"</span>, family <span class="op">=</span> <span class="st">"ibm"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/showtext/man/showtext_auto.html">showtext_auto</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">"IBM Plex Sans"</span>, <span class="at">family =</span> <span class="st">"ibm"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.svg" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-</section><section id="ggrepel" class="level2"><h2 class="anchored" data-anchor-id="ggrepel"><code>{ggrepel}</code></h2>
+</div>
+</section>
+<section id="ggrepel" class="level2">
+<h2 class="anchored" data-anchor-id="ggrepel"><code>{ggrepel}</code></h2>
 <p>Source: <a href="https://ggrepel.slowkow.com/articles/examples.html">https://ggrepel.slowkow.com/articles/examples.html</a>.</p>
 <p>This package has been on CRAN/github for a while now. Package that in combination with the <code>data</code> argument can make simple and effective annotations.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/ggrepel">ggrepel</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p_repel1</span> <span class="op">&lt;-</span> <span class="va">p1</span>  <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray40"</span>, family  <span class="op">=</span> <span class="st">"ibm"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p_repel1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.svg" class="img-fluid"></p>
-</div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p_repel2</span> <span class="op">&lt;-</span> <span class="va">p1</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="op">~</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.x</span>, <span class="va">mpg</span> <span class="op">&gt;</span> <span class="fl">30</span><span class="op">)</span>, </span>
-<span>    color <span class="op">=</span> <span class="st">"gray40"</span>, </span>
-<span>    family  <span class="op">=</span> <span class="st">"ibm"</span>,</span>
-<span>     force <span class="op">=</span> <span class="fl">20</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span><span class="va">p_repel2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-4-2.svg" class="img-fluid"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>p_repel1 <span class="ot">&lt;-</span> p1  <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">family  =</span> <span class="st">"ibm"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>p_repel1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.svg" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-</section><section id="gghighlight" class="level2"><h2 class="anchored" data-anchor-id="gghighlight"><code>{gghighlight}</code></h2>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p_repel2 <span class="ot">&lt;-</span> p1 <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="sc">~</span> <span class="fu">filter</span>(.x, mpg <span class="sc">&gt;</span> <span class="dv">30</span>), </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray40"</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">family  =</span> <span class="st">"ibm"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">force =</span> <span class="dv">20</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>p_repel2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gghighlight" class="level2">
+<h2 class="anchored" data-anchor-id="gghighlight"><code>{gghighlight}</code></h2>
 <p>Source: <a href="https://yutannihilation.github.io/gghighlight/articles/gghighlight.html">https://yutannihilation.github.io/gghighlight/articles/gghighlight.html</a>.</p>
 <ul>
 <li>This package is plug and play if you have to highlight data with a specific filter.</li>
-<li>Is important to know this package don’t work like the usual <code>geom_*</code> + <code><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes()</a></code>.</li>
+<li>Is important to know this package don’t work like the usual <code>geom_*</code> + <code>aes()</code>.</li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yutannihilation.github.io/gghighlight/">gghighlight</a></span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://yutannihilation.github.io/gghighlight/reference/gghighlight.html">gghighlight</a></span><span class="op">(</span></span>
-<span>    <span class="co"># interest subset</span></span>
-<span>    <span class="va">mpg</span> <span class="op">&gt;</span> <span class="fl">30</span>,</span>
-<span>    <span class="co"># additional parameters</span></span>
-<span>    label_key <span class="op">=</span> <span class="va">name</span>,</span>
-<span>    keep_scales <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    label_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray40"</span>, label.r <span class="op">=</span> <span class="fl">0</span>, fill <span class="op">=</span> <span class="st">"gray95"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># can change previous parameters</span></span>
-<span>    unhighlighted_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1.5</span>, color <span class="op">=</span> <span class="st">"darkorchid"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gghighlight) </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gghighlight</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># interest subset</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    mpg <span class="sc">&gt;</span> <span class="dv">30</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># additional parameters</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_key =</span> name,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">keep_scales =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_params =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">label.r =</span> <span class="dv">0</span>, <span class="at">fill =</span> <span class="st">"gray95"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># can change previous parameters</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">unhighlighted_params =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"darkorchid"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.svg" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-</section><section id="ggforce" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="ggforce"><code>{ggforce}</code></h2>
+</div>
+</section>
+<section id="ggforce" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="ggforce"><code>{ggforce}</code></h2>
 <p>Source: <a href="https://ggforce.data-imaginist.com/">https://ggforce.data-imaginist.com/</a>.</p>
 <ul>
-<li>
-<a href="https://ggforce.data-imaginist.com">ggforce</a> takes annotations to the next level.</li>
+<li><code>{ggforce}</code> takes annotations to the next level.</li>
 <li>A lot of other functionalities like new geoms, new facets!</li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com">ggforce</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_hull.html">geom_mark_hull</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>filter <span class="op">=</span>  <span class="va">mpg</span> <span class="op">&gt;</span> <span class="fl">30</span>, label <span class="op">=</span> <span class="st">"Interesting"</span><span class="op">)</span>,</span>
-<span>    description <span class="op">=</span> <span class="st">"Lightweight vehicles have high performance."</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"gray70"</span>,</span>
-<span>    fill <span class="op">=</span> <span class="st">"gray90"</span>,</span>
-<span>    concavity <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>    <span class="co"># control width text</span></span>
-<span>    label.minwidth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">100</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>    <span class="co"># how much distance before show legend</span></span>
-<span>    label.buffer <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>    label.colour <span class="op">=</span> <span class="st">"gray30"</span>,</span>
-<span>    label.family <span class="op">=</span> <span class="st">"ibm"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># use circle for points</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_circle.html">geom_mark_circle</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>filter <span class="op">=</span>  <span class="va">wt</span> <span class="op">&gt;</span> <span class="fl">3.75</span>, label <span class="op">=</span> <span class="cn">NULL</span>, description <span class="op">=</span> <span class="va">name</span><span class="op">)</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"gray70"</span>,</span>
-<span>    fill <span class="op">=</span> <span class="st">"transparent"</span>,</span>
-<span>    label.fontsize <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>    label.family <span class="op">=</span> <span class="st">"ibm"</span></span>
-<span>   <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">filter =</span>  mpg <span class="sc">&gt;</span> <span class="dv">30</span>, <span class="at">label =</span> <span class="st">"Interesting"</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">description =</span> <span class="st">"Lightweight vehicles have high performance."</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray70"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"gray90"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">concavity =</span> <span class="dv">5</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># control width text</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.minwidth =</span> <span class="fu">unit</span>(<span class="dv">100</span>, <span class="st">"mm"</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># how much distance before show legend</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="fl">2.5</span>, <span class="st">"mm"</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.colour =</span> <span class="st">"gray30"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.family =</span> <span class="st">"ibm"</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use circle for points</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_circle</span>(</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">filter =</span>  wt <span class="sc">&gt;</span> <span class="fl">3.75</span>, <span class="at">label =</span> <span class="cn">NULL</span>, <span class="at">description =</span> name),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray70"</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"transparent"</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.fontsize =</span> <span class="dv">10</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.family =</span> <span class="st">"ibm"</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>   )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>And other <code>geom_mark_*</code> like hull, circle, ellpse, rect.</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p2</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_ellipse.html">geom_mark_ellipse</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">species</span>, label <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>    alpha <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"transparent"</span>, <span class="co"># a nice touch sometimes! (imho)</span></span>
-<span>    label.colour <span class="op">=</span> <span class="st">"gray30"</span>,</span>
-<span>    label.family <span class="op">=</span> <span class="st">"ibm"</span>,</span>
-<span>    label.fontsize <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>    <span class="co"># label.fontface = "plain",</span></span>
-<span>    <span class="co"># this is just for blogpost</span></span>
-<span>    expand <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
-<span>    radius <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">5</span>, <span class="st">"mm"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_mark_circle.html">geom_mark_circle</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
-<span>      filter <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span><span class="va">bill_length_mm</span>, <span class="fl">0</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">bill_length_mm</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>      label <span class="op">=</span> <span class="cn">NULL</span>, </span>
-<span>      description <span class="op">=</span> <span class="st">"A rare penguin!"</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"gray70"</span>,</span>
-<span>    fill <span class="op">=</span> <span class="st">"transparent"</span>,</span>
-<span>    label.fontsize <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>    label.family <span class="op">=</span> <span class="st">"ibm"</span></span>
-<span>   <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen-inset">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_ellipse</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> species, <span class="at">label =</span> species),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.1</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"transparent"</span>, <span class="co"># a nice touch sometimes! (imho)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.colour =</span> <span class="st">"gray30"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.family =</span> <span class="st">"ibm"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># label.fontface = "plain",</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># this is just for blogpost</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">unit</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="st">"mm"</span>),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="fu">unit</span>(<span class="dv">5</span>, <span class="st">"mm"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_circle</span>(</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">filter =</span> <span class="fu">coalesce</span>(bill_length_mm, <span class="dv">0</span>) <span class="sc">==</span> <span class="fu">max</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="cn">NULL</span>, </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">description =</span> <span class="st">"A rare penguin!"</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray70"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"transparent"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.family =</span> <span class="st">"ibm"</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>   ) <span class="sc">+</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="index_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Now imagine we used a <span class="math inline">\(K\)</span>-means algorithm:</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dcenters</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">bill_length_mm</span>, <span class="va">bill_depth_mm</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">bill_depth_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">median</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>cluster <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">dcenters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dcenters <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, bill_length_mm, bill_depth_mm) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_length_mm)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(bill_depth_mm)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), median)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>species) <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cluster =</span> <span class="fu">as.character</span>(<span class="fu">row_number</span>()))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>dcenters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   bill_length_mm bill_depth_mm cluster
            &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;  
@@ -460,216 +550,261 @@ ga('send', {
 2           49.6          18.4 2      
 3           47.4          15   3      </code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bnd</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">bill_length_mm</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">bill_length_mm</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">bill_depth_mm</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  <span class="op">-</span> <span class="fl">1</span>,</span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">bill_depth_mm</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>  <span class="op">+</span> <span class="fl">1</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p2</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_delvor.html">geom_voronoi_tile</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">cluster</span>, group <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">dcenters</span>, alpha <span class="op">=</span> <span class="fl">0.2</span>, bound <span class="op">=</span> <span class="va">bnd</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_delvor.html">geom_voronoi_segment</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span>    data <span class="op">=</span> <span class="va">dcenters</span>, color <span class="op">=</span> <span class="st">"gray90"</span>, bound <span class="op">=</span> <span class="va">bnd</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">xlim</a></span><span class="op">(</span><span class="va">bnd</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">bnd</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="va">bnd</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">bnd</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span>direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, option <span class="op">=</span> <span class="st">"C"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># its better put point over all layers</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, </span>
-<span>    size <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>    shape <span class="op">=</span> <span class="fl">21</span>, </span>
-<span>    color <span class="op">=</span> <span class="st">"gray90"</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen-inset">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid figure-img"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bnd <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">min</span>(bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">max</span>(bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.list</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlist</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.vector</span>()</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>p2 <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_voronoi_tile</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> cluster, <span class="at">group =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dcenters, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">bound =</span> bnd</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_voronoi_segment</span>(</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">group =</span> <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dcenters, <span class="at">color =</span> <span class="st">"gray90"</span>, <span class="at">bound =</span> bnd</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(bnd[<span class="dv">1</span>], bnd[<span class="dv">2</span>]) <span class="sc">+</span> </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(bnd[<span class="dv">3</span>], bnd[<span class="dv">4</span>]) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">option =</span> <span class="st">"C"</span>) <span class="sc">+</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># its better put point over all layers</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">color =</span> species), </span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">2</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>, </span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray90"</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="index_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset"></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="ggfittext" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="ggfittext"><code>{ggfittext}</code></h2>
+</section>
+<section id="ggfittext" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="ggfittext"><code>{ggfittext}</code></h2>
 <p>Source: <a href="https://github.com/wilkox/ggfittext#bar-plots">https://github.com/wilkox/ggfittext</a>.</p>
 <p>This package have a lot of features to work with strings in ggplot objects, particulary when you use treemaps.</p>
-<p>A love the simple and useful function <code><a href="https://wilkox.org/ggfittext/reference/geom_fit_text.html">geom_bar_text()</a></code> + <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col()</a></code> combo.</p>
-<div class="page-columns page-full">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkox.org/ggfittext/">ggfittext</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">n</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">0.35</span>, fill <span class="op">=</span> <span class="st">"cyan4"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">p3</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://wilkox.org/ggfittext/reference/geom_fit_text.html">geom_bar_text</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">p3</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://wilkox.org/ggfittext/reference/geom_fit_text.html">geom_bar_text</a></span><span class="op">(</span></span>
-<span>    formatter <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html">comma_format</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>    padding.y <span class="op">=</span>  <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="st">"mm"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="va">p3</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://wilkox.org/ggfittext/reference/geom_fit_text.html">geom_bar_text</a></span><span class="op">(</span></span>
-<span>    formatter <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html">comma_format</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>    place <span class="op">=</span> <span class="st">"bottom"</span>,</span>
-<span>    padding.y <span class="op">=</span>  <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">2.5</span>, <span class="st">"mm"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell column-page quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p>A love the simple and useful function <code>geom_bar_text()</code> + <code>geom_col()</code> combo.</p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfittext)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(species) <span class="sc">|&gt;</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="dv">100</span> <span class="sc">*</span> n) <span class="sc">|&gt;</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(species, n)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">width =</span> <span class="fl">0.35</span>, <span class="at">fill =</span> <span class="st">"cyan4"</span>) </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>p3 <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar_text</span>()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>p3 <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar_text</span>(</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">formatter =</span> scales<span class="sc">::</span><span class="fu">comma_format</span>(), </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">padding.y =</span>  grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">2.5</span>, <span class="st">"mm"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>p3 <span class="sc">+</span> </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar_text</span>(</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">formatter =</span> scales<span class="sc">::</span><span class="fu">comma_format</span>(), </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">place =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">padding.y =</span>  grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">2.5</span>, <span class="st">"mm"</span>)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell column-page quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-9-2.svg" class="img-fluid"></p>
 </div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <p><img src="index_files/figure-html/unnamed-chunk-9-3.svg" class="img-fluid"></p>
 </div>
 </div>
 </div>
-</div>
-</section><section id="scales" class="level2"><h2 class="anchored" data-anchor-id="scales"><code>{scales}</code></h2>
+</section>
+<section id="scales" class="level2">
+<h2 class="anchored" data-anchor-id="scales"><code>{scales}</code></h2>
 <p>Source: <a href="https://scales.r-lib.org/">https://scales.r-lib.org/</a>.</p>
 <p>You use this package using a <code>label_*</code> function in the <code>labels</code> argument of <code>scale_*</code> function.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span> <span class="co"># comma dollar label_comma</span></span>
-<span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">123</span>, <span class="fl">456678</span>, <span class="fl">100000</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html">comma</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/dollar_format.html">dollar</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales) <span class="co"># comma dollar label_comma</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">123</span>, <span class="dv">456678</span>, <span class="dv">100000</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="fu">comma</span>(x), <span class="fu">dollar</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>[1] "123"      "456,678"  "100,000"  "$123"     "$456,678" "$100,000"</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># I know the correct alternative is Mpg</span></span>
-<span><span class="va">miles_per_gallon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span>suffix <span class="op">=</span> <span class="st">" mi/gal"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">wt_lbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://scales.r-lib.org/reference/label_number.html">label_comma</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">1000</span>, suffix <span class="op">=</span> <span class="st">" lbs"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p1</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span></span>
-<span>    labels <span class="op">=</span> <span class="va">miles_per_gallon</span>, </span>
-<span>    name <span class="op">=</span> <span class="st">"fuel consumption"</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span></span>
-<span>    labels <span class="op">=</span> <span class="va">wt_lbl</span>, </span>
-<span>    name <span class="op">=</span> <span class="st">"weigth"</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid"></p>
-</div>
-</div>
-</section><section id="ggparty" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="ggparty"><code>{ggparty}</code></h2>
-<p>Source: <a href="https://github.com/martin-borkovec/ggparty">https://github.com/martin-borkovec/ggparty</a>.</p>
-<div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://partykit.r-forge.r-project.org/partykit/">partykit</a></span><span class="op">)</span> <span class="co"># ctree</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/martin-borkovec/ggparty">ggparty</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">penguinct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/partykit/man/ctree.html">ctree</a></span><span class="op">(</span></span>
-<span>  <span class="va">species</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">bill_depth_mm</span> <span class="op">+</span> <span class="va">flipper_length_mm</span> <span class="op">+</span> <span class="va">body_mass_g</span> <span class="op">+</span> <span class="va">sex</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">penguins</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">penguinct</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid"></p>
-</div>
-</div>
-<div class="cell page-columns page-full" data-layout-align="center">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/ggparty.html">ggparty</a></span><span class="op">(</span><span class="va">penguinct</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_edge.html">geom_edge</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray80"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_edge_label.html">geom_edge_label</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_label.html">geom_node_label</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">splitvar</span><span class="op">)</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"gray30"</span>,</span>
-<span>    label.col <span class="op">=</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
-<span>    size <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>    label.padding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="st">"lines"</span><span class="op">)</span>,</span>
-<span>    ids <span class="op">=</span> <span class="st">"inner"</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_plot.html">geom_node_plot</a></span><span class="op">(</span></span>
-<span>    gglist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>        size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_d</a></span><span class="op">(</span>end <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">7</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    scales <span class="op">=</span> <span class="st">"fixed"</span>,</span>
-<span>    id <span class="op">=</span> <span class="st">"terminal"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_label.html">geom_node_label</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Node %s (n = %s)"</span>, <span class="va">id</span>, <span class="va">nodesize</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    ids <span class="op">=</span> <span class="st">"terminal"</span>,</span>
-<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>    label.col <span class="op">=</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
-<span>    nudge_y <span class="op">=</span> <span class="fl">0.01</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen-inset">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-12-1.svg" class="img-fluid figure-img"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I know the correct alternative is Mpg</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>miles_per_gallon <span class="ot">&lt;-</span> <span class="fu">label_comma</span>(<span class="at">suffix =</span> <span class="st">" mi/gal"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>wt_lbl <span class="ot">&lt;-</span> <span class="fu">label_comma</span>(<span class="at">scale =</span> <span class="dv">1000</span>, <span class="at">suffix =</span> <span class="st">" lbs"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> miles_per_gallon, </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"fuel consumption"</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> wt_lbl, </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"weigth"</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="parttree" class="level2"><h2 class="anchored" data-anchor-id="parttree"><code>{parttree}</code></h2>
+</section>
+<section id="ggparty" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="ggparty"><code>{ggparty}</code></h2>
+<p>Source: <a href="https://github.com/martin-borkovec/ggparty">https://github.com/martin-borkovec/ggparty</a>.</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(partykit) <span class="co"># ctree</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggparty)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>penguinct <span class="ot">&lt;-</span> <span class="fu">ctree</span>(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  species <span class="sc">~</span> bill_length_mm <span class="sc">+</span> bill_depth_mm <span class="sc">+</span> flipper_length_mm <span class="sc">+</span> body_mass_g <span class="sc">+</span> sex,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> penguins</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(penguinct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell page-columns page-full" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggparty</span>(penguinct) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">color =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_label</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_label</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> splitvar),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray30"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.col =</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.padding =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ids =</span> <span class="st">"inner"</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_plot</span>(</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">gglist =</span> <span class="fu">list</span>(</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm, <span class="at">color =</span> species),</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_viridis_d</span>(<span class="at">end =</span> <span class="fl">0.9</span>),</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">5</span>))), </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(),</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>)),</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">"fixed"</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> <span class="st">"terminal"</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_label</span>(</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">sprintf</span>(<span class="st">"Node %s (n = %s)"</span>, id, nodesize)),</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">ids =</span> <span class="st">"terminal"</span>,</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.col =</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fl">0.01</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="index_files/figure-html/unnamed-chunk-12-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="parttree" class="level2">
+<h2 class="anchored" data-anchor-id="parttree"><code>{parttree}</code></h2>
 <p>Source: <a href="https://github.com/grantmcdermott/parttree">https://github.com/grantmcdermott/parttree</a>.</p>
 <p>I use the {parttree} package when the model is simple, or when I want to explain the decision tree algorithm.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/grantmcdermott/parttree">parttree</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 2 independent variables</span></span>
-<span><span class="va">penguinct2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/partykit/man/ctree.html">ctree</a></span><span class="op">(</span></span>
-<span>  <span class="va">species</span> <span class="op">~</span> <span class="va">bill_length_mm</span> <span class="op">+</span> <span class="va">bill_depth_mm</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">penguins</span>,</span>
-<span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/partykit/man/ctree_control.html">ctree_control</a></span><span class="op">(</span>maxdepth <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://grantmcdermott.com/parttree/reference/geom_parttree.html">geom_parttree</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">penguinct2</span>, </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>    alpha <span class="op">=</span> <span class="fl">0.2</span>, </span>
-<span>    color <span class="op">=</span> <span class="st">"gray60"</span>,</span>
-<span>    <span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>col <span class="op">=</span> <span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.svg" class="img-fluid"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># remotes::install_github("grantmcdermott/parttree")</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parttree)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 independent variables</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>penguinct2 <span class="ot">&lt;-</span> <span class="fu">ctree</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  species <span class="sc">~</span> bill_length_mm <span class="sc">+</span> bill_depth_mm,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> penguins,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">ctree_control</span>(<span class="at">maxdepth =</span> <span class="dv">3</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_parttree</span>(</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> penguinct2, </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> species),</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.2</span>, </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray60"</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span> </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> species)) <span class="sc">+</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.svg" class="img-fluid figure-img"></p>
+</figure>
 </div>
 </div>
-</section><section id="ggparty-parttree" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="ggparty-parttree">
-<code>{ggparty}</code> + <code>{parttree}</code>
-</h2>
+</div>
+</section>
+<section id="ggparty-parttree" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="ggparty-parttree"><code>{ggparty}</code> + <code>{parttree}</code></h2>
 <div class="cell page-columns page-full" data-layout-align="center">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dpred_node</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">species</span>, <span class="va">bill_length_mm</span>, <span class="va">bill_depth_mm</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">penguinct2</span>, type <span class="op">=</span> <span class="st">"node"</span>, newdata <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span>,</span>
-<span>    species_pred <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">penguinct2</span>, newdata <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
-<span>    species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">species_pred</span><span class="op">)</span>,</span>
-<span>    bill_length_mm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span>,</span>
-<span>    bill_depth_mm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bill_depth_mm</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="va">dpred_node</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>dpred_node <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, bill_length_mm, bill_depth_mm) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> <span class="fu">predict</span>(penguinct2, <span class="at">type =</span> <span class="st">"node"</span>, <span class="at">newdata =</span> penguins),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">species_pred =</span> <span class="fu">predict</span>(penguinct2, <span class="at">newdata =</span> penguins)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">|&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">species =</span> <span class="fu">unique</span>(species_pred),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_length_mm =</span> <span class="fu">mean</span>(bill_length_mm),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">bill_depth_mm =</span> <span class="fu">mean</span>(bill_depth_mm)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>dpred_node</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 4
      id species   bill_length_mm bill_depth_mm
   &lt;int&gt; &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;
@@ -679,133 +814,146 @@ ga('send', {
 4     8 Adelie              43.0          18.2
 5     9 Chinstrap           49.5          18.4</code></pre>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dparttree</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://grantmcdermott.com/parttree/reference/parttree.html">parttree</a></span><span class="op">(</span><span class="va">penguinct2</span><span class="op">)</span></span>
-<span><span class="va">dparttree</span> <span class="op">&lt;-</span> <span class="va">dparttree</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>id <span class="op">=</span> <span class="va">node</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">path</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ggp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/ggparty.html">ggparty</a></span><span class="op">(</span><span class="va">penguinct2</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">ggp</span><span class="op">$</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">ggp</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="va">dpred_node</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">species</span><span class="op">)</span>,</span>
-<span>    by <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/join_by.html">join_by</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span><span class="va">ggp</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_edge.html">geom_edge</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray80"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_edge_label.html">geom_edge_label</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray50"</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_label.html">geom_node_label</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">splitvar</span>, <span class="st">"_"</span>, <span class="st">" "</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    color <span class="op">=</span> <span class="st">"gray30"</span>,</span>
-<span>    label.col <span class="op">=</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
-<span>    size <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>    label.padding <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="st">"lines"</span><span class="op">)</span>,</span>
-<span>    ids <span class="op">=</span> <span class="st">"inner"</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_plot.html">geom_node_plot</a></span><span class="op">(</span></span>
-<span>    gglist <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>        size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">0.5</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://grantmcdermott.com/parttree/reference/geom_parttree.html">geom_parttree</a></span><span class="op">(</span></span>
-<span>        data <span class="op">=</span> <span class="va">penguinct2</span>, </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>        alpha <span class="op">=</span> <span class="fl">0.1</span>, </span>
-<span>        color <span class="op">=</span> <span class="st">"gray60"</span>,</span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span></span>
-<span>        data <span class="op">=</span> <span class="va">dpred_node</span>, </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>, y <span class="op">=</span> <span class="va">bill_depth_mm</span>, color <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>        size <span class="op">=</span> <span class="fl">3</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_rect</a></span><span class="op">(</span></span>
-<span>        data <span class="op">=</span> <span class="va">dparttree</span>, </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>, ymin <span class="op">=</span> <span class="va">ymin</span>, ymax <span class="op">=</span> <span class="va">ymax</span>, fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span>,</span>
-<span>        alpha <span class="op">=</span> <span class="fl">0.5</span>, </span>
-<span>        color <span class="op">=</span> <span class="st">"gray40"</span>,</span>
-<span>        <span class="op">)</span>,</span>
-<span>      </span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colors</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colors</span><span class="op">)</span>,</span>
-<span>      <span class="co"># scale_color_viridis_d(end = 0.9),</span></span>
-<span>      <span class="co"># scale_fill_viridis_d(end = 0.9),</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size<span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">7</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    scales <span class="op">=</span> <span class="st">"fixed"</span>,</span>
-<span>    <span class="co"># id = "all"</span></span>
-<span>    id <span class="op">=</span> <span class="st">"terminal"</span></span>
-<span>  <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggparty/man/geom_node_label.html">geom_node_label</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"{species} (#{id},  n = {nodesize})"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    ids <span class="op">=</span> <span class="st">"terminal"</span>,</span>
-<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>    family <span class="op">=</span> <span class="st">"ibm"</span>,</span>
-<span>    label.col <span class="op">=</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
-<span>    nudge_y <span class="op">=</span> <span class="fl">0.01</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen-inset">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-14-1.svg" class="img-fluid figure-img"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>dparttree <span class="ot">&lt;-</span> <span class="fu">parttree</span>(penguinct2)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>dparttree <span class="ot">&lt;-</span> dparttree <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">id =</span> node) <span class="sc">|&gt;</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>path)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>ggp <span class="ot">&lt;-</span> <span class="fu">ggparty</span>(penguinct2) </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>ggp<span class="sc">$</span>data <span class="ot">&lt;-</span> ggp<span class="sc">$</span>data <span class="sc">|&gt;</span> </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    dpred_node <span class="sc">|&gt;</span> <span class="fu">select</span>(id, species),</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">join_by</span>(id)</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>ggp <span class="sc">+</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge</span>(<span class="at">color =</span> <span class="st">"gray80"</span>) <span class="sc">+</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_label</span>(<span class="at">color =</span> <span class="st">"gray50"</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_label</span>(</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">str_replace_all</span>(splitvar, <span class="st">"_"</span>, <span class="st">" "</span>)),</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"gray30"</span>,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.col =</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.padding =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>),</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">ids =</span> <span class="st">"inner"</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_plot</span>(</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">gglist =</span> <span class="fu">list</span>(</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm, <span class="at">color =</span> species),</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_parttree</span>(</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> penguinct2, </span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">fill =</span> species),</span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="fl">0.1</span>, </span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"gray60"</span>,</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> dpred_node, </span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x =</span> bill_length_mm, <span class="at">y =</span> bill_depth_mm, <span class="at">color =</span> species),</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">size =</span> <span class="dv">3</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_rect</span>(</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> dparttree, </span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">xmin =</span> xmin, <span class="at">xmax =</span> xmax, <span class="at">ymin =</span> ymin, <span class="at">ymax =</span> ymax, <span class="at">fill =</span> species),</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>        <span class="at">alpha =</span> <span class="fl">0.5</span>, </span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">"gray40"</span>,</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> colors),</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_color_manual</span>(<span class="at">values =</span> colors),</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>      <span class="co"># scale_color_viridis_d(end = 0.9),</span></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>      <span class="co"># scale_fill_viridis_d(end = 0.9),</span></span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>      <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size=</span><span class="dv">5</span>))),</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_minimal</span>(),</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>)),</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">"fixed"</span>,</span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>    <span class="co"># id = "all"</span></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">id =</span> <span class="st">"terminal"</span></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_label</span>(</span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">str_glue</span>(<span class="st">"{species} (#{id},  n = {nodesize})"</span>)),</span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">ids =</span> <span class="st">"terminal"</span>,</span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="st">"ibm"</span>,</span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.col =</span> <span class="cn">NA</span>, <span class="co"># no box</span></span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fl">0.01</span></span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="index_files/figure-html/unnamed-chunk-14-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset"></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="patchwork" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="patchwork"><code>{patchwork}</code></h2>
+</section>
+<section id="patchwork" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="patchwork"><code>{patchwork}</code></h2>
 <p>Source: <a href="https://patchwork.data-imaginist.com/articles/patchwork.html">https://patchwork.data-imaginist.com/articles/patchwork.html</a>.</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">p2</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colors</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="va">p3</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">species</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">colors</span>, name <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="op">(</span><span class="va">p1</span> <span class="op">/</span> <span class="va">p3</span><span class="op">)</span> <span class="op">|</span> <span class="va">p2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_layout.html">plot_layout</a></span><span class="op">(</span></span>
-<span>    widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    guides <span class="op">=</span> <span class="st">"collect"</span></span>
-<span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Some ggplot2 objects"</span>,</span>
-<span>    subtitle <span class="op">=</span> <span class="st">"The plot (a) shows one aspect, while (b) presents additional data."</span>,</span>
-<span>    tag_levels <span class="op">=</span> <span class="st">"a"</span>,</span>
-<span>    tag_prefix <span class="op">=</span> <span class="st">"("</span>,</span>
-<span>    tag_suffix <span class="op">=</span> <span class="st">")"</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span><span class="va">pp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen-inset">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid figure-img"></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> p2 <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> p3 <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> species), <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> colors, <span class="at">name =</span> <span class="cn">NULL</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> ((p1 <span class="sc">/</span> p3) <span class="sc">|</span> p2) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">guides =</span> <span class="st">"collect"</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Some ggplot2 objects"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"The plot (a) shows one aspect, while (b) presents additional data."</span>,</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_levels =</span> <span class="st">"a"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_prefix =</span> <span class="st">"("</span>,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">tag_suffix =</span> <span class="st">")"</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>pp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="index_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid quarto-figure quarto-figure-center figure-img column-screen-inset"></p>
 </figure>
 </div>
 </div>
 </div>
 
 
-</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2023,
-  author = {Joshua Kunst Fuentes},
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunst fuentes2023,
+  author = {Kunst Fuentes, Joshua},
   title = {My Favorite `Ggplot2` Packages with Examples},
   date = {2023-07-23},
   url = {https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2023" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Joshua Kunst Fuentes. 2023. <span>“My Favorite `Ggplot2` Packages with
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunst fuentes2023" class="csl-entry quarto-appendix-citeas" role="listitem">
+Kunst Fuentes, Joshua. 2023. <span>“My Favorite `Ggplot2` Packages with
 Examples.”</span> July 23, 2023. <a href="https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples">https://jkunst.com/blog/posts/2023-07-10-my-favorite-ggplot2-packages-with-examples</a>.
-</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -832,9 +980,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -870,10 +1032,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/jkunst\.com\/blog");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -883,8 +1062,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -899,6 +1087,238 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -936,29 +1356,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/jkunst\.com\/blog/);
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
-</script><script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
+<script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Joshua Kunst ©</div>   
-    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</div>
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Joshua Kunst ©</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</p>
+</div>
   </div>
 </footer>
+
+
 
 
 </body></html>

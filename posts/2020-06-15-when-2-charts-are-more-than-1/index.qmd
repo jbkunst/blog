@@ -55,7 +55,8 @@ library(tidyverse)
 library(lubridate)
 
 data <- readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
-
+data <- data %>% 
+  filter(date <= ymd(20220701), wday(date) == 2)
 # glimpse(data)
 
 data %>% count(continent)

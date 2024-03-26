@@ -43,3 +43,6 @@ format:
     code-block-border-left: true
     code-link: true
     code-fold: show
+
+execute:
+  freeze: true

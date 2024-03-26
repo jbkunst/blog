@@ -43,6 +43,7 @@ The packages to made this possible were:
 
 ```{r}
 rm(list = ls())
+# remotes::install_github("cran/maptools")
 library(tidyverse)
 library(maptools)
 library(highcharter)
@@ -63,16 +64,23 @@ package.
 ```{r}
 fldr <- here::here("posts", "2016-12-15-interactive-and-styled-middle-earth-map", "data")
 
-shp_to_geoj_smpl <- function(file = "Coastline2.shp", k = 0.5) {
+shp_to_geoj_smpl <- function(file = "Towns.shp", k = 0.5) {
   d <- readShapeSpatial(file.path(fldr, file))
+  
   d <- ms_simplify(d, keep = k)
+  
+  
   d <- geojson_list(d)
+  
+  
   geojsonio::geojson_write(d, file = str_replace(file.path(fldr, file), "shp$", "geojson"))
   d
 }
 
-shp_points_to_geoj <- function(file) {
+shp_points_to_geoj <- function(file = "Cities.shp"){
   outp <- readShapeSpatial(file.path(fldr, file))
+  names(outp) <- str_to_title(names(outp))
+  outp$Name <- stringi::stri_trans_general(outp$Name, "latin-ascii")
   outp <- geojson_json(outp) 
   geojsonio::geojson_write(outp, file = str_replace(file.path(fldr, file), "shp$", "geojson"))
   outp
@@ -82,6 +90,7 @@ dir(fldr) %>%
   str_subset(".shp")
 
 cstln <- shp_to_geoj_smpl("Coastline2.shp", .65)
+
 hlprs <- shp_to_geoj_smpl("HelperContours.shp", .65)
 
 rvers <- shp_to_geoj_smpl("Rivers.shp", .01)
@@ -119,7 +128,7 @@ the type of info:
 hcme <- highchart(type = "map") %>% 
   hc_chart(style = list(fontFamily = "Macondo"), backgroundColor = "#F4C283") %>% 
   hc_title(text = "The Middle Earth", style = list(fontFamily = "Tangerine", fontSize = "40px")) %>% 
-  hc_add_series(data = hlprs, type = "mapline", color = "brown", name = "Helpers", visible = FALSE) %>%
+  # hc_add_series(data = hlprs, type = "mapline", color = "brown", name = "Helpers", visible = FALSE) %>%
   hc_add_series(data = cstln, type = "mapline", color = "brown", name = "Coast") %>%
   hc_add_series(data = rvers, type = "mapline", color = "#7e88ee", name = "Rivers") %>%
   hc_add_series(data = roads, type = "mapline", color = "#634d53", name = "Main Roads") %>%

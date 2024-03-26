@@ -5,109 +5,109 @@ editor_options:
 draft: true
 ---
 
-```{r setup, include=FALSE}
-source(here::here("_R/post_setup.R"))
-```
+<!-- ```{r setup, include=FALSE} -->
+<!-- source(here::here("_R/post_setup.R")) -->
+<!-- ``` -->
 
-```{r}
-datadir <- here::here("posts/2023-exploring-movies-galaxies/data")
-datadir
+<!-- ```{r} -->
+<!-- datadir <- here::here("posts/2023-exploring-movies-galaxies/data") -->
+<!-- datadir -->
 
-data <- read_delim(fs::path(datadir, "network_metadata", ext = "tab"), )
+<!-- data <- read_delim(fs::path(datadir, "network_metadata", ext = "tab"), ) -->
 
-data <- janitor::clean_names(data)
+<!-- data <- janitor::clean_names(data) -->
 
-glimpse(data)
-```
+<!-- glimpse(data) -->
+<!-- ``` -->
 
-```{r}
-library(rgexf)
+<!-- ```{r} -->
+<!-- library(rgexf) -->
 
-id_test <- 316
-# id_test <- 292
- 
-network_stats <- data |> 
-  # as.data.frame() |> 
-  filter(gexf_id == id_test) 
+<!-- id_test <- 316 -->
+<!-- # id_test <- 292 -->
 
-network_stats
+<!-- network_stats <- data |>  -->
+<!--   # as.data.frame() |>  -->
+<!--   filter(gexf_id == id_test)  -->
 
-network <- rgexf::read.gexf(fs::path(datadir, "gexf", id_test, ext = "gexf"))
-```
+<!-- network_stats -->
 
-```{r igraph}
-library(igraph)
+<!-- network <- rgexf::read.gexf(fs::path(datadir, "gexf", id_test, ext = "gexf")) -->
+<!-- ``` -->
 
-network <- rgexf::gexf.to.igraph(network)
+<!-- ```{r igraph} -->
+<!-- library(igraph) -->
 
-str(network)
+<!-- network <- rgexf::gexf.to.igraph(network) -->
 
-V(network)$page_rank   <- page.rank(network)$vector
-V(network)$betweenness <- betweenness(network)
-V(network)$degree      <- degree(network)
-V(network)$community   <- membership(cluster_walktrap(network))
+<!-- str(network) -->
 
-plot(network)
+<!-- V(network)$page_rank   <- page.rank(network)$vector -->
+<!-- V(network)$betweenness <- betweenness(network) -->
+<!-- V(network)$degree      <- degree(network) -->
+<!-- V(network)$community   <- membership(cluster_walktrap(network)) -->
 
-glimpse(network_stats)
+<!-- plot(network) -->
 
-network_stats$edges
-igraph::gsize(network)
+<!-- glimpse(network_stats) -->
 
-# igraph::centralization.betweenness()
-# centralize(network)
-centr_degree(network)
-igraph::graph.density(network)
-```
+<!-- network_stats$edges -->
+<!-- igraph::gsize(network) -->
 
-
-```{r grapher}
-# remotes::install_github('JohnCoene/grapher', dependencies = c("Depends", "Imports"))
-library(grapher)
-
-gphr <- graph(network)
-
-gphr
-
-gphr |> 
-  graph_cluster() |> 
-  scale_node_color(cluster)
-
-length(table(V(network)$community))
-# graph(fs::path(datadir, "gexf", id_test, ext = "gexf"))
-```
-
-```{r sigmaNet}
-# remotes::install_github('iankloo/sigmaNet')
-library(sigmaNet)
-
-layout <- layout_nicely(network)
-
-sig <- sigmaFromIgraph(network, layout = layout) 
-
-sig
-
-sig |> 
-  addNodeLabels(labelAttr = 'name') |>
-  addEdgeSize(sizeAttr = 'weight', minSize = .1, maxSize = 2) |> 
-  # addNodeSize(sizeMetric = 'betweenness', minSize = 4, maxSize = 8) |>
-  addNodeSize(sizeVector = V(network)$betweenness, minSize = 4, maxSize = 8) |>
-  addNodeColors(colorAttr = 'color', colorPal = 'Set1')
-```
+<!-- # igraph::centralization.betweenness() -->
+<!-- # centralize(network) -->
+<!-- centr_degree(network) -->
+<!-- igraph::graph.density(network) -->
+<!-- ``` -->
 
 
-```{r visNetwork}
-library(visNetwork)
+<!-- ```{r grapher} -->
+<!-- # remotes::install_github('JohnCoene/grapher', dependencies = c("Depends", "Imports")) -->
+<!-- library(grapher) -->
 
-dnet <- toVisNetworkData(network)
+<!-- gphr <- graph(network) -->
 
-visnet <- visNetwork(nodes = dnet$nodes, edges = dnet$edges)
+<!-- gphr -->
 
-visnet
+<!-- gphr |>  -->
+<!--   graph_cluster() |>  -->
+<!--   scale_node_color(cluster) -->
 
-visnet |> 
-  visEdges(width = "weight", smooth = FALSE) |> 
-  visNodes() |> 
-  visPhysics(solver = "forceAtlas2Based")
-```
+<!-- length(table(V(network)$community)) -->
+<!-- # graph(fs::path(datadir, "gexf", id_test, ext = "gexf")) -->
+<!-- ``` -->
+
+<!-- ```{r sigmaNet} -->
+<!-- # remotes::install_github('iankloo/sigmaNet') -->
+<!-- library(sigmaNet) -->
+
+<!-- layout <- layout_nicely(network) -->
+
+<!-- sig <- sigmaFromIgraph(network, layout = layout)  -->
+
+<!-- sig -->
+
+<!-- sig |>  -->
+<!--   addNodeLabels(labelAttr = 'name') |> -->
+<!--   addEdgeSize(sizeAttr = 'weight', minSize = .1, maxSize = 2) |>  -->
+<!--   # addNodeSize(sizeMetric = 'betweenness', minSize = 4, maxSize = 8) |> -->
+<!--   addNodeSize(sizeVector = V(network)$betweenness, minSize = 4, maxSize = 8) |> -->
+<!--   addNodeColors(colorAttr = 'color', colorPal = 'Set1') -->
+<!-- ``` -->
+
+
+<!-- ```{r visNetwork} -->
+<!-- library(visNetwork) -->
+
+<!-- dnet <- toVisNetworkData(network) -->
+
+<!-- visnet <- visNetwork(nodes = dnet$nodes, edges = dnet$edges) -->
+
+<!-- visnet -->
+
+<!-- visnet |>  -->
+<!--   visEdges(width = "weight", smooth = FALSE) |>  -->
+<!--   visNodes() |>  -->
+<!--   visPhysics(solver = "forceAtlas2Based") -->
+<!-- ``` -->
 

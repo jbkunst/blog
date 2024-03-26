@@ -394,6 +394,7 @@ Source: [https://github.com/grantmcdermott/parttree](https://github.com/grantmcd
 I use the {parttree} package when the model is simple, or when I want to explain the decision tree algorithm.
 
 ```{r}
+# remotes::install_github("grantmcdermott/parttree")
 library(parttree)
 
 # 2 independent variables
