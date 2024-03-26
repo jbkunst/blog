@@ -75,7 +75,7 @@ chesswc <- chesswc %>%
   mutate(game_id = row_number())
 
 library(furrr)
-plan(multisession, workers = 4)
+plan(multisession, workers = 2)
 
 dfmoves <- chesswc %>% 
   select(game_id, pgn) %>% 
@@ -398,7 +398,8 @@ dfcaputures <- dfmoves %>%
   filter(status == "captured") %>%
   count(captured_by, piece) %>%
   ungroup() %>% 
-  arrange(desc(n))
+  arrange(desc(n)) %>% 
+  filter(!is.na(captured_by))
 
 dfvertices <- rchess:::.chesspiecedata() %>%
   select(-fen, -start_position) %>%
@@ -417,7 +418,7 @@ dfvertices <- dfvertices %>%
   mutate(x = lout[, 1], y = lout[, 2])
 
 dfedges <- as_data_frame(g, "edges") %>%
-  tbl_df() %>%
+  tibble::as_tibble() %>%
   left_join(dfvertices %>% select(from = name, x, y), by = "from") %>%
   left_join(dfvertices %>% select(to = name, xend = x, yend = y), by = "to")
 ```
