@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.4.550">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Joshua Kunst Fuentes">
 <meta name="dcterms.date" content="2021-06-18">
 <meta name="description" content="Always love time series when I studied statistics. This is a post to honor the time series (no {shiny} required).">
+
 <title>Data, Code and Visualization - Simulating and watching autoregressive processes</title>
 <style>
 code{white-space: pre-wrap;}
@@ -17,11 +20,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -46,44 +50,15 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -100,13 +75,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -115,10 +97,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
-}</script><script type="text/javascript">
+}</script>
+
+<script type="text/javascript">
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -130,57 +116,140 @@ ga('send', {
   hitType: 'pageview',
   'anonymizeIp': true,
 });
-</script><script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
-<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script><script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script><script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script><script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script><script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="../../styles.css">
+</script>
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="../../site_libs/proj4js-2.3.15/proj4.js"></script>
+<link href="../../site_libs/highcharts-9.3.1/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-9.3.1/highcharts.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/highcharts-3d.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/highcharts-more.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/stock.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/map.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/data.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/exporting.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/offline-exporting.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/drilldown.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/item-series.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/overlapping-datalabels.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/annotations.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/export-data.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/funnel.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/heatmap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/treemap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/sankey.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/dependency-wheel.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/organization.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/solid-gauge.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/streamgraph.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/sunburst.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/vector.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/wordcloud.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/xrange.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/tilemap.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/venn.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/gantt.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/timeline.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/parallel-coordinates.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/bullet.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/coloraxis.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/dumbbell.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/lollipop.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/series-label.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/plugins/motion.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/custom/reset.js"></script>
+<script src="../../site_libs/highcharts-9.3.1/modules/boost.js"></script>
+<script src="../../site_libs/highchart-binding-0.9.4/highchart.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Data, Code and Visualization - Simulating and watching autoregressive processes">
 <meta property="og:description" content="Always love time series when I studied statistics. This is a post to honor the time series (no {shiny} required).">
-<meta property="og:image" content="https://jkunst.com/blog/posts\2021-07-17-simulating-and-watching-autoregressive-processes\images\preview.gif">
-<meta property="og:site-name" content="Data, Code and Visualization">
+<meta property="og:image" content="https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/images/preview.gif">
+<meta property="og:site_name" content="Data, Code and Visualization">
 <meta name="twitter:title" content="Data, Code and Visualization - Simulating and watching autoregressive processes">
 <meta name="twitter:description" content="Always love time series when I studied statistics. This is a post to honor the time series (no {shiny} required).">
-<meta name="twitter:image" content="https://jkunst.com/blog/posts\2021-07-17-simulating-and-watching-autoregressive-processes\images\preview.gif">
+<meta name="twitter:image" content="https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes/images/preview.gif">
 <meta name="twitter:creator" content="@jbkunst">
 <meta name="twitter:card" content="summary_large_image">
 </head>
+
 <body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data, Code and Visualization</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
-    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"> <i class="bi bi-info-circle" role="img" aria-label="about">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/jbkunst"> <i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"> <i class="bi bi-mastodon" role="img" aria-label="mastodon">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Simulating and watching autoregressive processes</h1>
                   <div>
@@ -205,7 +274,7 @@ ga('send', {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Joshua Kunst Fuentes </p>
+               <p><a href="https://jkunst.com">Joshua Kunst Fuentes</a> </p>
             </div>
     </div>
       
@@ -222,45 +291,65 @@ ga('send', {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
    
   <ul>
-<li><a href="#the-model" id="toc-the-model" class="nav-link active" data-scroll-target="#the-model">The model</a></li>
+  <li><a href="#the-model" id="toc-the-model" class="nav-link active" data-scroll-target="#the-model">The model</a></li>
   <li><a href="#interactivity" id="toc-interactivity" class="nav-link" data-scroll-target="#interactivity">Interactivity</a></li>
   <li><a href="#improving-it" id="toc-improving-it" class="nav-link" data-scroll-target="#improving-it">Improving it</a></li>
   <li><a href="#extending-it" id="toc-extending-it" class="nav-link" data-scroll-target="#extending-it">Extending it</a></li>
   <li><a href="#let-it-shine-with-shiny-package" id="toc-let-it-shine-with-shiny-package" class="nav-link" data-scroll-target="#let-it-shine-with-shiny-package">Let it shine (with {shiny} package)</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="the-model" class="level2"><h2 class="anchored" data-anchor-id="the-model">The model</h2>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<section id="the-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-model">The model</h2>
 <p>An autoregressive model of order <span class="math inline">\(p\)</span>, <span class="math inline">\(AR(p)\)</span>, is defined as:</p>
 <p><span class="math display">\[{\displaystyle X_{t}=c+\sum _{i=1}^{p}\varphi _{i}X_{t-i}+\varepsilon _{t}\,}\]</span></p>
 <p>Where <span class="math inline">\(\varepsilon_t\)</span> is a <em>White Noise</em>, <span class="math inline">\(c\)</span>, <span class="math inline">\(\varphi_i\)</span> parameters of the model. The structure of this model is easy of understand: The next value <span class="math inline">\(X_t\)</span> is a linear combination of the past values plus a random noise -or innovation-.</p>
-<p>In R we can simulate this model with <code><a href="https://rdrr.io/r/stats/arima.sim.html">stats::arima.sim</a></code> function for example, if we want simulate an <span class="math inline">\(AR(1)\)</span> with <span class="math inline">\(\varphi _{1} = \varphi = 0.9\)</span> with <span class="math inline">\(0\)</span> mean:</p>
+<p>In R we can simulate this model with <code>stats::arima.sim</code> function for example, if we want simulate an <span class="math inline">\(AR(1)\)</span> with <span class="math inline">\(\varphi _{1} = \varphi = 0.9\)</span> with <span class="math inline">\(0\)</span> mean:</p>
 <p><span class="math display">\[{\displaystyle X_{t}= \varphi X_{t-i} + \varepsilon _{t} = 0.9 \times X_{t-i} + \varepsilon _{t}\,}\]</span> We code:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ar_model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">ar_model</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ar_model <span class="ot">&lt;-</span>  <span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.9</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">arima.sim</span>(<span class="at">model =</span> ar_model, <span class="at">n =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>Time Series:
 Start = 1 
 End = 20 
 Frequency = 1 
- [1] -1.77672932 -0.42137552 -1.14412458 -1.69266885 -0.89272259 -0.91866922
- [7] -0.19412967  0.47567958 -0.26995749 -0.72483040  0.03042900 -0.31695851
-[13]  1.04817286 -0.05238642 -0.49166004  0.01527420  0.52553654 -0.58810687
-[19] -0.60426529 -0.75117670</code></pre>
+ [1] -0.2937173 -1.0373896 -2.1456628 -2.0955873 -2.5788247 -0.8970791
+ [7]  0.9027584 -0.6562865 -1.2958745 -1.7186682 -1.3933786 -1.1556604
+[13] -1.8244684 -1.1352556 -1.8761248 -1.8890563 -2.1725299 -2.0381828
+[19] -2.7960559 -2.5107238</code></pre>
 </div>
 </div>
-</section><section id="interactivity" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="interactivity">Interactivity</h2>
+</section>
+<section id="interactivity" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="interactivity">Interactivity</h2>
 <p>There is a popular example in highcharts: <em>Dynamic Update</em> where each second a random value is added to the line series https://www.highcharts.com/demo/dynamic-update.</p>
 <p>The key part of this example is the next function which every second generate a random value and then is added to the series.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// This is Javascript code :) :/ :S XD</span></span>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// This is Javascript code :) :/ :S XD</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> () {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// set up the updating of the chart each second</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">var</span> series <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">series</span>[<span class="dv">0</span>]<span class="op">;</span></span>
@@ -273,75 +362,83 @@ Frequency = 1
 </details>
 </div>
 <p>We’ll take the example as a template and change to store the last values of the process and generate the random noise and the new value. To get the linear combination between the past values and the autoregressive parameter we used the dot product. For the generation of a normal random number we can use the the Box-Muller transform.</p>
-<aside><p><em>Dot product of two arrays in Javascript</em> https://stackoverflow.com/a/64816824/829971</p>
+<aside>
+<p><em>Dot product of two arrays in Javascript</em> https://stackoverflow.com/a/64816824/829971</p>
 <p><em>Generating random normal number in Javascript</em> https://stackoverflow.com/a/36481059/829971</p>
-</aside><p>Let’s create some</p>
+</aside>
+<p>Let’s create some</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># model</span></span>
-<span><span class="va">ar</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.85</span>, <span class="op">-</span><span class="fl">0.1</span>, <span class="fl">0.2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># time to update the chart in seconds</span></span>
-<span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span></span>
-<span><span class="co"># the first values of the model</span></span>
-<span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ar <span class="op">=</span> <span class="va">ar</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ts</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">ts</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code> [1] 1.155 2.471 3.908 1.892 2.101 3.163 1.463 2.857 2.956 2.607</code></pre>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(highcharter)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ar <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># time to update the chart in seconds</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># the first values of the model</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ts <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> ar), <span class="at">n =</span> <span class="dv">10</span>))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ts <span class="ot">&lt;-</span> <span class="fu">round</span>(ts, <span class="dv">3</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] -0.714 -1.815 -0.549 -2.127 -2.543 -2.010 -1.845 -2.658 -3.561 -3.568</code></pre>
 </div>
 </div>
 <p>The function would be something like this:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">load_fn</span> <span class="op">&lt;-</span> <span class="st">"function () {{</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">    dot = (a, b) =&gt; a.map((x, i) =&gt; a[i] * b[i]).reduce((m, n) =&gt; m + n);</span></span>
-<span><span class="st">  function randn_bm() {{</span></span>
-<span><span class="st">    var u = 0, v = 0;</span></span>
-<span><span class="st">    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)</span></span>
-<span><span class="st">    while(v === 0) v = Math.random();</span></span>
-<span><span class="st">    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );</span></span>
-<span><span class="st">   }}</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">    var dat = [{ data }];</span></span>
-<span><span class="st">  var ar = [{ ar }];</span></span>
-<span><span class="st">  dat = dat.slice(-ar.length);</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">  // set up the updating of the chart each second</span></span>
-<span><span class="st">  var series = this.series[0];</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">  setInterval(function () {{</span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">      console.log(dat);</span></span>
-<span><span class="st">      var new_value = dot(dat, ar) + randn_bm();</span></span>
-<span><span class="st">      new_value = Math.round(1000 * new_value)/1000</span></span>
-<span><span class="st">      console.log(new_value)</span></span>
-<span><span class="st">      dat.shift(); </span></span>
-<span><span class="st">      dat.push(new_value);</span></span>
-<span><span class="st">      series.addPoint([new_value]);  </span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">      //if (series.data.length &lt; 500) {{</span></span>
-<span><span class="st">      //  series.addPoint([new_value], true, false);</span></span>
-<span><span class="st">      //}} else {{</span></span>
-<span><span class="st">      //  series.addPoint([new_value], true, true);</span></span>
-<span><span class="st">      //}}</span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">  }}, { time });</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">}}"</span></span>
-<span></span>
-<span><span class="va">load_fn_glued</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span></span>
-<span>  <span class="va">load_fn</span>,</span>
-<span>  data <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">ts</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,</span>
-<span>  ar <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">ar</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,</span>
-<span>  time <span class="op">=</span> <span class="va">time</span> <span class="op">*</span> <span class="fl">1000</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">load_fn_glued</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>load_fn <span class="ot">&lt;-</span> <span class="st">"function () {{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">    dot = (a, b) =&gt; a.map((x, i) =&gt; a[i] * b[i]).reduce((m, n) =&gt; m + n);</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  function randn_bm() {{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">    var u = 0, v = 0;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">    while(v === 0) v = Math.random();</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">   }}</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">    var dat = [{ data }];</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">  var ar = [{ ar }];</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">  dat = dat.slice(-ar.length);</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">  // set up the updating of the chart each second</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="st">  var series = this.series[0];</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="st">  setInterval(function () {{</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="st">      console.log(dat);</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="st">      var new_value = dot(dat, ar) + randn_bm();</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="st">      new_value = Math.round(1000 * new_value)/1000</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="st">      console.log(new_value)</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="st">      dat.shift(); </span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="st">      dat.push(new_value);</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="st">      series.addPoint([new_value]);  </span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="st">      //if (series.data.length &lt; 500) {{</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="st">      //  series.addPoint([new_value], true, false);</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="st">      //}} else {{</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="st">      //  series.addPoint([new_value], true, true);</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="st">      //}}</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="st">  }}, { time });</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="st">}}"</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>load_fn_glued <span class="ot">&lt;-</span> <span class="fu">str_glue</span>(</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  load_fn,</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">str_c</span>(ts, <span class="at">collapse =</span> <span class="st">","</span>),</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">ar =</span> <span class="fu">str_c</span>(ar, <span class="at">collapse =</span> <span class="st">","</span>),</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> time <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>load_fn_glued</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code>function () {
 
     dot = (a, b) =&gt; a.map((x, i) =&gt; a[i] * b[i]).reduce((m, n) =&gt; m + n);
@@ -352,7 +449,7 @@ Frequency = 1
     return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
    }
   
-    var dat = [1.155,2.471,3.908,1.892,2.101,3.163,1.463,2.857,2.956,2.607];
+    var dat = [-0.714,-1.815,-0.549,-2.127,-2.543,-2.01,-1.845,-2.658,-3.561,-3.568];
   var ar = [0.85,-0.1,0.2];
   dat = dat.slice(-ar.length);
   
@@ -381,34 +478,40 @@ Frequency = 1
 </div>
 </div>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ts</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span></span>
-<span>    events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>load <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">load_fn_glued</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>    animation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">time</span><span class="op">*</span><span class="fl">1000</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-
-<div id="htmlwidget-178f09989bad4fcc4091" style="width:100%;height:464px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-178f09989bad4fcc4091">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [1.155,2.471,3.908,1.892,2.101,3.163,1.463,2.857,2.956,2.607];\n  var ar = [0.85,-0.1,0.2];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[1.155,2.471,3.908,1.892,2.101,3.163,1.463,2.857,2.956,2.607]}]},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load"],"jsHooks":[]}</script>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">highchart</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_add_series</span>(<span class="at">data =</span> ts) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_chart</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">events =</span> <span class="fu">list</span>(<span class="at">load =</span> <span class="fu">JS</span>(load_fn_glued)), </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">animation =</span> <span class="fu">list</span>(<span class="at">duration =</span> time<span class="sc">*</span><span class="dv">1000</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-6f5e648cf0a4603e686a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-6f5e648cf0a4603e686a">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [-0.714,-1.815,-0.549,-2.127,-2.543,-2.01,-1.845,-2.658,-3.561,-3.568];\n  var ar = [0.85,-0.1,0.2];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":null},"yAxis":{"title":{"text":null}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[-0.714,-1.815,-0.549,-2.127,-2.543,-2.01,-1.845,-2.658,-3.561,-3.568]}]},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load"],"jsHooks":[]}</script>
 </div>
 </div>
 <p>And it works perfectly in the first try! Nah! This take me some time in the <a href="https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/dynamic-update">jsfiddle</a>.</p>
 <blockquote class="blockquote">
 <p>All according to keikaku.</p>
 </blockquote>
-</section><section id="improving-it" class="level2"><h2 class="anchored" data-anchor-id="improving-it">Improving it</h2>
+</section>
+<section id="improving-it" class="level2">
+<h2 class="anchored" data-anchor-id="improving-it">Improving it</h2>
 <p>We can improve the chart doing for example:</p>
 <ul>
 <li><p>Make a <code>plotLine</code> in y axis at the value 0 to show as reference.</p></li>
 <li><p>Make a second yAxis to the right showing the last generated value, this can be done using the next function in the <code>tickPositioner</code>argument.</p></li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tick_post_fn</span> <span class="op">&lt;-</span> <span class="st">"function(min,max){        </span></span>
-<span><span class="st">  var data = this.chart.yAxis[0].series[0].processedYData;</span></span>
-<span><span class="st">  //last point</span></span>
-<span><span class="st">  return [Math.round(1000 * data[data.length-1])/1000]; </span></span>
-<span><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tick_post_fn <span class="ot">&lt;-</span> <span class="st">"function(min,max){        </span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">  var data = this.chart.yAxis[0].series[0].processedYData;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">  //last point</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">  return [Math.round(1000 * data[data.length-1])/1000]; </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ul>
@@ -416,264 +519,290 @@ Frequency = 1
 <li><p>We can put an informative title showing the specification of the simulated model.</p></li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">ar</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">ar</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">par</span>, <span class="va">t</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="va">par</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">t</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"+ "</span>, <span class="va">par</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"{ par } \\times X_{{ t - { i } }}"</span>, i <span class="op">=</span> <span class="va">t</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="op">}</span><span class="op">)</span> </span>
-<span>  </span>
-<span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html">reduce</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">str_c</span>, sep <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"$$ X_t = "</span>, <span class="va">formula</span>, <span class="st">" + \\epsilon_t$$"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map2</span>(ar, <span class="fu">seq_along</span>(ar), <span class="cf">function</span>(par, t){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(par <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> t <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    par <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"+ "</span>, par)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"{ par } </span><span class="sc">\\</span><span class="st">times X_{{ t - { i } }}"</span>, <span class="at">i =</span> t)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  }) </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">reduce</span>(formula, str_c, <span class="at">sep =</span> <span class="st">" "</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"$$ X_t = "</span>, formula, <span class="st">" + </span><span class="sc">\\</span><span class="st">epsilon_t$$"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><p><span class="math display">\[ X_t = 0.85 \times X_{ t - 1 } -0.1 \times X_{ t - 2 } + 0.2 \times X_{ t - 3 } + \epsilon_t\]</span></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(formula)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p><span class="math display">\[ X_t = 0.85 \times X_{ t - 1 } -0.1 \times X_{ t - 2 } + 0.2 \times X_{ t - 3 } + \epsilon_t\]</span></p>
 <p>Alternatively, formula using subscript and superscript tags.</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">ar</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">ar</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">par</span>, <span class="va">t</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
-<span>  <span class="kw">if</span><span class="op">(</span><span class="va">par</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">t</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"+ "</span>, <span class="va">par</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  </span>
-<span>  <span class="fu">htmltools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="va">par</span>, <span class="st">"×"</span>, <span class="st">"X"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"t - { i }"</span>, i <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
-<span><span class="op">}</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html">reduce</a></span><span class="op">(</span><span class="va">formula</span>, <span class="fu">htmltools</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" = "</span>,<span class="va">formula</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" + &amp;epsilon;"</span>,  <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map2</span>(ar, <span class="fu">seq_along</span>(ar), <span class="cf">function</span>(par, t){</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(par <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> t <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    par <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"+ "</span>, par)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  htmltools<span class="sc">::</span><span class="fu">tagList</span>(par, <span class="st">"×"</span>, <span class="st">"X"</span>, tags<span class="sc">$</span><span class="fu">sub</span>(stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"t - { i }"</span>, <span class="at">i =</span> t)))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}) </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">reduce</span>(formula, htmltools<span class="sc">::</span>tagList)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>formula <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"X"</span>, tags<span class="sc">$</span><span class="fu">sub</span>(<span class="st">"t"</span>) <span class="sc">%&gt;%</span> <span class="fu">as.character</span>(), <span class="st">" = "</span>,formula <span class="sc">%&gt;%</span> <span class="fu">as.character</span>(), <span class="st">" + &amp;epsilon;"</span>,  tags<span class="sc">$</span><span class="fu">sub</span>(<span class="st">"t"</span>) <span class="sc">%&gt;%</span> <span class="fu">as.character</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><p>X<sub>t</sub> = 0.85 × X <sub>t - 1</sub> -0.1 × X <sub>t - 2</sub> + 0.2 × X <sub>t - 3</sub> + ε<sub>t</sub></p>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(formula)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p>X<sub>t</sub> = 0.85 × X <sub>t - 1</sub> -0.1 × X <sub>t - 2</sub> + 0.2 × X <sub>t - 3</sub> + ε<sub>t</sub></p>
 <ul>
 <li>Helper button to remove last values.</li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rm_poinst_fn</span> <span class="op">&lt;-</span> <span class="st">"function () {</span></span>
-<span><span class="st">  for (var i = 1; i &lt;= 500; i++) {</span></span>
-<span><span class="st">    if (this.series[0].data.length) {</span></span>
-<span><span class="st">      this.series[0].data[0].remove();</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rm_poinst_fn <span class="ot">&lt;-</span> <span class="st">"function () {</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">  for (var i = 1; i &lt;= 500; i++) {</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">    if (this.series[0].data.length) {</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">      this.series[0].data[0].remove();</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">  }</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">}"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ul>
 <li>And others tweaks.</li>
 </ul>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ts</span>, name <span class="op">=</span> <span class="st">"Process"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span></span>
-<span>    events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>load <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">load_fn_glued</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>    animation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">time</span><span class="op">*</span><span class="fl">1000</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Autoregressive process"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">formula</span><span class="op">)</span>, useHTML <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>valueDecimals <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"95%"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_exporting.html">hc_exporting</a></span><span class="op">(</span></span>
-<span>    enabled <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    buttons <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        text <span class="op">=</span>  <span class="st">"Remove last 500 values"</span>,</span>
-<span>        onclick <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">rm_poinst_fn</span><span class="op">)</span>,</span>
-<span>        theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>stroke <span class="op">=</span> <span class="st">'silver'</span><span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_yAxis.html">hc_yAxis_multiples</a></span><span class="op">(</span></span>
-<span>    <span class="co"># default axis</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>      plotLines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">0</span>, width <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"#AAA"</span>, zIndex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>    <span class="co"># opposite axis</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>      linkedTo <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>      opposite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>      gridLineWidth <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>      tickPositioner <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">tick_post_fn</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_navigator.html">hc_navigator</a></span><span class="op">(</span></span>
-<span>    enabled <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>    series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span>,</span>
-<span>    xAxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, width <span class="op">=</span> <span class="st">"95%"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-
-<div id="htmlwidget-cfb5da2b739d1a02f9d0" style="width:100%;height:464px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cfb5da2b739d1a02f9d0">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [1.155,2.471,3.908,1.892,2.101,3.163,1.463,2.857,2.956,2.607];\n  var ar = [0.85,-0.1,0.2];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n  var data = this.chart.yAxis[0].series[0].processedYData;\n  //last point\n  return [Math.round(1000 * data[data.length-1])/1000]; \n}"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n  for (var i = 1; i <= 500; i++) {\n    if (this.series[0].data.length) {\n      this.series[0].data[0].remove();\n    }\n  }\n}","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[1.155,2.471,3.908,1.892,2.101,3.163,1.463,2.857,2.956,2.607],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0.85\n×\nX\n<sub>t - 1<\/sub>\n-0.1\n×\nX\n<sub>t - 2<\/sub>\n+ 0.2\n×\nX\n<sub>t - 3<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">highchart</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_add_series</span>(<span class="at">data =</span> ts, <span class="at">name =</span> <span class="st">"Process"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_chart</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">events =</span> <span class="fu">list</span>(<span class="at">load =</span> <span class="fu">JS</span>(load_fn_glued)), </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">animation =</span> <span class="fu">list</span>(<span class="at">duration =</span> time<span class="sc">*</span><span class="dv">1000</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_title</span>(<span class="at">text =</span> <span class="st">"Autoregressive process"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_subtitle</span>(<span class="at">text =</span> <span class="fu">as.character</span>(formula), <span class="at">useHTML =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_plotOptions</span>(<span class="at">series =</span> <span class="fu">list</span>(<span class="at">marker =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">FALSE</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_tooltip</span>(<span class="at">valueDecimals =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_xAxis</span>(<span class="at">width =</span> <span class="st">"95%"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_exporting</span>(</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">enabled =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">buttons =</span> <span class="fu">list</span>(</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">text =</span>  <span class="st">"Remove last 500 values"</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">onclick =</span> <span class="fu">JS</span>(rm_poinst_fn),</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">theme =</span> <span class="fu">list</span>(<span class="at">stroke =</span> <span class="st">'silver'</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_yAxis_multiples</span>(</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># default axis</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">""</span>),</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">plotLines =</span> <span class="fu">list</span>(</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">value =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"#AAA"</span>, <span class="at">zIndex =</span> <span class="dv">1</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># opposite axis</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">""</span>),</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">linkedTo =</span> <span class="dv">0</span>,</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">opposite =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">gridLineWidth =</span> <span class="dv">0</span>,</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickPositioner =</span> <span class="fu">JS</span>(tick_post_fn)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_navigator</span>(</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">enabled =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">series =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">"line"</span>),</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">xAxis =</span> <span class="fu">list</span>(<span class="at">labels =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">FALSE</span>), <span class="at">width =</span> <span class="st">"95%"</span>)</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-67c8485a6825a979033f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-67c8485a6825a979033f">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [-0.714,-1.815,-0.549,-2.127,-2.543,-2.01,-1.845,-2.658,-3.561,-3.568];\n  var ar = [0.85,-0.1,0.2];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n  var data = this.chart.yAxis[0].series[0].processedYData;\n  //last point\n  return [Math.round(1000 * data[data.length-1])/1000]; \n}"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n  for (var i = 1; i <= 500; i++) {\n    if (this.series[0].data.length) {\n      this.series[0].data[0].remove();\n    }\n  }\n}","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[-0.714,-1.815,-0.549,-2.127,-2.543,-2.01,-1.845,-2.658,-3.561,-3.568],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0.85\n×\nX\n<sub>t - 1<\/sub>\n-0.1\n×\nX\n<sub>t - 2<\/sub>\n+ 0.2\n×\nX\n<sub>t - 3<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
 </div>
 </div>
-</section><section id="extending-it" class="level2"><h2 class="anchored" data-anchor-id="extending-it">Extending it</h2>
+</section>
+<section id="extending-it" class="level2">
+<h2 class="anchored" data-anchor-id="extending-it">Extending it</h2>
 <p>We can encapsulate all this code into a function:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sim_ar_hc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ar</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="va">time</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span></span>
-<span>  </span>
-<span>   <span class="co"># the first values of the model</span></span>
-<span>  <span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/arima.sim.html">arima.sim</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>ar <span class="op">=</span> <span class="va">ar</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">ts</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span>  <span class="va">ts</span></span>
-<span>  </span>
-<span><span class="va">load_fn</span> <span class="op">&lt;-</span> <span class="st">"function () {{</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">    dot = (a, b) =&gt; a.map((x, i) =&gt; a[i] * b[i]).reduce((m, n) =&gt; m + n);</span></span>
-<span><span class="st">  function randn_bm() {{</span></span>
-<span><span class="st">    var u = 0, v = 0;</span></span>
-<span><span class="st">    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)</span></span>
-<span><span class="st">    while(v === 0) v = Math.random();</span></span>
-<span><span class="st">    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );</span></span>
-<span><span class="st">   }}</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">    var dat = [{ data }];</span></span>
-<span><span class="st">  var ar = [{ ar }];</span></span>
-<span><span class="st">  dat = dat.slice(-ar.length);</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">  // set up the updating of the chart each second</span></span>
-<span><span class="st">  var series = this.series[0];</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">  setInterval(function () {{</span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">      console.log(dat);</span></span>
-<span><span class="st">      var new_value = dot(dat, ar) + randn_bm();</span></span>
-<span><span class="st">      new_value = Math.round(1000 * new_value)/1000</span></span>
-<span><span class="st">      console.log(new_value)</span></span>
-<span><span class="st">      dat.shift(); </span></span>
-<span><span class="st">      dat.push(new_value);</span></span>
-<span><span class="st">      series.addPoint([new_value]);  </span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">      //if (series.data.length &lt; 500) {{</span></span>
-<span><span class="st">      //  series.addPoint([new_value], true, false);</span></span>
-<span><span class="st">      //}} else {{</span></span>
-<span><span class="st">      //  series.addPoint([new_value], true, true);</span></span>
-<span><span class="st">      //}}</span></span>
-<span><span class="st">      </span></span>
-<span><span class="st">  }}, { time });</span></span>
-<span><span class="st">  </span></span>
-<span><span class="st">}}"</span></span>
-<span>  </span>
-<span>  <span class="va">load_fn_glued</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span></span>
-<span>    <span class="va">load_fn</span>,</span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">ts</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,</span>
-<span>    ar <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">ar</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span>,</span>
-<span>    time <span class="op">=</span> <span class="va">time</span> <span class="op">*</span> <span class="fl">1000</span></span>
-<span>  <span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">tick_post_fn</span> <span class="op">&lt;-</span> <span class="st">"function(min,max){        </span></span>
-<span><span class="st">    var data = this.chart.yAxis[0].series[0].processedYData;</span></span>
-<span><span class="st">    //last point</span></span>
-<span><span class="st">    return [Math.round(1000 * data[data.length-1])/1000]; </span></span>
-<span><span class="st">  }"</span></span>
-<span>  </span>
-<span>  <span class="va">rm_poinst_fn</span> <span class="op">&lt;-</span> <span class="st">"function () {</span></span>
-<span><span class="st">    for (var i = 1; i &lt;= 500; i++) {</span></span>
-<span><span class="st">      if (this.series[0].data.length) {</span></span>
-<span><span class="st">        this.series[0].data[0].remove();</span></span>
-<span><span class="st">      }</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st">  }"</span></span>
-<span>    </span>
-<span>  <span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map2.html">map2</a></span><span class="op">(</span><span class="va">ar</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">ar</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">par</span>, <span class="va">t</span><span class="op">)</span><span class="op">{</span></span>
-<span>    </span>
-<span>    <span class="kw">if</span><span class="op">(</span><span class="va">par</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">t</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">par</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"+ "</span>, <span class="va">par</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>    </span>
-<span>    <span class="fu">htmltools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">(</span><span class="va">par</span>, <span class="st">"×"</span>, <span class="st">"X"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"t - { i }"</span>, i <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    </span>
-<span>  <span class="op">}</span><span class="op">)</span> </span>
-<span>  </span>
-<span>  <span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html">reduce</a></span><span class="op">(</span><span class="va">formula</span>, <span class="fu">htmltools</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/htmltools/man/tagList.html">tagList</a></span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">formula</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" = "</span>,<span class="va">formula</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">" + &amp;epsilon;"</span>,  <span class="va">tags</span><span class="op">$</span><span class="fu">sub</span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/highchart.html">highchart</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ts</span>, name <span class="op">=</span> <span class="st">"Process"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_chart.html">hc_chart</a></span><span class="op">(</span></span>
-<span>      events <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>load <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">load_fn_glued</span><span class="op">)</span><span class="op">)</span>, </span>
-<span>      animation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>duration <span class="op">=</span> <span class="va">time</span><span class="op">*</span><span class="fl">1000</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Autoregressive process"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">formula</span>, useHTML <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_plotOptions.html">hc_plotOptions</a></span><span class="op">(</span>series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span>valueDecimals <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"95%"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_exporting.html">hc_exporting</a></span><span class="op">(</span></span>
-<span>      enabled <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>      buttons <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>          text <span class="op">=</span>  <span class="st">"Remove last 500 values"</span>,</span>
-<span>          onclick <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">rm_poinst_fn</span><span class="op">)</span>,</span>
-<span>          theme <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>stroke <span class="op">=</span> <span class="st">'silver'</span><span class="op">)</span></span>
-<span>          <span class="op">)</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_yAxis.html">hc_yAxis_multiples</a></span><span class="op">(</span></span>
-<span>      <span class="co"># default axis</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>        plotLines <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fl">0</span>, width <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"#AAA"</span>, zIndex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>          <span class="op">)</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>      <span class="co"># opposite axis</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>        linkedTo <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>        opposite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>        gridLineWidth <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>        tickPositioner <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/htmlwidgets/man/JS.html">JS</a></span><span class="op">(</span><span class="va">tick_post_fn</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_navigator.html">hc_navigator</a></span><span class="op">(</span></span>
-<span>      enabled <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>      series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"line"</span><span class="op">)</span>,</span>
-<span>      xAxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, width <span class="op">=</span> <span class="st">"95%"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  </span>
-<span>  <span class="va">hc</span></span>
-<span>  </span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(highcharter)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sim_ar_hc <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.2</span>), <span class="at">time =</span> <span class="dv">1</span>){</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>   <span class="co"># the first values of the model</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ts <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">arima.sim</span>(<span class="at">model =</span> <span class="fu">list</span>(<span class="at">ar =</span> ar), <span class="at">n =</span> <span class="dv">10</span>))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ts <span class="ot">&lt;-</span> <span class="fu">round</span>(ts, <span class="dv">3</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  ts</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>load_fn <span class="ot">&lt;-</span> <span class="st">"function () {{</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="st">    dot = (a, b) =&gt; a.map((x, i) =&gt; a[i] * b[i]).reduce((m, n) =&gt; m + n);</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="st">  function randn_bm() {{</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="st">    var u = 0, v = 0;</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="st">    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="st">    while(v === 0) v = Math.random();</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="st">    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="st">   }}</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="st">    var dat = [{ data }];</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="st">  var ar = [{ ar }];</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="st">  dat = dat.slice(-ar.length);</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="st">  // set up the updating of the chart each second</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="st">  var series = this.series[0];</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="st">  setInterval(function () {{</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="st">      console.log(dat);</span></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="st">      var new_value = dot(dat, ar) + randn_bm();</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="st">      new_value = Math.round(1000 * new_value)/1000</span></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="st">      console.log(new_value)</span></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="st">      dat.shift(); </span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="st">      dat.push(new_value);</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="st">      series.addPoint([new_value]);  </span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="st">      //if (series.data.length &lt; 500) {{</span></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="st">      //  series.addPoint([new_value], true, false);</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="st">      //}} else {{</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="st">      //  series.addPoint([new_value], true, true);</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="st">      //}}</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="st">      </span></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a><span class="st">  }}, { time });</span></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a><span class="st">}}"</span></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>  load_fn_glued <span class="ot">&lt;-</span> <span class="fu">str_glue</span>(</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    load_fn,</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">str_c</span>(ts, <span class="at">collapse =</span> <span class="st">","</span>),</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">ar =</span> <span class="fu">str_c</span>(ar, <span class="at">collapse =</span> <span class="st">","</span>),</span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> time <span class="sc">*</span> <span class="dv">1000</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>  tick_post_fn <span class="ot">&lt;-</span> <span class="st">"function(min,max){        </span></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a><span class="st">    var data = this.chart.yAxis[0].series[0].processedYData;</span></span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a><span class="st">    //last point</span></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="st">    return [Math.round(1000 * data[data.length-1])/1000]; </span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a><span class="st">  }"</span></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  rm_poinst_fn <span class="ot">&lt;-</span> <span class="st">"function () {</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="st">    for (var i = 1; i &lt;= 500; i++) {</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a><span class="st">      if (this.series[0].data.length) {</span></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="st">        this.series[0].data[0].remove();</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a><span class="st">      }</span></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="st">    }</span></span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="st">  }"</span></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map2</span>(ar, <span class="fu">seq_along</span>(ar), <span class="cf">function</span>(par, t){</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(par <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> t <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a>      par <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"+ "</span>, par)</span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a>    htmltools<span class="sc">::</span><span class="fu">tagList</span>(par, <span class="st">"×"</span>, <span class="st">"X"</span>, tags<span class="sc">$</span><span class="fu">sub</span>(stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"t - { i }"</span>, <span class="at">i =</span> t)))</span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a>  }) </span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">reduce</span>(formula, htmltools<span class="sc">::</span>tagList)</span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a>  formula <span class="ot">&lt;-</span> <span class="fu">str_c</span>(<span class="st">"X"</span>, tags<span class="sc">$</span><span class="fu">sub</span>(<span class="st">"t"</span>) <span class="sc">%&gt;%</span> <span class="fu">as.character</span>(), <span class="st">" = "</span>,formula <span class="sc">%&gt;%</span> <span class="fu">as.character</span>(), <span class="st">" + &amp;epsilon;"</span>,  tags<span class="sc">$</span><span class="fu">sub</span>(<span class="st">"t"</span>) <span class="sc">%&gt;%</span> <span class="fu">as.character</span>())</span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a>  hc <span class="ot">&lt;-</span> <span class="fu">highchart</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_add_series</span>(<span class="at">data =</span> ts, <span class="at">name =</span> <span class="st">"Process"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_chart</span>(</span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a>      <span class="at">events =</span> <span class="fu">list</span>(<span class="at">load =</span> <span class="fu">JS</span>(load_fn_glued)), </span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a>      <span class="at">animation =</span> <span class="fu">list</span>(<span class="at">duration =</span> time<span class="sc">*</span><span class="dv">1000</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_title</span>(<span class="at">text =</span> <span class="st">"Autoregressive process"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_subtitle</span>(<span class="at">text =</span> formula, <span class="at">useHTML =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_plotOptions</span>(<span class="at">series =</span> <span class="fu">list</span>(<span class="at">marker =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">FALSE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_tooltip</span>(<span class="at">valueDecimals =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_xAxis</span>(<span class="at">width =</span> <span class="st">"95%"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_exporting</span>(</span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>      <span class="at">enabled =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>      <span class="at">buttons =</span> <span class="fu">list</span>(</span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>        <span class="fu">list</span>(</span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>          <span class="at">text =</span>  <span class="st">"Remove last 500 values"</span>,</span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>          <span class="at">onclick =</span> <span class="fu">JS</span>(rm_poinst_fn),</span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>          <span class="at">theme =</span> <span class="fu">list</span>(<span class="at">stroke =</span> <span class="st">'silver'</span>)</span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_yAxis_multiples</span>(</span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>      <span class="co"># default axis</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">""</span>),</span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>        <span class="at">plotLines =</span> <span class="fu">list</span>(</span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>          <span class="fu">list</span>(<span class="at">value =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"#AAA"</span>, <span class="at">zIndex =</span> <span class="dv">1</span>)</span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>      <span class="co"># opposite axis</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">""</span>),</span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>        <span class="at">linkedTo =</span> <span class="dv">0</span>,</span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>        <span class="at">opposite =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a>        <span class="at">gridLineWidth =</span> <span class="dv">0</span>,</span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>        <span class="at">tickPositioner =</span> <span class="fu">JS</span>(tick_post_fn)</span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hc_navigator</span>(</span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">enabled =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>      <span class="at">series =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">"line"</span>),</span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">xAxis =</span> <span class="fu">list</span>(<span class="at">labels =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">FALSE</span>), <span class="at">width =</span> <span class="st">"95%"</span>)</span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>  hc</span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>White Noise:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">sim_ar_hc</span><span class="op">(</span>ar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-
-<div id="htmlwidget-3fe1b6909a86f9f515d5" style="width:100%;height:464px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3fe1b6909a86f9f515d5">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [-0.423,1.96,0.983,-0.4,2.135,1.977,-0.419,-0.555,-1.989,0.702];\n  var ar = [0];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n    var data = this.chart.yAxis[0].series[0].processedYData;\n    //last point\n    return [Math.round(1000 * data[data.length-1])/1000]; \n  }"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n    for (var i = 1; i <= 500; i++) {\n      if (this.series[0].data.length) {\n        this.series[0].data[0].remove();\n      }\n    }\n  }","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[-0.423,1.96,0.983,-0.4,2.135,1.977,-0.419,-0.555,-1.989,0.702],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0\n×\nX\n<sub>t - 1<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ar_hc</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-e6156a6636b743a67f7b" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-e6156a6636b743a67f7b">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [-0.552,-0.414,-0.646,1.218,1.121,-0.599,-0.133,-1.545,0.339,1.076];\n  var ar = [0];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n    var data = this.chart.yAxis[0].series[0].processedYData;\n    //last point\n    return [Math.round(1000 * data[data.length-1])/1000]; \n  }"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n    for (var i = 1; i <= 500; i++) {\n      if (this.series[0].data.length) {\n        this.series[0].data[0].remove();\n      }\n    }\n  }","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[-0.552,-0.414,-0.646,1.218,1.121,-0.599,-0.133,-1.545,0.339,1.076],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0\n×\nX\n<sub>t - 1<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Some traditional AR model:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">sim_ar_hc</span><span class="op">(</span>ar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">.1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-
-<div id="htmlwidget-64c68a73dd7ecd7c97e6" style="width:100%;height:464px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-64c68a73dd7ecd7c97e6">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [-0.717,-1.002,-1.768,-2.21,-2.468,-0.994,-0.853,0.209,0.329,0.056];\n  var ar = [0.8,0.1];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n    var data = this.chart.yAxis[0].series[0].processedYData;\n    //last point\n    return [Math.round(1000 * data[data.length-1])/1000]; \n  }"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n    for (var i = 1; i <= 500; i++) {\n      if (this.series[0].data.length) {\n        this.series[0].data[0].remove();\n      }\n    }\n  }","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[-0.717,-1.002,-1.768,-2.21,-2.468,-0.994,-0.853,0.209,0.329,0.056],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0.8\n×\nX\n<sub>t - 1<\/sub>\n+ 0.1\n×\nX\n<sub>t - 2<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ar_hc</span>(<span class="at">ar =</span> <span class="fu">c</span>(.<span class="dv">8</span>, .<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="highchart html-widget html-fill-item" id="htmlwidget-d8822b2d935cc716d1c7" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-d8822b2d935cc716d1c7">{"x":{"hc_opts":{"chart":{"reflow":true,"events":{"load":"function () {\n\n\tdot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);\n  function randn_bm() {\n  \tvar u = 0, v = 0;\n    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)\n    while(v === 0) v = Math.random();\n    return Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );\n   }\n  \n\tvar dat = [3.134,5.382,6.021,6.288,5.356,5.493,5.32,6.035,4.887,3.84];\n  var ar = [0.8,0.1];\n  dat = dat.slice(-ar.length);\n  \n  // set up the updating of the chart each second\n  var series = this.series[0];\n  \n  setInterval(function () {\n      \n      console.log(dat);\n      var new_value = dot(dat, ar) + randn_bm();\n      new_value = Math.round(1000 * new_value)/1000\n      console.log(new_value)\n      dat.shift(); \n      dat.push(new_value);\n      series.addPoint([new_value]);  \n      \n      //if (series.data.length < 500) {\n      //  series.addPoint([new_value], true, false);\n      //} else {\n      //  series.addPoint([new_value], true, true);\n      //}\n      \n  }, 1000);\n  \n}"},"animation":{"duration":500}},"title":{"text":"Autoregressive process"},"yAxis":[{"title":{"text":""},"plotLines":[{"value":0,"width":2,"color":"#AAA","zIndex":1}]},{"title":{"text":""},"linkedTo":0,"opposite":true,"gridLineWidth":0,"tickPositioner":"function(min,max){        \n    var data = this.chart.yAxis[0].series[0].processedYData;\n    //last point\n    return [Math.round(1000 * data[data.length-1])/1000]; \n  }"}],"credits":{"enabled":false},"exporting":{"enabled":true,"buttons":[{"text":"Remove last 500 values","onclick":"function () {\n    for (var i = 1; i <= 500; i++) {\n      if (this.series[0].data.length) {\n        this.series[0].data[0].remove();\n      }\n    }\n  }","theme":{"stroke":"silver"}}]},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"}},"series":[{"data":[3.134,5.382,6.021,6.288,5.356,5.493,5.32,6.035,4.887,3.84],"name":"Process"}],"subtitle":{"text":"X<sub>t<\/sub> = 0.8\n×\nX\n<sub>t - 1<\/sub>\n+ 0.1\n×\nX\n<sub>t - 2<\/sub> + &epsilon;<sub>t<\/sub>","useHTML":true},"tooltip":{"valueDecimals":3},"xAxis":{"width":"95%"},"navigator":{"enabled":true,"series":{"type":"line"},"xAxis":{"labels":{"enabled":false},"width":"95%"}}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":["hc_opts.chart.events.load","hc_opts.yAxis.1.tickPositioner","hc_opts.exporting.buttons.0.onclick"],"jsHooks":[]}</script>
 </div>
 </div>
-</section><section id="let-it-shine-with-shiny-package" class="level2"><h2 class="anchored" data-anchor-id="let-it-shine-with-shiny-package">Let it shine (with {shiny} package)</h2>
+</section>
+<section id="let-it-shine-with-shiny-package" class="level2">
+<h2 class="anchored" data-anchor-id="let-it-shine-with-shiny-package">Let it shine (with {shiny} package)</h2>
 <p>In this case we can update the highcharts using the new set of proxy functions. You can check the code of the shiny app in https://github.com/jbkunst/shiny-apps-edu/ and the app live is in https://jbkunst.shinyapps.io/arma-process</p>
-<iframe src="https://jbkunst.shinyapps.io/arma-process" height="750px" width="100%"></iframe>
-</section><section id="references" class="level2"><h2 class="anchored" data-anchor-id="references">References</h2>
+<iframe src="https://jbkunst.shinyapps.io/arma-process" height="750px" ,="" width="100%"></iframe>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li>https://jsfiddle.net/gh/get/library/pure/highcharts/highcharts/tree/master/samples/highcharts/demo/dynamic-update</li>
 <li>https://jsfiddle.net/BlackLabel/evypfr1L/</li>
@@ -682,17 +811,20 @@ Frequency = 1
 </ul>
 
 
-</section><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2021,
-  author = {Joshua Kunst Fuentes},
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunst fuentes2021,
+  author = {Kunst Fuentes, Joshua},
   title = {Simulating and Watching Autoregressive Processes},
   date = {2021-06-18},
   url = {https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Joshua Kunst Fuentes. 2021. <span>“Simulating and Watching
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunst fuentes2021" class="csl-entry quarto-appendix-citeas" role="listitem">
+Kunst Fuentes, Joshua. 2021. <span>“Simulating and Watching
 Autoregressive Processes.”</span> June 18, 2021. <a href="https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes">https://jkunst.com/blog/posts/2021-07-17-simulating-and-watching-autoregressive-processes</a>.
-</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -719,9 +851,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -757,10 +903,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/jkunst\.com\/blog");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -770,8 +933,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -786,6 +958,238 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -823,29 +1227,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/jkunst\.com\/blog/);
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
-</script><script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
+<script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Joshua Kunst ©</div>   
-    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i> with ❤️ and ☕</div>
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Joshua Kunst ©</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</p>
+</div>
   </div>
 </footer>
+
+
 
 
 </body></html>
