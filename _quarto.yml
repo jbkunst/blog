@@ -35,7 +35,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: materia
     css: styles.css
     monofont:	"Fira Mono"
     monobackgroundcolor: "#f7f7f7"

@@ -1,6 +1,6 @@
 @import 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap';
 
-.sourceCode {
+code {
   font-family: "Fira Code";
 }
 
@@ -14,10 +14,14 @@ main {
 }
 
 .quarto-title-banner .code-tools-button {
-  color: #c1c1c1;
+  color: #f1f1f1;
 }
 
-.navbar-dark,
+.navbar {
+  box-shadow: none;
+}
+
+.navbar,
 .quarto-title-banner {
   animation:backgroundtransition 100s;
   -moz-animation:backgroundtransition 100s infinite; /* Firefox */
