@@ -6,6 +6,7 @@ categories: [package, htmlwidgets, chess]
 image: images/preview.png  
 editor_options: 
   chunk_output_type: console
+freeze: true
 ---
 
 ```{r setup, include=FALSE}

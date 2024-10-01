@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.5.57">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Joshua Kunst Fuentes">
 <meta name="dcterms.date" content="2019-04-08">
-<title>Data, Code and Visualization - When charts are integrated in the web page</title>
+
+<title>When charts are integrated in the web page – Data, Code and Visualization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -16,11 +19,12 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -31,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -45,44 +49,15 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -99,13 +74,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -114,10 +96,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
-}</script><script type="text/javascript">
+}</script>
+
+<script type="text/javascript">
 
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -129,61 +115,115 @@ ga('send', {
   hitType: 'pageview',
   'anonymizeIp': true,
 });
-</script><script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script><script src="../../site_libs/proj4js-2.3.15/proj4.js"></script><link href="../../site_libs/highcharts-10.2.0/css/motion.css" rel="stylesheet">
-<script src="../../site_libs/highcharts-10.2.0/highcharts.js"></script><script src="../../site_libs/highcharts-10.2.0/highcharts-3d.js"></script><script src="../../site_libs/highcharts-10.2.0/highcharts-more.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/stock.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/map.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/data.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/exporting.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/offline-exporting.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/drilldown.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/item-series.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/overlapping-datalabels.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/annotations.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/export-data.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/funnel.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/heatmap.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/treemap.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/sankey.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/dependency-wheel.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/organization.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/solid-gauge.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/streamgraph.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/sunburst.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/vector.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/wordcloud.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/xrange.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/tilemap.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/venn.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/gantt.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/timeline.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/parallel-coordinates.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/bullet.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/coloraxis.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/dumbbell.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/lollipop.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/series-label.js"></script><script src="../../site_libs/highcharts-10.2.0/plugins/motion.js"></script><script src="../../site_libs/highcharts-10.2.0/custom/reset.js"></script><script src="../../site_libs/highcharts-10.2.0/modules/boost.js"></script><script src="../../site_libs/highchart-binding-0.9.4.9000/highchart.js"></script><link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Data, Code and Visualization - When charts are integrated in the web page">
+</script>
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<script src="../../site_libs/proj4js-2.3.15/proj4.js"></script>
+<link href="../../site_libs/highcharts-10.2.0/css/motion.css" rel="stylesheet">
+<script src="../../site_libs/highcharts-10.2.0/highcharts.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/highcharts-3d.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/highcharts-more.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/stock.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/map.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/data.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/exporting.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/offline-exporting.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/drilldown.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/item-series.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/overlapping-datalabels.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/annotations.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/export-data.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/funnel.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/heatmap.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/treemap.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/sankey.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/dependency-wheel.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/organization.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/solid-gauge.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/streamgraph.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/sunburst.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/vector.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/wordcloud.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/xrange.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/tilemap.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/venn.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/gantt.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/timeline.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/parallel-coordinates.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/bullet.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/coloraxis.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/dumbbell.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/lollipop.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/series-label.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/plugins/motion.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/custom/reset.js"></script>
+<script src="../../site_libs/highcharts-10.2.0/modules/boost.js"></script>
+<script src="../../site_libs/highchart-binding-0.9.4.9000/highchart.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="When charts are integrated in the web page – Data, Code and Visualization">
 <meta property="og:description" content="I saw a chart yesterday, a chart without frame, without title or captions just a very hidden chart at bottom of the web page. It will be a nice time to get the most interesting visual features of it.">
-<meta property="og:image" content="https://jkunst.com/blog/posts\2019-04-08-when-charts-are-integrated-in-the-web-page\images\preview.png">
-<meta property="og:site-name" content="Data, Code and Visualization">
+<meta property="og:image" content="https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/images/preview.png">
+<meta property="og:site_name" content="Data, Code and Visualization">
 <meta property="og:image:height" content="269">
 <meta property="og:image:width" content="424">
-<meta name="twitter:title" content="Data, Code and Visualization - When charts are integrated in the web page">
+<meta name="twitter:title" content="When charts are integrated in the web page – Data, Code and Visualization">
 <meta name="twitter:description" content="I saw a chart yesterday, a chart without frame, without title or captions just a very hidden chart at bottom of the web page. It will be a nice time to get the most interesting visual features of it.">
-<meta name="twitter:image" content="https://jkunst.com/blog/posts\2019-04-08-when-charts-are-integrated-in-the-web-page\images\preview.png">
+<meta name="twitter:image" content="https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/images/preview.png">
 <meta name="twitter:creator" content="@jbkunst">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image-height" content="269">
 <meta name="twitter:image-width" content="424">
 </head>
+
 <body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data, Code and Visualization</span>
     </a>
   </div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
-    <a class="nav-link" href="../../about.html"><i class="bi bi-info-circle" role="img" aria-label="about">
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../about.html"> <i class="bi bi-info-circle" role="img" aria-label="about">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/jbkunst/blog"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/jbkunst/blog"> <i class="bi bi-github" role="img" aria-label="github">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/jbkunst"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/jbkunst"> <i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://fosstodon.org/@jbkunst"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+    <a class="nav-link" href="https://fosstodon.org/@jbkunst"> <i class="bi bi-mastodon" role="img" aria-label="mastodon">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-<div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
-    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">When charts are integrated in the web page</h1>
             <p class="subtitle lead">I saw a chart yesterday, a chart without frame, without title or captions just a very hidden chart at bottom of the web page. It will be a nice time to get the most interesting visual features of it.</p>
@@ -200,7 +240,7 @@ ga('send', {
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p>Joshua Kunst Fuentes </p>
+               <p><a href="https://jkunst.com">Joshua Kunst Fuentes</a> </p>
             </div>
     </div>
       
@@ -217,37 +257,50 @@ ga('send', {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><p>I was searching for a CDN at jsdelivr.com and I noticed a chart showing download per days:</p>
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+
+<p>I was searching for a CDN at jsdelivr.com and I noticed a chart showing download per days:</p>
 <div class="column-body">
 <p><img src="images/images/jsdelivr.png" class="img-fluid"></p>
 </div>
 <p>Why I like this chart? Because is a chart integrated with the web site using all space and soft colors to not call the attention. A very special chart.</p>
 <p>Now we’ll try to replicate :). That’s why we’re are here. Let’s download the data:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html">read_json</a></span><span class="op">(</span><span class="st">"https://data.jsdelivr.com/v1/package/npm/highcharts/stats/month"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># str(data)</span></span>
-<span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">versions</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">.x</span><span class="op">$</span><span class="va">dates</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html">enframe</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">enframe</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html">unnest</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
-<span>    value <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">identity</span><span class="op">)</span>,</span>
-<span>    name1 <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="va">name1</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span></span>
-<span><span class="va">data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> jsonlite<span class="sc">::</span><span class="fu">read_json</span>(<span class="st">"https://data.jsdelivr.com/v1/package/npm/highcharts/stats/month"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># str(data)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data<span class="sc">$</span>versions <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>( <span class="sc">~</span> .x<span class="sc">$</span>dates) <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">enframe</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> <span class="fu">map</span>(value, enframe)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">map_dbl</span>(value, identity),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">name1 =</span> <span class="fu">ymd</span>(name1)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,090 × 3
    name  name1      value
    &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt;
@@ -266,16 +319,19 @@ ga('send', {
 </div>
 <p>We’ll group the data by day:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">datag</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span></span>
-<span>    date <span class="op">=</span> <span class="va">name1</span>,</span>
-<span>    downloads <span class="op">=</span> <span class="va">value</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="va">datag</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>datag <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name1) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">value =</span> <span class="fu">sum</span>(value)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> name1,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">downloads =</span> value</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>datag</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 30 × 2
    date       downloads
    &lt;date&gt;         &lt;dbl&gt;
@@ -294,10 +350,12 @@ ga('send', {
 </div>
 <p>And we’re ready to our first try:</p>
 <div class="cell">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu">hchart</span><span class="op">(</span><span class="va">datag</span>, <span class="st">"line"</span>, <span class="fu">hcaes</span><span class="op">(</span><span class="va">date</span>, <span class="va">downloads</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">hc</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display">
-
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hchart</span>(datag, <span class="st">"line"</span>, <span class="fu">hcaes</span>(date, downloads))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
 <div class="highchart html-widget html-fill-item" id="htmlwidget-cac57d31d76c2959111e" style="width:100%;height:464px;"></div>
 <script type="application/json" data-for="htmlwidget-cac57d31d76c2959111e">{"x":{"hc_opts":{"chart":{"reflow":true},"title":{"text":null},"yAxis":{"title":{"text":"downloads"},"type":"linear"},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"date":"2024-02-24","downloads":398186,"x":1708732800000,"y":398186},{"date":"2024-02-25","downloads":473378,"x":1708819200000,"y":473378},{"date":"2024-02-26","downloads":582457,"x":1708905600000,"y":582457},{"date":"2024-02-27","downloads":479109,"x":1708992000000,"y":479109},{"date":"2024-02-28","downloads":478527,"x":1709078400000,"y":478527},{"date":"2024-02-29","downloads":481919,"x":1709164800000,"y":481919},{"date":"2024-03-01","downloads":470637,"x":1709251200000,"y":470637},{"date":"2024-03-02","downloads":406260,"x":1709337600000,"y":406260},{"date":"2024-03-03","downloads":414719,"x":1709424000000,"y":414719},{"date":"2024-03-04","downloads":508708,"x":1709510400000,"y":508708},{"date":"2024-03-05","downloads":500240,"x":1709596800000,"y":500240},{"date":"2024-03-06","downloads":492034,"x":1709683200000,"y":492034},{"date":"2024-03-07","downloads":538716,"x":1709769600000,"y":538716},{"date":"2024-03-08","downloads":484697,"x":1709856000000,"y":484697},{"date":"2024-03-09","downloads":472647,"x":1709942400000,"y":472647},{"date":"2024-03-10","downloads":476714,"x":1710028800000,"y":476714},{"date":"2024-03-11","downloads":538037,"x":1710115200000,"y":538037},{"date":"2024-03-12","downloads":531199,"x":1710201600000,"y":531199},{"date":"2024-03-13","downloads":558660,"x":1710288000000,"y":558660},{"date":"2024-03-14","downloads":521680,"x":1710374400000,"y":521680},{"date":"2024-03-15","downloads":491242,"x":1710460800000,"y":491242},{"date":"2024-03-16","downloads":415058,"x":1710547200000,"y":415058},{"date":"2024-03-17","downloads":470129,"x":1710633600000,"y":470129},{"date":"2024-03-18","downloads":561624,"x":1710720000000,"y":561624},{"date":"2024-03-19","downloads":535920,"x":1710806400000,"y":535920},{"date":"2024-03-20","downloads":524315,"x":1710892800000,"y":524315},{"date":"2024-03-21","downloads":531211,"x":1710979200000,"y":531211},{"date":"2024-03-22","downloads":516298,"x":1711065600000,"y":516298},{"date":"2024-03-23","downloads":501484,"x":1711152000000,"y":501484},{"date":"2024-03-24","downloads":491029,"x":1711238400000,"y":491029}],"type":"line"}],"xAxis":{"type":"datetime","title":{"text":"date"},"categories":null}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -315,45 +373,47 @@ ga('send', {
 <li>And the most important step in this chart: use all the space, reducing the margins and move the x-axis labels to the inner side. Using the <code>l-screen</code> option in distill package.</li>
 </ul>
 <div class="cell page-columns page-full">
-<details open=""><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">color_theme</span> <span class="op">&lt;-</span> <span class="st">"#E76235"</span> <span class="co"># extracted with chrome extension</span></span>
-<span></span>
-<span><span class="fu">hchart</span><span class="op">(</span><span class="va">datag</span>, <span class="st">"areaspline"</span>, <span class="fu">hcaes</span><span class="op">(</span><span class="va">date</span>, <span class="va">downloads</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"Downloads"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">hc_xAxis</span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>    opposite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    gridLineWidth <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>    gridLineColor <span class="op">=</span> <span class="va">color_theme</span>, <span class="co"># vertical lines</span></span>
-<span>    tickColor <span class="op">=</span> <span class="va">color_theme</span>,</span>
-<span>    lineColor <span class="op">=</span> <span class="st">"transparent"</span>,  <span class="co"># horizontal line,</span></span>
-<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">color_theme</span>, fontSize <span class="op">=</span> <span class="st">"16px"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    tickInterval <span class="op">=</span> <span class="fl">8</span> <span class="op">*</span> <span class="fl">24</span> <span class="op">*</span> <span class="fl">3600</span> <span class="op">*</span> <span class="fl">1000</span> <span class="co"># interval of 1 day (in your case = 60)</span></span>
-<span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">hc_yAxis</span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>    opposite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    gridLineColor <span class="op">=</span> <span class="st">"transparent"</span>,</span>
-<span>    showFirstLabel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">color_theme</span>, fontSize <span class="op">=</span> <span class="st">"16px"</span><span class="op">)</span>,</span>
-<span>      align <span class="op">=</span> <span class="st">"left"</span>,</span>
-<span>      x <span class="op">=</span> <span class="op">-</span><span class="fl">100</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">hc_plotOptions</span><span class="op">(</span></span>
-<span>    series <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      color <span class="op">=</span> <span class="va">color_theme</span>,</span>
-<span>      fillColor <span class="op">=</span> <span class="fu">hex_to_rgba</span><span class="op">(</span><span class="va">color_theme</span>, <span class="fl">0.20</span><span class="op">)</span>,</span>
-<span>      marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>enabled <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">hc_chart</span><span class="op">(</span></span>
-<span>    spacingBottom <span class="op">=</span>  <span class="fl">0</span>,</span>
-<span>    spacingLeft <span class="op">=</span>  <span class="op">-</span><span class="fl">6</span>,</span>
-<span>    spacingRight <span class="op">=</span>  <span class="op">-</span><span class="fl">55</span> <span class="co"># just plying to get these numbers</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">hc_size</span><span class="op">(</span>height <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output-display column-screen">
-
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>color_theme <span class="ot">&lt;-</span> <span class="st">"#E76235"</span> <span class="co"># extracted with chrome extension</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hchart</span>(datag, <span class="st">"areaspline"</span>, <span class="fu">hcaes</span>(date, downloads), <span class="at">name =</span> <span class="st">"Downloads"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_xAxis</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="cn">NULL</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">opposite =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gridLineWidth =</span> <span class="dv">1</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">gridLineColor =</span> color_theme, <span class="co"># vertical lines</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickColor =</span> color_theme,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">lineColor =</span> <span class="st">"transparent"</span>,  <span class="co"># horizontal line,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">list</span>(<span class="at">style =</span> <span class="fu">list</span>(<span class="at">color =</span> color_theme, <span class="at">fontSize =</span> <span class="st">"16px"</span>)),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">tickInterval =</span> <span class="dv">8</span> <span class="sc">*</span> <span class="dv">24</span> <span class="sc">*</span> <span class="dv">3600</span> <span class="sc">*</span> <span class="dv">1000</span> <span class="co"># interval of 1 day (in your case = 60)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_yAxis</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">""</span>),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">opposite =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">gridLineColor =</span> <span class="st">"transparent"</span>,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">showFirstLabel =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">list</span>(</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">style =</span> <span class="fu">list</span>(<span class="at">color =</span> color_theme, <span class="at">fontSize =</span> <span class="st">"16px"</span>),</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">align =</span> <span class="st">"left"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="sc">-</span><span class="dv">100</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_plotOptions</span>(</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">series =</span> <span class="fu">list</span>(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> color_theme,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">fillColor =</span> <span class="fu">hex_to_rgba</span>(color_theme, <span class="fl">0.20</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_chart</span>(</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">spacingBottom =</span>  <span class="dv">0</span>,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">spacingLeft =</span>  <span class="sc">-</span><span class="dv">6</span>,</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">spacingRight =</span>  <span class="sc">-</span><span class="dv">55</span> <span class="co"># just plying to get these numbers</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hc_size</span>(<span class="at">height =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-screen">
 <div id="htmlwidget-8fbd6f1740f2c7cca1f6" style="width:100%;height:290px;" class="highchart html-widget"></div>
 <script type="application/json" data-for="htmlwidget-8fbd6f1740f2c7cca1f6">{"x":{"hc_opts":{"chart":{"reflow":true,"spacingBottom":0,"spacingLeft":-6,"spacingRight":-55,"height":300},"title":{"text":null},"yAxis":{"title":{"text":""},"type":"linear","opposite":true,"gridLineColor":"transparent","showFirstLabel":false,"labels":{"style":{"color":"#E76235","fontSize":"16px"},"align":"left","x":-100}},"credits":{"enabled":false},"exporting":{"enabled":false},"boost":{"enabled":false},"plotOptions":{"series":{"label":{"enabled":false},"turboThreshold":0,"showInLegend":false,"color":"#E76235","fillColor":"rgba(231,98,53,0.2)","marker":{"enabled":false}},"treemap":{"layoutAlgorithm":"squarified"},"scatter":{"marker":{"symbol":"circle"}}},"series":[{"group":"group","data":[{"date":"2024-02-24","downloads":398186,"x":1708732800000,"y":398186},{"date":"2024-02-25","downloads":473378,"x":1708819200000,"y":473378},{"date":"2024-02-26","downloads":582457,"x":1708905600000,"y":582457},{"date":"2024-02-27","downloads":479109,"x":1708992000000,"y":479109},{"date":"2024-02-28","downloads":478527,"x":1709078400000,"y":478527},{"date":"2024-02-29","downloads":481919,"x":1709164800000,"y":481919},{"date":"2024-03-01","downloads":470637,"x":1709251200000,"y":470637},{"date":"2024-03-02","downloads":406260,"x":1709337600000,"y":406260},{"date":"2024-03-03","downloads":414719,"x":1709424000000,"y":414719},{"date":"2024-03-04","downloads":508708,"x":1709510400000,"y":508708},{"date":"2024-03-05","downloads":500240,"x":1709596800000,"y":500240},{"date":"2024-03-06","downloads":492034,"x":1709683200000,"y":492034},{"date":"2024-03-07","downloads":538716,"x":1709769600000,"y":538716},{"date":"2024-03-08","downloads":484697,"x":1709856000000,"y":484697},{"date":"2024-03-09","downloads":472647,"x":1709942400000,"y":472647},{"date":"2024-03-10","downloads":476714,"x":1710028800000,"y":476714},{"date":"2024-03-11","downloads":538037,"x":1710115200000,"y":538037},{"date":"2024-03-12","downloads":531199,"x":1710201600000,"y":531199},{"date":"2024-03-13","downloads":558660,"x":1710288000000,"y":558660},{"date":"2024-03-14","downloads":521680,"x":1710374400000,"y":521680},{"date":"2024-03-15","downloads":491242,"x":1710460800000,"y":491242},{"date":"2024-03-16","downloads":415058,"x":1710547200000,"y":415058},{"date":"2024-03-17","downloads":470129,"x":1710633600000,"y":470129},{"date":"2024-03-18","downloads":561624,"x":1710720000000,"y":561624},{"date":"2024-03-19","downloads":535920,"x":1710806400000,"y":535920},{"date":"2024-03-20","downloads":524315,"x":1710892800000,"y":524315},{"date":"2024-03-21","downloads":531211,"x":1710979200000,"y":531211},{"date":"2024-03-22","downloads":516298,"x":1711065600000,"y":516298},{"date":"2024-03-23","downloads":501484,"x":1711152000000,"y":501484},{"date":"2024-03-24","downloads":491029,"x":1711238400000,"y":491029}],"type":"areaspline","name":"Downloads"}],"xAxis":{"type":"datetime","title":{},"opposite":true,"gridLineWidth":1,"gridLineColor":"#E76235","tickColor":"#E76235","lineColor":"transparent","labels":{"style":{"color":"#E76235","fontSize":"16px"}},"tickInterval":691200000}},"theme":{"colors":["#d35400","#2980b9","#2ecc71","#f1c40f","#2c3e50","#7f8c8d"],"chart":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","color":"#666666"}},"title":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"","fontWeight":"bold"}},"subtitle":{"align":"left","style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}},"legend":{"align":"right","verticalAlign":"bottom","itemStyle":{"fontWeight":"normal","color":"#A2A39C"}},"xAxis":{"gridLineWidth":1,"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"yAxis":{"gridLineColor":"#F3F3F3","lineColor":"#F3F3F3","minorGridLineColor":"#F3F3F3","tickColor":"#F3F3F3","tickWidth":1},"plotOptions":{"line":{"marker":{"enabled":false}},"spline":{"marker":{"enabled":false}},"area":{"marker":{"enabled":false}},"areaspline":{"marker":{"enabled":false}},"arearange":{"marker":{"enabled":false}},"bubble":{"maxSize":"10%"}},"credits":{"style":{"fontFamily":"-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""}}},"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadCSV":"Download CSV","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","downloadXLS":"Download XLS","drillUpText":"◁ Back to {series.name}","exitFullscreen":"Exit from full screen","exportData":{"annotationHeader":"Annotations","categoryDatetimeHeader":"DateTime","categoryHeader":"Category"},"hideData":"Hide data table","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbolMagnitude":1000,"numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"shortWeekdays":["Sat","Sun","Mon","Tue","Wed","Thu","Fri"],"thousandsSep":" ","viewData":"View data table","viewFullscreen":"View in full screen","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":"-apple-system,+BlinkMacSystemFont,+\"Segoe+UI\",+Roboto,+Helvetica,+Arial,+\"Apple+Color+Emoji\",+\"Segoe+UI+Emoji\",+\"Segoe+UI+Symbol\"","debug":false},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -361,17 +421,18 @@ ga('send', {
 
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunstfuentes2019,
-  author = {Joshua Kunst Fuentes},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{kunst_fuentes2019,
+  author = {Kunst Fuentes, Joshua},
   title = {When Charts Are Integrated in the Web Page},
   date = {2019-04-08},
-  url = {https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page},
+  url = {https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunstfuentes2019" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Joshua Kunst Fuentes. 2019. <span>“When Charts Are Integrated in the Web
-Page.”</span> April 8, 2019. <a href="https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page">https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page</a>.
-</div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunst_fuentes2019" class="csl-entry quarto-appendix-citeas" role="listitem">
+Kunst Fuentes, Joshua. 2019. <span>“When Charts Are Integrated in the
+Web Page.”</span> April 8, 2019. <a href="https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/">https://jkunst.com/blog/posts/2019-04-08-when-charts-are-integrated-in-the-web-page/</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -398,12 +459,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -435,11 +499,55 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/jkunst\.com\/blog");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -449,8 +557,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -462,9 +579,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -502,29 +855,28 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/jkunst\.com\/blog/);
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
-    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
-</script><script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
 </script>
+<script src="https://giscus.app/client.js" data-repo="jbkunst/blog" data-repo-id="R_kgDOIpZYXw" data-category="General" data-category-id="DIC_kwDOIpZYX84CTOYH" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Joshua Kunst ©</div>   
-    <div class="nav-footer-right">This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</div>
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Joshua Kunst ©</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/jbkunst/blog/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This blog is <i class="bi bi-code-slash"></i><sup>ed</sup> with ❤️, open source and ☕</p>
+</div>
   </div>
 </footer>
+
+
 
 
 </body></html>
