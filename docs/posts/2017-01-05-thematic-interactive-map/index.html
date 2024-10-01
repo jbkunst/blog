@@ -220,22 +220,22 @@ ga('send', {
 <section id="packages-and-data" class="level2"><h2 class="anchored" data-anchor-id="packages-and-data">Packages and Data</h2>
 <p>The data used for this chart is the same using by Timo. But the workflow was slightly modified:</p>
 <ol type="1">
-<li>Read the shapefile with <code>maptools::readShapeSpatial</code>.</li>
-<li>Simplify the shapefile (optional step) using <code>rmapshaper::ms_simplify</code>.</li>
-<li>Then transform the map data to geojson using <code>geojsonio::geojson_list</code>.</li>
+<li>Read the shapefile with <code><a href="http://maptools.r-forge.r-project.org/reference/maptools-deprecated.html">maptools::readShapeSpatial</a></code>.</li>
+<li>Simplify the shapefile (optional step) using <code><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">rmapshaper::ms_simplify</a></code>.</li>
+<li>Then transform the map data to geojson using <code><a href="https://docs.ropensci.org/geojsonio/reference/geojson_list.html">geojsonio::geojson_list</a></code>.</li>
 </ol>
 <div class="cell">
 <details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ateucher/rmapshaper">rmapshaper</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">maptools</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://maptools.r-forge.r-project.org/">maptools</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/geojsonio">geojsonio</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/">viridis</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">shape</span> <span class="op">&lt;-</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"posts"</span>, <span class="st">"2017-01-05-thematic-interactive-map"</span>, <span class="st">"data"</span>, <span class="st">"gde-1-1-15.shp"</span><span class="op">)</span></span>
-<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">readShapeSpatial</span><span class="op">(</span><span class="va">shape</span><span class="op">)</span></span>
-<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">ms_simplify</span><span class="op">(</span><span class="va">map</span>, keep <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># because ms_simplify fix the ü's</span></span>
-<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu">geojson_list</span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span>
+<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://maptools.r-forge.r-project.org/reference/maptools-deprecated.html">readShapeSpatial</a></span><span class="op">(</span><span class="va">shape</span><span class="op">)</span></span>
+<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span><span class="op">(</span><span class="va">map</span>, keep <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># because ms_simplify fix the ü's</span></span>
+<span><span class="va">map</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/geojsonio/reference/geojson_list.html">geojson_list</a></span><span class="op">(</span><span class="va">map</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># this was to put the name on the tooltip</span></span>
 <span><span class="va">map</span><span class="op">$</span><span class="va">features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span><span class="op">(</span><span class="va">map</span><span class="op">$</span><span class="va">features</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
@@ -250,7 +250,7 @@ ga('send', {
 <span><span class="co"># colors</span></span>
 <span><span class="va">no_classes</span> <span class="op">&lt;-</span> <span class="fl">6</span></span>
 <span></span>
-<span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu">magma</span><span class="op">(</span><span class="va">no_classes</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="va">colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html">magma</a></span><span class="op">(</span><span class="va">no_classes</span> <span class="op">+</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
