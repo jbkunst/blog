@@ -1,5 +1,6 @@
 ---
 title: "Quarto post example"
+draft: true
 subtitle: "Yep, this is a quarto post example"
 description: Description is a longer text of what your post is about, or anything else. This particular
   post is about make an example of a quarto post showing what I like about quarto.

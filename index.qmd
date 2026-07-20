@@ -3,25 +3,25 @@ title: "Data, Code and Visualization"
 subtitle: "A list of sketches, ideas and notes"
 listing:
   id: listings
-  feed: true
+  feed:
+    type: partial
+    items: 20
+    title: "Data, Code and Visualization"
+    description: "Notes and experiments about data, statistics, R, code, and visualization."
   contents: posts
-  fields: [image, title, date, categories, reading-time] # description, subtitle, file-modified
+  fields: [image, title, date, categories, reading-time]
   sort: "date desc"
-  type: grid 
+  type: grid
   grid-columns: 3
   image-height: 250px
-  page-size: 100
+  page-size: 18
   categories: true
-  sort-ui: [title, date, file-modified]
+  sort-ui: [title, date]
   filter-ui: true
 page-layout: full
 title-block-banner: true
-code-tools: false # disable here the code-tools (default as true in _quarto.yml)
+code-tools: false
 ---
-
-<!-- You can review the following documents for additional information: -->
 
 ::: {#listings}
 :::
-
-<!-- Learn more about Quarto [here](https://www.quarto.com). -->

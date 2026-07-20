@@ -4,42 +4,34 @@ project:
 
 website:
   title: Data, Code and Visualization
+  description: "Notes and experiments about data, statistics, R, code, and visualization."
   site-url: https://jkunst.com/blog
   repo-url: https://github.com/jbkunst/blog
-  repo-actions: [issue]
-  google-analytics: "UA-17670833-5"
+  repo-actions: [source, issue]
   open-graph: true
-  twitter-card:
-    creator: "@jbkunst"
-    card-style: summary_large_image
+  twitter-card: true
+  back-to-top-navigation: true
 
   navbar:
-    right:
+    tools:
       - icon: info-circle
-        aria-label: about
-        href: about.html
+        aria-label: About
+        href: about.qmd
       - icon: github
-        aria-label: github
+        aria-label: GitHub
         href: https://github.com/jbkunst/blog
-      - icon: twitter
-        aria-label: twitter
-        href: https://twitter.com/jbkunst
-      - icon: mastodon
-        aria-label: mastodon
-        href: https://fosstodon.org/@jbkunst
-
   page-footer:
-    right: "This blog is <i class=\"bi bi-code-slash\"></i><sup>ed</sup>
-      with ❤️, open source and ☕"
-    left: "Joshua Kunst ©"
+    left: "© Joshua Kunst"
+    right: "Made with Quarto, open source, and ☕"
 
 format:
   html:
     theme: materia
     css: styles.css
-    monofont:	"Fira Mono"
-    monobackgroundcolor: "#f7f7f7"
+    code-copy: hover
+    code-overflow: wrap
     code-tools: false
     code-block-border-left: true
     code-link: true
     code-fold: show
+    smooth-scroll: true
