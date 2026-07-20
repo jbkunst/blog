@@ -1,87 +1,61 @@
-@import 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap';
-
-code {
-  font-family: "Fira Code";
+/* Small, stable overrides on top of Quarto's Materia theme. */
+:root {
+  --blog-accent: #31546d;
+  --blog-border: #dee2e6;
 }
 
-/* css styles */
 .nav-footer {
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--blog-border);
 }
 
 main {
-  font-weight: 300;
+  font-weight: 400;
 }
 
-.quarto-title-banner .code-tools-button {
-  color: #f1f1f1;
+.navbar,
+.quarto-title-banner {
+  background-color: var(--blog-accent);
 }
 
 .navbar {
   box-shadow: none;
 }
 
-.navbar,
-.quarto-title-banner {
-  animation:backgroundtransition 100s;
-  -moz-animation:backgroundtransition 100s infinite; /* Firefox */
-  -webkit-animation:backgroundtransition 100s infinite; /* Safari and Chrome */
+.quarto-title-banner .code-tools-button {
+  color: #f1f1f1;
 }
 
-@-moz-keyframes backgroundtransition /* Firefox */ {
-   0%   {background: #B71C1C;} /* red */
-   10%  {background: #311b92;} /* deep purlple */
-   20%  {background: #0D47A1;} /* blue */
-   30%  {background: #004D40;} /* teal */
-   40%  {background: #212121;} /* grey */
-   50%  {background: #1A237E;} /* indigo */
-   60%  {background: #33691E;} /* ligth green */
-   70%  {background: #006064;} /* cyan */
-   80%  {background: #FBC02D;} /* lime */
-   90%  {background: #263238;} /* blue gray*/
-   100% {background: #B71C1C;} /* red */
+.quarto-title-banner .title {
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
 }
 
-@-webkit-keyframes backgroundtransition /* Safari and Chrome */ {
-   0%   {background: #B71C1C;} /* red */
-   10%  {background: #311b92;} /* deep purlple */
-   20%  {background: #0D47A1;} /* blue */
-   30%  {background: #004D40;} /* teal */
-   40%  {background: #212121;} /* grey */
-   50%  {background: #1A237E;} /* indigo */
-   60%  {background: #33691E;} /* ligth green */
-   70%  {background: #006064;} /* cyan */
-   80%  {background: #FBC02D;} /* lime */
-   90%  {background: #263238;} /* blue gray*/
-   100% {background: #B71C1C;} /* red */
+pre.sourceCode {
+  font-size: 0.82em;
 }
 
-@-webkit-keyframes pulse_animation {
-  0%  { -webkit-transform: scale(1);   }
-  16% { -webkit-transform: scale(1);   }
-  33% { -webkit-transform: scale(1.2); }
-  50% { -webkit-transform: scale(1);   }
-  66% { -webkit-transform: scale(1);   }
-  83% { -webkit-transform: scale(1.2); }
+.cell-output > pre > code {
+  font-size: 0.9em;
 }
 
-.pulse {
-  -webkit-animation-name: 'pulse_animation';
-  -webkit-animation-duration: 2000ms;
-  -webkit-transform-origin: 50% 60%;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
+.quarto-grid-item .card-img-top {
+  object-fit: cover;
 }
 
-/* fix code size */
-pre.sourceCode            { font-size: 0.75em;}
-.cell-output > pre > code { font-size: 0.9em;}
-
-/* this is for quarto demo post */
+/* Used by the Quarto demonstration post. */
 .layout-example {
   background: #adb5bd;
   color: #fff;
   text-align: center;
   margin-bottom: 1em;
   padding-top: 1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }
