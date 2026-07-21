@@ -9,7 +9,7 @@
 <link>https://jkunst.com/blog/</link>
 <atom:link href="https://jkunst.com/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Notes and experiments about data, statistics, R, code, and visualization.</description>
-<generator>quarto-1.9.38</generator>
+<generator>quarto-1.8.25</generator>
 <lastBuildDate>Mon, 20 Jul 2026 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Many models, many years later</title>
