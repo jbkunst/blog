@@ -64,19 +64,24 @@ hc <- hchart(
   hcaes(
     x = beta0,
     y = beta1,
-    z = r_squared,
+    size = r_squared,
     name = country,
     group = continent
   )
 ) |>
+  hc_add_dependency("highcharts-more.js") |>
   hc_chart(zooming = list(type = "xy")) |>
   hc_title(text = "One model for each country") |>
-  hc_subtitle(text = "Bubble size represents R²") |>
+  hc_subtitle(text = "Bubble size represents R-squared") |>
   hc_xAxis(title = list(text = "Estimated life expectancy in 1950 (beta0)")) |>
   hc_yAxis(title = list(text = "Estimated change per year (beta1)")) |>
   hc_plotOptions(
     bubble = list(minSize = 6, maxSize = 28),
-    series = list(marker = list(lineWidth = 0), opacity = 0.75)
+    series = list(
+      animation = FALSE,
+      marker = list(lineWidth = 0),
+      opacity = 0.75
+    )
   ) |>
   hc_tooltip(
     useHTML = TRUE,
@@ -143,7 +148,7 @@ webshot2::webshot(
   vwidth = 760,
   vheight = 460,
   zoom = 2,
-  delay = 1,
+  delay = 5,
   cliprect = "viewport"
 )
 ```
