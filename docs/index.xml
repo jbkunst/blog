@@ -9,7 +9,7 @@
 <link>https://jkunst.com/blog/</link>
 <atom:link href="https://jkunst.com/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Notes and experiments about data, statistics, R, code, and visualization.</description>
-<generator>quarto-1.8.25</generator>
+<generator>quarto-1.9.38</generator>
 <lastBuildDate>Sun, 23 Jul 2023 04:00:00 GMT</lastBuildDate>
 <item>
   <title>My favorite ggplot2 packages with examples</title>
