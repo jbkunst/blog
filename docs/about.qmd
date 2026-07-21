@@ -1,0 +1,22 @@
+---
+title: "About"
+description: "About Joshua Kunst and this blog."
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/jbkunst
+    - icon: envelope
+      text: Email
+      href: mailto:jbkunst@gmail.com
+---
+
+I am Joshua Kunst, a data scientist and R developer based in Chile. I work with
+statistics, data visualization, interactive applications, and code that turns
+data into useful knowledge.
+
+This blog is a collection of sketches, ideas, experiments, and notes. Some older
+posts depend on packages or external data that have changed over time; their
+rendered output is preserved as part of the archive.

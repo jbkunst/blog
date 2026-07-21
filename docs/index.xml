@@ -10,7 +10,20 @@
 <atom:link href="https://jkunst.com/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>Notes and experiments about data, statistics, R, code, and visualization.</description>
 <generator>quarto-1.9.38</generator>
-<lastBuildDate>Sun, 23 Jul 2023 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 20 Jul 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Many models, many years later</title>
+  <dc:creator>Joshua Kunst Fuentes</dc:creator>
+  <link>https://jkunst.com/blog/posts/2026-07-20-many-models-many-years-later/</link>
+  <description><![CDATA[ The talk that changed how I write R. ]]></description>
+  <category>minipost</category>
+  <category>R</category>
+  <category>purrr</category>
+  <category>highcharter</category>
+  <guid>https://jkunst.com/blog/posts/2026-07-20-many-models-many-years-later/</guid>
+  <pubDate>Mon, 20 Jul 2026 04:00:00 GMT</pubDate>
+  <media:content url="https://jkunst.com/blog/posts/2026-07-20-many-models-many-years-later/preview.png" medium="image" type="image/png" height="87" width="144"/>
+</item>
 <item>
   <title>My favorite ggplot2 packages with examples</title>
   <dc:creator>Joshua Kunst Fuentes</dc:creator>
@@ -79,7 +92,7 @@
   <title>The tale of two charts combined</title>
   <dc:creator>Joshua Kunst Fuentes</dc:creator>
   <link>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/</link>
-  <description><![CDATA[ <em>Post updated on Mar 26, 2024</em> ]]></description>
+  <description><![CDATA[ <em>Post updated on Jul 20, 2026</em> ]]></description>
   <category>data-visualization</category>
   <category>highcharts</category>
   <guid>https://jkunst.com/blog/posts/2020-06-15-when-2-charts-are-more-than-1/</guid>
@@ -240,18 +253,6 @@
   <guid>https://jkunst.com/blog/posts/2015-10-30-visualizing-chess-data-with-ggplot/</guid>
   <pubDate>Fri, 30 Oct 2015 03:00:00 GMT</pubDate>
   <media:content url="https://jkunst.com/blog/posts/2015-10-30-visualizing-chess-data-with-ggplot/images/preview.png" medium="image" type="image/png" height="143" width="144"/>
-</item>
-<item>
-  <title>rchess a Chess Package for R</title>
-  <dc:creator>Joshua Kunst Fuentes</dc:creator>
-  <link>https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r/</link>
-  <description><![CDATA[ A long time ago I wonder for some R package for chess. Python, JS, Java, C have chess libraries, why R not? But then the <a href="https://github.com/ramnathv/htmlwidgets">htmlwidgets</a> and <a href="https://github.com/jeroenooms/v8">V8</a> packages were born and now possibilities are <em>almost</em> endless. Anyone can make a wrapper for a JS library :D. And this is how <a href="https://github.com/jbkunst/rchess">rchess</a> came out. ]]></description>
-  <category>package</category>
-  <category>htmlwidgets</category>
-  <category>chess</category>
-  <guid>https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r/</guid>
-  <pubDate>Wed, 07 Oct 2015 03:00:00 GMT</pubDate>
-  <media:content url="https://jkunst.com/blog/posts/2015-10-07-rchess-a-chess-package-for-r/images/preview.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 </channel>
 </rss>

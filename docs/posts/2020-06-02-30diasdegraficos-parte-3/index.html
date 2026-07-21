@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Joshua Kunst Fuentes">
 <meta name="dcterms.date" content="2020-06-02">
 <meta name="description" content="La tercera parte (y última?) Queda un buen trecho por recorrer y quedan características, opciones y series que nos falta ver, revisar y aprender.">
 <title>#30diasdegraficos Parte 3 – Data, Code and Visualization</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -66,15 +69,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-7692307aebead8447eff0fd775daa25c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-e1c353cf265c9502138153e37b539443.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -121,8 +123,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Data, Code and Visualization</span>
     </a>
@@ -198,16 +198,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content"><section id="introducción" class="level2"><h2 class="anchored" data-anchor-id="introducción">Introducción</h2>
 <p>Seguiremos utilizando los mismos paquetes que la parte anterior.</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ejecutar estas líneas para poder instalar {datos}</span>}</span>
+<details open="" class="code-fold"><summary>Code</summary><div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ejecutar estas líneas para poder instalar {datos}</span></span>
 <span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="co"># remotes::install_github("cienciadedatos/datos")</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cienciadedatos/datos">datos</a></span><span class="op">)</span>       <span class="co"># datos</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span> <span class="co"># gráficos</span>s</span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>     <span class="co"># más gráficos  </span>  </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jkunst.com/highcharter/">highcharter</a></span><span class="op">)</span> <span class="co"># gráficos</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>     <span class="co"># más gráficos  </span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span>       <span class="co"># lectura de datos</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>       <span class="co"># manipulación de datos</span>s</span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>       <span class="co"># más manipulación de datos</span>os</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>       <span class="co"># manipulación de datos</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>       <span class="co"># más manipulación de datos</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Cambiando configuración para el español.</p>
@@ -232,9 +232,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">hc21</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jkunst.com/highcharter/reference/hchart.html">hchart</a></span><span class="op">(</span><span class="va">tourfrance</span>, <span class="st">"area"</span>, <span class="fu"><a href="https://jkunst.com/highcharter/reference/hcaes.html">hcaes</a></span><span class="op">(</span><span class="va">distance</span>, <span class="va">elevation</span><span class="op">)</span>, fillOpacity <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_title.html">hc_title</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Tour de Francia 2017, Etapa 8: &lt;i&gt;Dole - Station des Rousses&lt;/i&gt;"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ejemplo obtendido de la documentación de HighchartsJS"</span><span class="op">)</span>)<span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>% </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_subtitle.html">hc_subtitle</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Ejemplo obtendido de la documentación de HighchartsJS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"{value} km"</span><span class="op">)</span>, title  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Distancia"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"{value} m"</span><span class="op">)</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Elevación"</span><span class="op">)</span><span class="op">)</span>)<span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>% </span>
+<span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_yAxis.html">hc_yAxis</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"{value} m"</span><span class="op">)</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Elevación"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span></span>
 <span>    headerFormat <span class="op">=</span> <span class="st">"Distance: {point.x:.1f} km&lt;br&gt;"</span>,</span>
 <span>    pointFormat <span class="op">=</span> <span class="st">"{point.y} m a. s. l."</span></span>
@@ -258,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">'"x","y","text"</span></span>
 <span><span class="st">101.44,1026,"Col de la Joux"</span></span>
 <span><span class="st">138.5,748,"Côte de Viry"</span></span>
-<span><span class="st">176.4,1202,"Montée de la Combe&lt;br&gt;de Laisia Les Molunes"'</span><span class="op">)</span>)</span>
+<span><span class="st">176.4,1202,"Montée de la Combe&lt;br&gt;de Laisia Les Molunes"'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">'"x","y","text"</span></span>
 <span><span class="st">96.2,783,"6.1 km climb&lt;br&gt;4.6% on avg."</span></span>
@@ -308,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_caption.html">hc_caption</a></span><span class="op">(</span></span>
 <span>    text <span class="op">=</span> <span class="st">"Este gráfico utiliza la función Anotaciones de Highcharts para colocar</span></span>
 <span><span class="st">    etiquetas en varios puntos de interés. Las etiquetas son &lt;i&gt;responsivas&lt;/i&gt; y se ocultarán</span></span>
-<span><span class="st">    para evitar la superposición en pantallas pequeñas."</span>."</span>
+<span><span class="st">    para evitar la superposición en pantallas pequeñas."</span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output-display column-page">
 <div class="highchart html-widget html-fill-item" id="htmlwidget-0276d96abf7ad29f0ca2" style="width:100%;height:464px;"></div>
@@ -453,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  style  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fontFamily <span class="op">=</span> <span class="va">fntfmly</span>, fontWeight <span class="op">=</span> <span class="st">"bold"</span><span class="op">)</span>,</span>
 <span>  tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>    pointHeader <span class="op">=</span> <span class="st">"&lt;b&gt;{point.key}&lt;/b&gt;"</span>,</span>
-<span>    pointFormat <span class="op">=</span> <span class="st">"Capítulo &lt;b&gt;{point.capitulo}&lt;/b&gt;&lt;br&gt;TF-IDF: {point.tf_idf:0.4f}"</span>"</span>
+<span>    pointFormat <span class="op">=</span> <span class="st">"Capítulo &lt;b&gt;{point.capitulo}&lt;/b&gt;&lt;br&gt;TF-IDF: {point.tf_idf:0.4f}"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details><div class="cell-output-display">
@@ -575,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_add_series.html">hc_add_series</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">dataserie</span>,</span>
 <span>    type <span class="op">=</span> <span class="st">"sunburst"</span>,</span>
-<span>    name <span class="op">=</span> <span class="st">"Población"</span>",</span>
+<span>    name <span class="op">=</span> <span class="st">"Población"</span>,</span>
 <span>    <span class="co"># type=  "treemap",</span></span>
 <span>    allowDrillToNode <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
@@ -665,7 +665,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Especie"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_xAxis.html">hc_xAxis</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Largo del Sépalo"</span><span class="op">)</span>)</span>
+<span>    title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>text <span class="op">=</span> <span class="st">"Largo del Sépalo"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://jkunst.com/highcharter/reference/hc_tooltip.html">hc_tooltip</a></span><span class="op">(</span></span>
 <span>    useHTML <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-kunst_fuentes2020" class="csl-entry quarto-appendix-citeas" role="listitem">
 Kunst Fuentes, Joshua. 2020. <span>“#30diasdegraficos Parte 3.”</span>
-June 2, 2020. <a href="https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/">https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/</a>.
+June 2. <a href="https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/">https://jkunst.com/blog/posts/2020-06-02-30diasdegraficos-parte-3/</a>.
 </div></div></section></div></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -1,10 +1,10 @@
 ---
 title: "Many models, many years later"
-description: "The talk that made me fall in love with purrr... many years later."
+description: "The talk that changed how I write R."
 date: "2026-07-20"
 categories: [minipost, R, purrr, highcharter]
 image: preview.png
-draft: true
+draft: false
 toc: false
 ---
 
@@ -17,15 +17,14 @@ library(gapminder)
 source(here::here("_R/post_setup.R"))
 ```
 
-A few days ago, I was talking with a friend and we remembered Hadley Wickham's 2016 talk, [*Managing many models with R*](https://www.youtube.com/watch?v=rz3_FDVt9eg).
+A few days ago, a friend and I remembered Hadley Wickham's 2016 talk, [*Managing many models with R*](https://www.youtube.com/watch?v=rz3_FDVt9eg). Today, it feels like a classic!
 
-This talk sold me on `purrr`. Before `map()`, I used `for` loops because the `apply` family never felt very intuitive to me. I created a list with the final length and saved each result with `results[[i]]`. It gave me the same result in a more explicit way, and it was sometimes slower when I did not allocate the output well. The code was correct, but I had to manage the index and the output myself. With `map()`, the action became the important part.
+This talk sold me on `purrr`. Before `map()`, many years ago, I used `for` loops because the `apply` family never felt intuitive to me. I created a list with the final length and saved each result in `results[[i]]`. It gave me the same result in a more explicit way, but it could be slower when I did not allocate the output in advance. With `map()`, the action became the important part.
 
-Here is a small version of the Gapminder example. First, I nest the data and fit one linear model for each country. I use `year - 1950`, so the intercept has a clear meaning: estimated life expectancy in 1950.
+Here is a small version of the Gapminder example from that talk. First, we nest the data and fit one linear model for each country. The example uses `year - 1950`, so the intercept has a clear meaning: *estimated life expectancy in 1950*.
 
 ```{r}
 #| label: fit-models
-
 models <- gapminder |>
   mutate(year1950 = year - 1950) |>
   nest(.by = c(country, continent)) |>
@@ -39,11 +38,10 @@ models <- gapminder |>
   )
 ```
 
-The chart below puts the intercept on the x-axis and the slope on the y-axis. Bubble size is the model's R². Hover over a country to see its data and fitted line.
+The chart below puts the intercept on the x-axis and the slope on the y-axis. Bubble size represents the model's R². Hover over a country to see its data and fitted line.
+
 
 ```{r}
-#| label: many-models-chart
-
 chart_data <- models |>
   mutate(
     observed = map(
@@ -111,17 +109,24 @@ hc <- hchart(
     )
   ) |>
   hc_credits(enabled = FALSE)
-
-hc
 ```
 
-I still use `purrr` almost every day. Other languages have tools for iteration, but in my experience, nothing feels as natural as keeping the data, models, results, and charts together in one table.
+
+```{r}
+#| column: page
+hc |> 
+  hc_size(height = 700)
+```
+
+As Hadley points out, countries with slopes close to zero also tend to have lower R² values. In these cases, a straight line may not be the best way to represent how life expectancy changed over time.
+
+
+I still use `purrr` almost every day—or at least my AI assistant does these days. Other languages have tools for iteration, but in my experience, nothing feels as natural and simple as this.
 
 ```{r}
 #| label: create-preview
 #| include: false
 #| eval: false
-
 post_dir <- here::here("posts", "2026-07-20-many-models-many-years-later")
 widget_file <- tempfile("many-models-chart-", fileext = ".html")
 image_file <- file.path(post_dir, "preview.png")
