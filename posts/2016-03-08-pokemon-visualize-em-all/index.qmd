@@ -19,7 +19,7 @@ Back in 2016 I downloaded the available data and used it as an excuse to play wi
 
 ## Data
 
-PokeAPI keeps the source tables used to build the API as CSV files in its public repository. We can join the Pokémon table with base stats, types, and egg groups without scraping third-party pages.
+PokeAPI keeps the source tables used to build the API as CSV files in its public repository. We can join the Pokémon table with base stats, types, egg groups, generation, capture and breeding traits, and other species metadata without scraping third-party pages.
 
 ```{r}
 pokeapi_csv <- function(file) {
@@ -89,14 +89,50 @@ egg_groups <- pokeapi_csv("egg_groups.csv") |>
   select(species_id, slot, egg_group) |>
   tidyr::pivot_wider(names_from = slot, values_from = egg_group)
 
+generations <- pokeapi_csv("generations.csv") |>
+  transmute(generation_id = id, generation = identifier)
+
+growth_rates <- pokeapi_csv("growth_rates.csv") |>
+  transmute(growth_rate_id = id, growth_rate = identifier)
+
+colors <- pokeapi_csv("pokemon_colors.csv") |>
+  transmute(color_id = id, body_color = identifier)
+
+shapes <- pokeapi_csv("pokemon_shapes.csv") |>
+  transmute(shape_id = id, body_shape = identifier)
+
+habitats <- pokeapi_csv("pokemon_habitats.csv") |>
+  transmute(habitat_id = id, habitat = identifier)
+
+species <- pokeapi_csv("pokemon_species.csv") |>
+  select(
+    id, generation_id, color_id, shape_id, habitat_id,
+    gender_rate, capture_rate, base_happiness, is_baby,
+    hatch_counter, has_gender_differences, growth_rate_id,
+    forms_switchable, is_legendary, is_mythical
+  ) |>
+  rename(species_id = id) |>
+  left_join(generations, by = "generation_id") |>
+  left_join(growth_rates, by = "growth_rate_id") |>
+  left_join(colors, by = "color_id") |>
+  left_join(shapes, by = "shape_id") |>
+  left_join(habitats, by = "habitat_id")
+
 pokemon <- pokemon |>
   left_join(types, by = "id") |>
   left_join(stats, by = "id") |>
   left_join(egg_groups, by = "species_id") |>
+  left_join(species, by = "species_id") |>
   mutate(
     type_color = unname(type_colors[type_1]),
     type_2 = coalesce(type_2, "none"),
+    egg_group_1 = coalesce(egg_group_1, "none"),
     egg_group_2 = coalesce(egg_group_2, "none"),
+    growth_rate = coalesce(growth_rate, "unknown"),
+    body_color = coalesce(body_color, "unknown"),
+    body_shape = coalesce(body_shape, "unknown"),
+    habitat = coalesce(habitat, "unknown"),
+    generation = stringr::str_to_upper(generation),
     sprite_url = paste0(
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
       id,
@@ -110,7 +146,10 @@ pokemon <- pokemon |>
   )
 
 pokemon |>
-  select(id, pokemon, type_1, type_2, height, weight, hp, attack, defense) |>
+  select(
+    id, pokemon, generation, type_1, type_2,
+    height, weight, capture_rate, is_legendary, is_mythical
+  ) |>
   head()
 ```
 
@@ -194,37 +233,114 @@ highchart() |>
 
 In the original post I had just met t-SNE (t-Distributed Stochastic Neighbor Embedding). The goal was not prediction; it was to place Pokémon that look similar in a high-dimensional feature space near one another in two dimensions.
 
-This time I keep the same spirit, but make two changes:
+This time I keep the same spirit, but the preprocessing is a little more careful. Pokémon are mixed data: some variables are continuous, some are binary flags, and others are nominal categories.
 
-- numeric variables are standardized before embedding, so weight does not dominate simply because of its scale;
+- continuous variables are standardized so weight or a battle stat does not dominate simply because of its scale;
+- binary variables stay as 0/1, so a rare flag such as `is_mythical` does not acquire an enormous z-score;
+- nominal variables are one-hot encoded;
+- each semantic feature block is divided by the square root of its number of columns, preventing a dummy-heavy block from dominating just because it creates more columns;
 - the old `tsne` package is replaced by `Rtsne`.
 
-The feature set still combines physical measurements, battle stats, primary and secondary types, and egg groups.
+There is no invented rarity score here. PokeAPI already gives us `capture_rate` plus explicit legendary and mythical flags, which is a much cleaner way to represent that information.
 
 ```{r}
-numeric_features <- pokemon |>
+scale_continuous_features <- function(data) {
+  data <- as.data.frame(data)
+
+  data[] <- lapply(data, function(x) {
+    x <- as.numeric(x)
+    replacement <- median(x, na.rm = TRUE)
+    if (!is.finite(replacement)) replacement <- 0
+    x[is.na(x)] <- replacement
+    x
+  })
+
+  x <- as.matrix(data)
+  center <- colMeans(x)
+  spread <- apply(x, 2, sd)
+  spread[!is.finite(spread) | spread == 0] <- 1
+
+  x <- sweep(x, 2, center, FUN = "-")
+  sweep(x, 2, spread, FUN = "/")
+}
+
+# Review point: these weights are explicit on purpose. Keeping them at 1 gives
+# every semantic block the same neutral starting weight after column-count
+# normalization. They can be changed later to study sensitivity.
+block_weights <- c(
+  continuous = 1,
+  binary = 1,
+  types = 1,
+  egg_groups = 1,
+  species_traits = 1
+)
+
+weight_feature_block <- function(x, weight = 1) {
+  x <- as.matrix(x)
+  x * (weight / sqrt(ncol(x)))
+}
+
+feature_data <- pokemon |>
+  mutate(
+    # PokeAPI uses -1 for genderless; do not treat -1 as a genuine ratio.
+    female_ratio = if_else(gender_rate < 0, NA_real_, gender_rate / 8),
+    genderless = as.numeric(gender_rate < 0)
+  )
+
+continuous_features <- feature_data |>
   select(
     height, weight, base_experience,
-    hp, attack, defense, special_attack, special_defense, speed
+    hp, attack, defense, special_attack, special_defense, speed,
+    capture_rate, base_happiness, hatch_counter, female_ratio
   ) |>
-  mutate(
-    across(
-      everything(),
-      ~ replace_na(as.numeric(.x), median(.x, na.rm = TRUE))
-    )
-  ) |>
-  scale()
+  scale_continuous_features() |>
+  weight_feature_block(block_weights[["continuous"]])
 
-categorical_features <- pokemon |>
+binary_features <- feature_data |>
   transmute(
-    type_1 = factor(type_1),
-    type_2 = factor(type_2),
+    is_baby = as.numeric(coalesce(is_baby, 0)),
+    is_legendary = as.numeric(coalesce(is_legendary, 0)),
+    is_mythical = as.numeric(coalesce(is_mythical, 0)),
+    has_gender_differences = as.numeric(coalesce(has_gender_differences, 0)),
+    forms_switchable = as.numeric(coalesce(forms_switchable, 0)),
+    genderless = as.numeric(coalesce(genderless, 0))
+  ) |>
+  as.matrix() |>
+  weight_feature_block(block_weights[["binary"]])
+
+type_features <- feature_data |>
+  transmute(type_1 = factor(type_1), type_2 = factor(type_2)) |>
+  model.matrix(~ type_1 + type_2 - 1, data = _) |>
+  weight_feature_block(block_weights[["types"]])
+
+egg_group_features <- feature_data |>
+  transmute(
     egg_group_1 = factor(egg_group_1),
     egg_group_2 = factor(egg_group_2)
   ) |>
-  model.matrix(~ type_1 + type_2 + egg_group_1 + egg_group_2 - 1, data = _)
+  model.matrix(~ egg_group_1 + egg_group_2 - 1, data = _) |>
+  weight_feature_block(block_weights[["egg_groups"]])
 
-features <- cbind(numeric_features, categorical_features)
+species_trait_features <- feature_data |>
+  transmute(
+    growth_rate = factor(growth_rate),
+    body_color = factor(body_color),
+    body_shape = factor(body_shape),
+    habitat = factor(habitat)
+  ) |>
+  model.matrix(
+    ~ growth_rate + body_color + body_shape + habitat - 1,
+    data = _
+  ) |>
+  weight_feature_block(block_weights[["species_traits"]])
+
+features <- cbind(
+  continuous_features,
+  binary_features,
+  type_features,
+  egg_group_features,
+  species_trait_features
+)
 
 set.seed(13242)
 
@@ -244,7 +360,7 @@ pokemon <- pokemon |>
   )
 ```
 
-Now comes the fun part: putting the sprites directly on the Highcharts scatter and keeping the larger official artwork plus stats inside the tooltip.
+Now comes the fun part: putting the sprites directly on the Highcharts scatter and keeping the larger official artwork plus stats and species traits inside the tooltip.
 
 ```{r}
 point_data <- pokemon |>
@@ -252,6 +368,7 @@ point_data <- pokemon |>
     x,
     y,
     pokemon = stringr::str_to_title(stringr::str_replace_all(pokemon, "-", " ")),
+    generation = stringr::str_replace(generation, "GENERATION-", "Gen "),
     type_1 = stringr::str_to_title(type_1),
     type_2 = if_else(type_2 == "none", "—", stringr::str_to_title(type_2)),
     type_color,
@@ -263,13 +380,24 @@ point_data <- pokemon |>
     special_attack,
     special_defense,
     speed,
+    capture_rate,
+    base_happiness,
+    growth_rate = stringr::str_to_title(stringr::str_replace_all(growth_rate, "-", " ")),
+    habitat = stringr::str_to_title(stringr::str_replace_all(habitat, "-", " ")),
+    special_status = case_when(
+      is_mythical == 1 ~ "Mythical",
+      is_legendary == 1 ~ "Legendary",
+      is_baby == 1 ~ "Baby",
+      TRUE ~ "—"
+    ),
     artwork_url,
     sprite_url
   ) |>
   purrr::pmap(function(
-    x, y, pokemon, type_1, type_2, type_color,
+    x, y, pokemon, generation, type_1, type_2, type_color,
     height_m, weight_kg, hp, attack, defense,
     special_attack, special_defense, speed,
+    capture_rate, base_happiness, growth_rate, habitat, special_status,
     artwork_url, sprite_url
   ) {
     list(
@@ -277,6 +405,7 @@ point_data <- pokemon |>
       y = y,
       name = pokemon,
       pokemon = pokemon,
+      generation = generation,
       type_1 = type_1,
       type_2 = type_2,
       type_color = type_color,
@@ -288,6 +417,11 @@ point_data <- pokemon |>
       special_attack = special_attack,
       special_defense = special_defense,
       speed = speed,
+      capture_rate = capture_rate,
+      base_happiness = base_happiness,
+      growth_rate = growth_rate,
+      habitat = habitat,
+      special_status = special_status,
       artwork_url = artwork_url,
       color = type_color,
       marker = list(
@@ -299,10 +433,11 @@ point_data <- pokemon |>
   })
 
 tooltip <- paste0(
-  '<div style="width:260px;padding:12px;font-family:inherit">',
+  '<div style="width:280px;padding:12px;font-family:inherit">',
   '<div style="display:flex;gap:12px;align-items:center">',
   '<img src="{point.artwork_url}" style="width:96px;height:96px;object-fit:contain">',
   '<div><div style="font-size:18px;font-weight:700">{point.pokemon}</div>',
+  '<div style="font-size:11px;opacity:.65">{point.generation}</div>',
   '<div style="margin-top:4px"><span style="background:{point.type_color};color:white;padding:2px 7px;border-radius:10px">{point.type_1}</span>',
   '<span style="margin-left:5px">{point.type_2}</span></div>',
   '<div style="margin-top:8px">{point.height_m} m · {point.weight_kg} kg</div></div></div>',
@@ -310,6 +445,9 @@ tooltip <- paste0(
   '<tr><td>HP</td><td><b>{point.hp}</b></td><td>Attack</td><td><b>{point.attack}</b></td></tr>',
   '<tr><td>Defense</td><td><b>{point.defense}</b></td><td>Speed</td><td><b>{point.speed}</b></td></tr>',
   '<tr><td>Sp. Atk</td><td><b>{point.special_attack}</b></td><td>Sp. Def</td><td><b>{point.special_defense}</b></td></tr>',
+  '<tr><td>Capture</td><td><b>{point.capture_rate}</b></td><td>Happiness</td><td><b>{point.base_happiness}</b></td></tr>',
+  '<tr><td>Growth</td><td><b>{point.growth_rate}</b></td><td>Habitat</td><td><b>{point.habitat}</b></td></tr>',
+  '<tr><td>Status</td><td colspan="3"><b>{point.special_status}</b></td></tr>',
   '</table></div>'
 )
 
@@ -321,7 +459,7 @@ hc <- highchart() |>
     backgroundColor = "transparent"
   ) |>
   hc_title(text = "A Wild t-SNE Appears!") |>
-  hc_subtitle(text = "Stats, types, and egg groups projected into two dimensions") |>
+  hc_subtitle(text = "Stats, capture traits, types, egg groups, and species metadata") |>
   hc_xAxis(title = list(text = NULL), labels = list(enabled = FALSE), gridLineWidth = 0) |>
   hc_yAxis(title = list(text = NULL), labels = list(enabled = FALSE), gridLineWidth = 0) |>
   hc_add_series(
@@ -356,7 +494,7 @@ hc <- highchart() |>
 hc
 ```
 
-The exact geometry changes as the Pokédex and implementation evolve, so I would not over-interpret individual distances. The useful part is exploration: evolution families often remain close, type structure appears naturally, and unusual combinations are easy to spot.
+The exact geometry changes as the Pokédex and implementation evolve, so I would not over-interpret individual distances. The useful part is exploration: evolution families often remain close, type structure appears naturally, and unusual combinations are easy to spot. Capture difficulty and species traits add another layer that was not present in the original version.
 
 The original 2016 conclusion was basically: *nice algorithm to keep testing in other data*. I still agree.
 
