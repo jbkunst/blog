@@ -1,0 +1,369 @@
+---
+title: "pokemon: visualize 'em all!"
+subtitle: Revisiting Pokémon, t-SNE, and Highcharter with current data.
+date: 2016-03-08
+categories: [highcharts, visualization, machine learning, pokemon]
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+source(here::here("_R/post_setup.R"))
+```
+
+*Updated in July 2026. The original post and publication date are preserved, but the data source and R code were refreshed so the example is reproducible again.*
+
+A long time ago, when I was younger, I knew the original 150 Pokémon. Then the Pokédex kept growing: new generations, types, regions, forms, and a lot more monsters to remember.
+
+Back in 2016 I downloaded the available data and used it as an excuse to play with Highcharter and a dimensionality-reduction method I had just discovered: t-SNE. Ten years later, the idea is still fun, but several of the original URLs and packages are obsolete. This version uses the maintained [PokeAPI](https://pokeapi.co/) data repository, current sprite URLs, and `Rtsne`.
+
+## Data
+
+PokeAPI keeps the source tables used to build the API as CSV files in its public repository. We can join the Pokémon table with base stats, types, and egg groups without scraping third-party pages.
+
+```{r}
+pokeapi_csv <- function(file) {
+  url <- paste0(
+    "https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/",
+    file
+  )
+
+  readr::read_csv(url, show_col_types = FALSE)
+}
+
+type_colors <- c(
+  normal = "#A8A77A", fire = "#EE8130", water = "#6390F0",
+  electric = "#F7D02C", grass = "#7AC74C", ice = "#96D9D6",
+  fighting = "#C22E28", poison = "#A33EA1", ground = "#E2BF65",
+  flying = "#A98FF3", psychic = "#F95587", bug = "#A6B91A",
+  rock = "#B6A136", ghost = "#735797", dragon = "#6F35FC",
+  dark = "#705746", steel = "#B7B7CE", fairy = "#D685AD"
+)
+```
+
+```{r}
+pokemon <- pokeapi_csv("pokemon.csv") |>
+  filter(is_default == 1) |>
+  transmute(
+    id,
+    species_id,
+    pokemon = identifier,
+    height,
+    weight,
+    base_experience
+  )
+
+stats <- pokeapi_csv("stats.csv") |>
+  transmute(stat_id = id, stat = stringr::str_replace_all(identifier, "-", "_")) |>
+  right_join(
+    pokeapi_csv("pokemon_stats.csv") |>
+      select(pokemon_id, stat_id, base_stat),
+    by = "stat_id"
+  ) |>
+  select(pokemon_id, stat, base_stat) |>
+  tidyr::pivot_wider(names_from = stat, values_from = base_stat) |>
+  rename(id = pokemon_id)
+
+types <- pokeapi_csv("types.csv") |>
+  transmute(type_id = id, type = identifier) |>
+  right_join(
+    pokeapi_csv("pokemon_types.csv") |>
+      select(pokemon_id, type_id, slot),
+    by = "type_id"
+  ) |>
+  mutate(slot = paste0("type_", slot)) |>
+  select(pokemon_id, slot, type) |>
+  tidyr::pivot_wider(names_from = slot, values_from = type) |>
+  rename(id = pokemon_id)
+
+egg_groups <- pokeapi_csv("egg_groups.csv") |>
+  transmute(egg_group_id = id, egg_group = identifier) |>
+  right_join(
+    pokeapi_csv("pokemon_egg_groups.csv") |>
+      select(species_id, egg_group_id),
+    by = "egg_group_id"
+  ) |>
+  group_by(species_id) |>
+  mutate(slot = paste0("egg_group_", row_number())) |>
+  ungroup() |>
+  select(species_id, slot, egg_group) |>
+  tidyr::pivot_wider(names_from = slot, values_from = egg_group)
+
+pokemon <- pokemon |>
+  left_join(types, by = "id") |>
+  left_join(stats, by = "id") |>
+  left_join(egg_groups, by = "species_id") |>
+  mutate(
+    type_color = unname(type_colors[type_1]),
+    type_2 = coalesce(type_2, "none"),
+    egg_group_2 = coalesce(egg_group_2, "none"),
+    sprite_url = paste0(
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/",
+      id,
+      ".png"
+    ),
+    artwork_url = paste0(
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/",
+      id,
+      ".png"
+    )
+  )
+
+pokemon |>
+  select(id, pokemon, type_1, type_2, height, weight, hp, attack, defense) |>
+  head()
+```
+
+## *bar chart* I choose you!
+
+Let's start with the simplest chart: how many Pokémon have each primary type?
+
+```{r}
+bar_data <- pokemon |>
+  count(type_1, type_color, sort = TRUE) |>
+  purrr::pmap(function(type_1, type_color, n) {
+    list(
+      name = stringr::str_to_title(type_1),
+      y = n,
+      color = type_color
+    )
+  })
+
+highchart() |>
+  hc_chart(type = "column") |>
+  hc_title(text = "Pokémon by primary type") |>
+  hc_xAxis(type = "category", title = list(text = NULL)) |>
+  hc_yAxis(title = list(text = "Pokémon")) |>
+  hc_add_series(
+    data = bar_data,
+    name = "Pokémon",
+    showInLegend = FALSE
+  ) |>
+  hc_tooltip(pointFormat = "<b>{point.y}</b> Pokémon")
+```
+
+Water and Normal are still crowded neighborhoods, although the exact counts are very different from the 2016 Pokédex.
+
+## Oh! The *bar chart* has evolved into a *treemap*
+
+The second type adds another layer. A treemap gives us a compact view of primary and secondary type combinations.
+
+```{r}
+type_pairs <- pokemon |>
+  mutate(type_2_label = if_else(type_2 == "none", "Only", type_2)) |>
+  count(type_1, type_2_label, type_color)
+
+parents <- type_pairs |>
+  distinct(type_1, type_color) |>
+  purrr::pmap(function(type_1, type_color) {
+    list(
+      id = paste0("type-", type_1),
+      name = stringr::str_to_title(type_1),
+      color = type_color
+    )
+  })
+
+children <- type_pairs |>
+  purrr::pmap(function(type_1, type_2_label, type_color, n) {
+    list(
+      id = paste(type_1, type_2_label, sep = "-"),
+      parent = paste0("type-", type_1),
+      name = stringr::str_to_title(type_2_label),
+      value = n,
+      color = type_color
+    )
+  })
+
+highchart() |>
+  hc_title(text = "Primary and secondary Pokémon types") |>
+  hc_add_series(
+    type = "treemap",
+    data = c(parents, children),
+    layoutAlgorithm = "squarified",
+    allowTraversingTree = TRUE,
+    levelIsConstant = FALSE,
+    levels = list(
+      list(level = 1, dataLabels = list(enabled = TRUE)),
+      list(level = 2, dataLabels = list(enabled = TRUE))
+    )
+  ) |>
+  hc_tooltip(pointFormat = "<b>{point.name}</b><br>{point.value} Pokémon")
+```
+
+## A Wild t-SNE Appears!
+
+In the original post I had just met t-SNE (t-Distributed Stochastic Neighbor Embedding). The goal was not prediction; it was to place Pokémon that look similar in a high-dimensional feature space near one another in two dimensions.
+
+This time I keep the same spirit, but make two changes:
+
+- numeric variables are standardized before embedding, so weight does not dominate simply because of its scale;
+- the old `tsne` package is replaced by `Rtsne`.
+
+The feature set still combines physical measurements, battle stats, primary and secondary types, and egg groups.
+
+```{r}
+numeric_features <- pokemon |>
+  select(
+    height, weight, base_experience,
+    hp, attack, defense, special_attack, special_defense, speed
+  ) |>
+  mutate(
+    across(
+      everything(),
+      ~ replace_na(as.numeric(.x), median(.x, na.rm = TRUE))
+    )
+  ) |>
+  scale()
+
+categorical_features <- pokemon |>
+  transmute(
+    type_1 = factor(type_1),
+    type_2 = factor(type_2),
+    egg_group_1 = factor(egg_group_1),
+    egg_group_2 = factor(egg_group_2)
+  ) |>
+  model.matrix(~ type_1 + type_2 + egg_group_1 + egg_group_2 - 1, data = _)
+
+features <- cbind(numeric_features, categorical_features)
+
+set.seed(13242)
+
+tsne_fit <- Rtsne::Rtsne(
+  features,
+  dims = 2,
+  perplexity = 60,
+  check_duplicates = FALSE,
+  pca = TRUE,
+  verbose = FALSE
+)
+
+pokemon <- pokemon |>
+  mutate(
+    x = tsne_fit$Y[, 1],
+    y = tsne_fit$Y[, 2]
+  )
+```
+
+Now comes the fun part: putting the sprites directly on the Highcharts scatter and keeping the larger official artwork plus stats inside the tooltip.
+
+```{r}
+point_data <- pokemon |>
+  transmute(
+    x,
+    y,
+    pokemon = stringr::str_to_title(stringr::str_replace_all(pokemon, "-", " ")),
+    type_1 = stringr::str_to_title(type_1),
+    type_2 = if_else(type_2 == "none", "—", stringr::str_to_title(type_2)),
+    type_color,
+    height_m = round(height / 10, 1),
+    weight_kg = round(weight / 10, 1),
+    hp,
+    attack,
+    defense,
+    special_attack,
+    special_defense,
+    speed,
+    artwork_url,
+    sprite_url
+  ) |>
+  purrr::pmap(function(
+    x, y, pokemon, type_1, type_2, type_color,
+    height_m, weight_kg, hp, attack, defense,
+    special_attack, special_defense, speed,
+    artwork_url, sprite_url
+  ) {
+    list(
+      x = x,
+      y = y,
+      name = pokemon,
+      pokemon = pokemon,
+      type_1 = type_1,
+      type_2 = type_2,
+      type_color = type_color,
+      height_m = height_m,
+      weight_kg = weight_kg,
+      hp = hp,
+      attack = attack,
+      defense = defense,
+      special_attack = special_attack,
+      special_defense = special_defense,
+      speed = speed,
+      artwork_url = artwork_url,
+      color = type_color,
+      marker = list(
+        symbol = sprintf("url(%s)", sprite_url),
+        width = 28,
+        height = 28
+      )
+    )
+  })
+
+tooltip <- paste0(
+  '<div style="width:260px;padding:12px;font-family:inherit">',
+  '<div style="display:flex;gap:12px;align-items:center">',
+  '<img src="{point.artwork_url}" style="width:96px;height:96px;object-fit:contain">',
+  '<div><div style="font-size:18px;font-weight:700">{point.pokemon}</div>',
+  '<div style="margin-top:4px"><span style="background:{point.type_color};color:white;padding:2px 7px;border-radius:10px">{point.type_1}</span>',
+  '<span style="margin-left:5px">{point.type_2}</span></div>',
+  '<div style="margin-top:8px">{point.height_m} m · {point.weight_kg} kg</div></div></div>',
+  '<table style="width:100%;margin-top:10px;font-size:12px">',
+  '<tr><td>HP</td><td><b>{point.hp}</b></td><td>Attack</td><td><b>{point.attack}</b></td></tr>',
+  '<tr><td>Defense</td><td><b>{point.defense}</b></td><td>Speed</td><td><b>{point.speed}</b></td></tr>',
+  '<tr><td>Sp. Atk</td><td><b>{point.special_attack}</b></td><td>Sp. Def</td><td><b>{point.special_defense}</b></td></tr>',
+  '</table></div>'
+)
+
+hc <- highchart() |>
+  hc_chart(
+    type = "scatter",
+    height = 720,
+    zooming = list(type = "xy"),
+    backgroundColor = "transparent"
+  ) |>
+  hc_title(text = "A Wild t-SNE Appears!") |>
+  hc_subtitle(text = "Stats, types, and egg groups projected into two dimensions") |>
+  hc_xAxis(title = list(text = NULL), labels = list(enabled = FALSE), gridLineWidth = 0) |>
+  hc_yAxis(title = list(text = NULL), labels = list(enabled = FALSE), gridLineWidth = 0) |>
+  hc_add_series(
+    data = point_data,
+    name = "Pokémon",
+    turboThreshold = 0,
+    showInLegend = FALSE
+  ) |>
+  hc_tooltip(
+    useHTML = TRUE,
+    outside = TRUE,
+    borderWidth = 0,
+    shadow = TRUE,
+    padding = 0,
+    headerFormat = "",
+    pointFormat = tooltip
+  ) |>
+  hc_plotOptions(
+    series = list(
+      animation = FALSE,
+      states = list(
+        hover = list(
+          halo = list(size = 30, opacity = 0.25)
+        )
+      )
+    )
+  )
+```
+
+```{r}
+#| column: page
+hc
+```
+
+The exact geometry changes as the Pokédex and implementation evolve, so I would not over-interpret individual distances. The useful part is exploration: evolution families often remain close, type structure appears naturally, and unusual combinations are easy to spot.
+
+The original 2016 conclusion was basically: *nice algorithm to keep testing in other data*. I still agree.
+
+For a more interactive version, I also revisited this idea as a Shiny app where the projection method can be switched between PCA, t-SNE, and UMAP and their main parameters can be changed before redrawing the same Pokémon scatter.
+
+### Sources
+
+- [PokeAPI data repository](https://github.com/PokeAPI/pokeapi)
+- [PokeAPI sprites repository](https://github.com/PokeAPI/sprites)
+- [Rtsne](https://cran.r-project.org/package=Rtsne)
